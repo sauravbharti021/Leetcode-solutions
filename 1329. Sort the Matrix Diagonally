@@ -1,0 +1,56 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> diagonalSort(vector<vector<int>>& mat) {
+        
+        rep(i, mat[0].size()){
+            
+            int k=i, l=0;
+            vector<int> chg;
+            while(k<mat[0].size() && l<mat.size() ){
+                chg.pb(mat[l][k]);
+                k++, l++;
+            }
+            
+            sort(all(chg));
+             k=i, l=0; ll f=0;
+             while(k<mat[0].size() && l<mat.size() ){
+               mat[l][k]=chg[f];
+                 f++,k++,l++;
+            }
+            
+        }
+        
+        
+        for(int i=1;i<mat.size(); i++){
+            int k=i, l=0;
+            vector<int> chg;
+            
+            while(k<mat.size() && l<mat[0].size()){
+                 chg.pb(mat[k][l]);
+                 k++, l++;
+            }
+            sort(all(chg));
+             k=i, l=0; ll f=0;
+            while(k<mat.size() && l<mat[0].size() ){
+               mat[k][l]=chg[f];
+                 f++,k++,l++;
+            }
+        }
+        
+        return mat;
+        
+    }
+};
