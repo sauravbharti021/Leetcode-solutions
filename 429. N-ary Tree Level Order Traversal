@@ -1,0 +1,71 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    map<int,vector<int>>m;
+    vector<vector<int>> levelOrder(Node* root) {
+      Node* head= root;
+       
+        vector<vector<int>> ans;
+        if(root==NULL ) return ans;
+         bfs(head);
+        for(auto i: m){
+            ans.pb(i.ss);
+        }
+        
+        return ans;
+        
+    }
+    void bfs(Node* node){
+        
+        queue<Node*> q;
+        int dis=0;
+        q.push(node);
+        m[0].pb(node->val);
+        
+        while(!q.empty()){
+         dis++;   
+        int size=q.size();      
+        for(int i=0;i<size; i++){
+            Node* cur= q.front();
+            q.pop();
+            for(auto j: cur->children){
+                m[dis].pb(j->val);
+                q.push(j);
+            }
+            
+        }
+      }
+        return;
+    }
+};
