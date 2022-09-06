@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    TreeNode* ans= NULL;
+    TreeNode* pruneTree(TreeNode* root) {
+        if(!check(root)) return ans;
+        
+        TreeNode* lul= root;
+        ans= root;
+        recur(lul, ans);
+        
+        return ans;
+    }
+    
+    void recur(TreeNode* lul, TreeNode* ans){
+        
+        if(lul->left!= NULL && check(lul->left)) {
+            ans->left= lul->left;
+            
+            recur(lul->left, ans->left);
+        }
+        else lul->left=NULL;
+        if(lul->right!=NULL && check(lul->right)){
+            ans->right= lul->right;
+            recur(lul->right, ans->right);
+        }
+        else lul->right=NULL;
+    }
+    
+    bool check(TreeNode* lul){
+        
+        if(lul->val == 1) return true;
+        
+        bool f1=false, f2=false;
+        if(lul->left != NULL) f1=check(lul->left);
+        if(lul->right !=NULL) f2= check(lul->right);
+        
+        return f1 || f2;
+    }
+};
