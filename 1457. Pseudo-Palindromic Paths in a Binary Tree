@@ -1,0 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    int ans=0;
+    
+    int pseudoPalindromicPaths (TreeNode* root) {
+        
+        TreeNode* head= root;
+        vector<int> a(10);
+        recur(head, a);
+        
+        return ans;
+    }
+    
+    void recur(TreeNode *head, vector<int> a){
+        
+        if(head->left==NULL && head->right==NULL){
+                a[head->val]++;
+            int oc=0,ec=0;
+            rep(i, 10){
+                if(a[i]%2==1) oc++;
+                else ec++;
+            }
+            
+           
+            if(oc<=1) ans++;
+            return;
+        }else{
+            a[head->val]++;
+        }
+        
+        
+        
+        if(head->left != NULL){
+        recur(head->left, a);
+        }
+        if(head->right !=NULL){
+        recur(head->right, a);
+        }  
+        
+    }
+};
