@@ -1,0 +1,6 @@
+int val = 1000000007;
+int concatenatedBinary(int n) {
+	long long res = 0;
+	for (int i = 1; i <= n; i++) res = (((res << (int) log2(i) + 1) % val) + i) % val;
+	return res;
+}
