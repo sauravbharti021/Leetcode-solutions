@@ -1,0 +1,41 @@
+ListNode* removeNthFromEnd(ListNode* head, int n)
+    {
+        if(head==NULL)// if the head node is null
+            return head;
+        if(head->next==NULL && n==1)// if the list consists of just one node and n==1
+        {
+            delete head;
+            return NULL;
+        }
+		// to find the total number of nodes in the list
+        int len=0;
+        for(ListNode* curr=head; curr!=NULL; curr=curr->next)
+                len++;
+        if(len-n==0)// to handle the case when the head of the list is to be deleted
+        {
+            ListNode*temp=head->next;
+            delete head;
+            return temp;
+        }
+        else
+        {
+            ListNode*curr= head;
+            ListNode*first=curr;
+            ListNode*second=curr;
+            for(int i=0;i<n;i++)
+            {
+                if(first==NULL)
+                    return NULL;
+                first=first->next;
+            }
+            while(first->next!=NULL)
+            {
+                first=first->next;
+                second=second->next;
+            }
+            ListNode*temp=second->next;
+            second->next= temp->next;
+            delete(temp);
+            return head;
+        }
+    }
