@@ -1,0 +1,48 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff firstBUY
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        
+       sort(all(nums));
+        ll n=nums.size();
+       
+        ll mi= 1e11;
+        int cnt=1;
+        int sum=0;
+        ll ans=0;
+        
+        rep(i,n){
+            int ntar= target-nums[i];
+             int l=i+1, r=n-1; 
+            while(r-l>0){
+                
+                if(abs(target - (nums[i]+nums[l]+nums[r] )) <mi){
+                    mi= abs(target - (nums[i]+nums[l]+nums[r] ));
+                    
+                            ans= nums[i]+nums[l]+nums[r];
+                }
+                if( nums[i]+nums[l]+nums[r] == target){
+                   
+                    break;
+                }else if(nums[i]+nums[l]+nums[r] > target){
+                    r--;
+                }else l++;
+            }
+        }
+        
+        return ans;
+        
+    }
+};
