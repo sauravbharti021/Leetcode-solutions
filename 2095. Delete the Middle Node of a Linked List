@@ -1,0 +1,26 @@
+class Solution {
+public:
+    ListNode* deleteMiddle(ListNode* head) {
+        
+        if(head->next == NULL) return NULL;
+        
+        ListNode* slow=head;
+        int m=  cnt(slow, 0);
+        m/=2;
+        
+        while(m-->1){
+            slow=slow->next;
+        }
+        
+        slow->next= slow->next->next;
+        
+        
+        return head;
+    }
+    int cnt(ListNode* now,int count ){
+        if(now==NULL) return count;
+        now=now->next;
+        return cnt(now, count+1);
+    }
+        
+};
