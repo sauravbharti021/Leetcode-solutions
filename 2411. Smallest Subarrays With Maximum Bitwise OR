@@ -1,0 +1,49 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> smallestSubarrays(vector<int>& nums) {
+        
+        map<ll,set<ll>>m;
+        
+        int n=nums.size();
+        rep(i,n){
+            ll x= nums[i];
+            while(x>0){
+                int y= 31- __builtin_clz(x);
+                x-=(1ULL<<y);
+                m[y].insert(i);
+            }
+        }
+        
+        vector<int> ans(n);
+        
+        rep(i,n){
+           int mx=1;
+            
+            rrep(j,32){
+                auto it= m[j].lower_bound(i);
+                if(it== m[j].end()) continue;
+                else{
+                    int now= *it- i +1;
+                    mx=max(mx, now);
+                }
+            }
+            ans[i]=mx;
+        }
+        
+        return ans;
+        
+    }
+};
