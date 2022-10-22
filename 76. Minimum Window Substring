@@ -1,0 +1,60 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        
+      map<char,int> m;
+        rep(i, t.size()) m[t[i]]++;
+        
+        if(t.size()>s.size()) return  "";
+        if(s==t) return s;
+        
+        int f3=0;
+        
+        int start=-1,left=0;
+        
+        string ans="";
+        ll mi=1e8; 
+        
+        map<char,int> m2;
+        
+        rep(i,s.size()){
+            m2[s[i]]++;
+            
+            while(check(m , m2)){
+                int d= i- left+1;
+                if(mi> d) {mi=d, start=left;}
+                m2[s[left]]--;
+                f3=1;
+                left++;
+            }
+        }    
+        
+        if(!f3) return "";
+        
+        
+        
+        ans= s.substr(start, mi);
+        return ans;
+        
+    }
+    bool check(map<char,int> &m, map<char,int> &m2){
+        for(auto i: m){
+            if(i.ss > m2[i.ff])
+                return false;
+        }
+        return true;
+    }
+};
