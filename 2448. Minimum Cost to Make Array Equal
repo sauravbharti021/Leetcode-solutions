@@ -1,0 +1,55 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    long long minCost(vector<int>& nums, vector<int>& cost) {
+        
+        ll n=nums.size(); 
+        
+        vector<pair<ll, ll>> a(n);
+        
+        ll total=0, tc=0;
+        rep(i,n) {a[i].ff = nums[i], a[i].ss= cost[i];
+                  ll now=1;
+                  now *= nums[i];
+                  now*=cost[i];
+                  total+= now;
+                  tc+=cost[i]; 
+                 }
+        
+        sort(all(a));
+        
+        int prev=0;
+        
+        ll lt=0;
+        ll mi= 1e18; 
+        ll x=0; 
+        rep(i,n){
+            
+          ll delta= a[i].ff - x;  
+          total-= (tc* delta );
+          total+= (lt * delta);  
+            
+          lt+= a[i].ss;
+          tc-= a[i].ss;
+          
+          mi= min(mi, total); 
+            x=a[i].ff;
+            
+        }
+        
+        
+        return mi;
+    }
+};
