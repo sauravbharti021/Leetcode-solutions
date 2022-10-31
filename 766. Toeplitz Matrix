@@ -1,0 +1,37 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+        
+        int n=matrix.size(), m= matrix[0].size();
+        
+        rep(k,n){
+         rep(j,m){
+            
+            int start= matrix[k][j];
+            int flag=0;
+            int i=k, col=j;
+            while(i<n && col<m ){
+                if(matrix[i][col]!=start) return false;
+                i++;
+                col++;
+            }
+        }
+       }     
+        
+        return true;
+        
+    }
+};
