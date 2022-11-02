@@ -1,0 +1,74 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minMutation(string start, string end, vector<string>& bank) {
+        
+        int n=bank.size();
+        
+        int mi=1e5, f2=0;
+        
+        rep(i, (1<<n)+1){
+            vector<string> s;
+            rep(j, n){
+                if(i & (1<<j)){
+                   s.pb(bank[j]); 
+                }
+            }
+            if(s.empty()) continue;
+            else{
+                
+                
+                int cnt=0;
+                string str= start;
+                int flag=0;
+               map<string, int> m;
+                m[start]++;
+                string last="";
+                 int f3=0, g=0;
+                
+              while(f3<s.size() && g<s.size()) { 
+                 
+                rep(j, s.size()){
+                    int c=0;
+                    rep(k, 8){
+                        if(str[k]!=s[j][k]) c++;
+                    }
+                    if(c==1 && m.find(s[j])==m.end()){
+                        str= s[j];
+                        m[s[j]]++;
+                        last=s[j];
+                        f3++;
+                    }
+                }
+                  g++;
+                  
+              }
+                
+                if(f3==s.size() && last==end){
+                    f2=1;
+                    mi= min(mi, (int)s.size());
+                }
+                
+               }
+                
+              
+        }
+        
+        if(!f2) return -1;
+        
+        return mi;
+        
+    }
+};
