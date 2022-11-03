@@ -1,0 +1,75 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int longestPalindrome(vector<string>& words) {
+        
+        map<string, int> m;
+        int n=words.size();
+        
+        rep(i,words.size()){
+            m[words[i]]++;
+        }
+        
+        int len=0;
+        
+      
+        
+        for(auto it=m.begin(); it!=m.end(); it++)  {
+            string l= it->ff;
+            string r=l;
+            reverse(all(r));
+           
+            
+            
+            if(l==r){
+                
+                int x= m[l];
+                if(x%2==1){
+                    int z=(2*(x-1));
+                    len+= z;
+                    m[l]=1;
+                }else{
+                    len+= (2*x);
+                    m[l]=0;
+                }
+                continue;
+            }
+            
+            if(m[l]>0 && m[r]>0){
+                
+                int y=min(m[l], m[r]);
+               
+                len+= (y)*4;
+                
+              
+                    m[r]-=y;
+                
+                    m[l]-=y;
+            }
+        }
+        
+        int mx=0;
+        for(auto i=m.begin(); i!=m.end(); i++ ){
+            string l= i->ff;
+            if(l[0]==l[1] && m[l]>0){
+                mx=max(mx, i->ss*2);
+            }
+        }
+        
+        len+=mx;
+        
+        return len;
+    }
+};
