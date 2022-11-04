@@ -1,0 +1,64 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    long long makeIntegerBeautiful(long long n, int target) {
+        
+        ll prev=n;
+        
+        string s=to_string(n); 
+        int j=s.size()-1;
+            
+        while(true && j>=0){
+            if(check(n, target)) break;
+            else{
+                
+                s[j]='0';
+                j--;
+                
+                while(j>=0 && s[j]=='9'){
+                    s[j]='0';
+                    j--;
+                }
+                if(j>=0)
+                s[j] = ((s[j]-'0')+1)+'0';
+                
+                if(j<0){
+                    s.insert(s.begin(), '1');
+                }
+                n=stoll(s);
+            }
+        }
+        
+        
+        ll x= n-prev;
+        
+        return x;
+        
+        
+    }
+    
+    
+    
+    bool check(ll n, ll target){
+        
+        string s= to_string(n);
+        ll sum=0;
+        rep(i,s.size()){
+            sum+=(s[i]-'0');
+        }
+        
+        return sum<=target;
+    }
+};
