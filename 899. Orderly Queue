@@ -1,18 +1,48 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 998244353
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
 class Solution {
 public:
     string orderlyQueue(string s, int k) {
-        string S=s;
-       if(k > 1) {
-            sort(S.begin(), S.end());
-            return S;
+        
+        if(k!=1){
+            sort(all(s));
+            return s;
         }
         
-        int n = S.size();
-        string res = S;
-        S += S;
-        for(int i=0;i<n;i++) {
-            if(S.substr(i, n) < res) res = S.substr(i, n);
+        int mi= 27;
+        int n=s.size();
+        rep(i,n){
+            mi=min(mi, s[i]-'a');
         }
-        return res;
+        
+        vector<string> ans;
+        rep(i,n){
+            if(s[i]-'a' == mi){
+               string f= s.substr(i, n-i);
+               
+                string l= s.substr(0,i);
+                
+               
+                    string q=f+l;
+                    ans.pb(q);
+               
+                
+            }
+        }
+        
+        sort(all(ans));
+        
+        return ans[0];
     }
-};    
+};
