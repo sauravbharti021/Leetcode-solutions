@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root==NULL) return 0;
+
+        TreeNode* head= root;
+        return 1+recur(head);
+    }
+    int recur(TreeNode* head){
+        
+
+        int ans=0;
+        if(head->left!=NULL)
+        ans+= 1+recur(head->left);
+        if(head->right!=NULL)
+        ans+= 1+recur(head->right);
+
+        return ans;
+    }
+};
