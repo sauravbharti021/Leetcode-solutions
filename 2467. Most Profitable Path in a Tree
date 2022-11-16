@@ -1,0 +1,87 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<ll>> adj;
+    vector<ll> level;
+    vector<int> real;
+    ll mx= -1e9 - 15 ;
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        
+        real = amount;
+        int n=amount.size();
+        adj.assign(n+1, vector<ll>{});
+        level.assign(n+1, -1);
+        
+        rep(i, n-1){
+            adj[edges[i][0]].pb(edges[i][1]);
+            adj[edges[i][1]].pb(edges[i][0]);
+        }
+        
+         dfs1(0, 0, -1);
+        
+      
+       
+        int flag=0;
+        if(level[bob]%2==0) flag=1;
+        dfs(bob , level[bob], flag , ceil((1.0*level[bob])/2)) ;
+      
+        
+        fdfs(0,-1, 0);
+        return mx;
+        
+    }
+    void dfs1(int n, int height, int par){
+        
+        level[n] = height;
+        for(auto i: adj[n]){
+            if(i!=par){
+                dfs1(i, height+1, n);
+            }
+        }
+    }
+    
+    void dfs(int n, int height, int &odd, int mid){
+        
+        if(height< mid) return;
+        
+        
+        if(odd && height==mid ){
+            real[n] /=2;
+        }else real[n]=0;
+        
+        for(auto i: adj[n]){
+            if(height -1 == level[i]){
+                dfs(i, height-1, odd, mid);
+            }
+        }
+    }
+    
+    
+    
+    void fdfs(int n, int par, ll money){
+        
+        money+= real[n];
+        if(adj[n].size()==1  && n!=0){
+            mx= max(mx, money);
+        }
+        for(auto i: adj[n]){
+            if(i!=par){
+                fdfs(i, n, money);
+            }
+        }
+    }
+    
+    
+};
