@@ -1,0 +1,35 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        
+        ll a1  = (ll)(ax2 - ax1) * (ll)(ay2- ay1);
+        ll a2  = (ll)(bx2 - bx1) * (ll)(by2- by1);
+        
+         if(by1> ay2 || ay1>by2 || bx1>ax2 || ax1>bx2) return a1+a2;
+          
+                 ll x= common(ax1 , ay1, ax2, ay2, bx1, by1, bx2, by2);
+                 return (a1+a2)-x;
+       
+        
+    }
+    int common(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2){
+        
+        ll hehe= min(ay2, by2) - max(ay1, by1);
+        ll lol = min(ax2, bx2) - max(ax1, bx1);
+        
+        return (ll)(hehe*lol);
+    }
+};
