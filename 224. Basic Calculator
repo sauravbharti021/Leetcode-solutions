@@ -1,0 +1,115 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_w
+class Solution {
+public:
+    int calculate(string s) {
+       
+        int n=s.size();
+        string p="";
+        rep(i,n) {
+            if(s[i]!=' ') p+=s[i];
+            
+        }
+        s=p;
+        n=s.size();
+        
+        stack<string> st;
+        
+        rep(i,n){
+            
+            string now="";
+            if(isdigit(s[i]) ){
+                while(isdigit(s[i])){
+                    now+=s[i];
+                    i++;
+                }
+                i--;
+                st.push(now);
+            }else{
+                now+=s[i];
+                st.push(now);
+            }
+            
+            
+            int flag=-1;
+            
+            if(s[i]==')'){
+                
+                st.pop();
+                if(st.top()=="(") {st.pop(); continue;}
+                
+                ll lol=0;
+               
+                
+                while(st.top()!= "("){
+                    
+                    ll x= stoll(st.top());
+                    st.pop();
+                    
+                    if(st.top()=="("){
+                        lol+=x;
+                        break;
+                    }
+                    
+                    string y= st.top();
+                    st.pop();
+                    
+                    if(y.size()==1 && (y[0]=='+' || y[0]=='-')){
+                        if(y[0]=='+') flag=1;
+                        else flag=0;
+                    }
+                    
+                        if(flag) x=x;
+                        else x*=-1;
+                    
+                        
+                    lol+=x;
+                }
+                
+                st.pop();
+                st.push(to_string(lol));
+            }
+        }
+        
+        ll fun=0;
+        
+        ll f1=-1;
+        while(!st.empty()){
+            
+            ll x= stoll(st.top());
+            st.pop();
+            if(st.empty()){
+                fun+=x;
+                break;
+            }
+            
+            string y=st.top();
+            st.pop();
+            
+            if(y.size()==1 && (y[0]=='+' || y[0]=='-')){
+                        if(y[0]=='+') f1=1;
+                        else f1=0;
+                    }
+                    
+                        if(f1) x=x;
+                        else x*=-1;
+                    
+                        
+                    fun+=x;
+        }
+       
+        return fun;
+    }
+};
