@@ -1,0 +1,55 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int numSquares(int n) {
+        
+        vector<ll> a;
+        map<ll, ll> m;
+        
+        for(int i=1; ;i++) {
+            ll x= i*i;
+            a.pb(x);
+            m[x]++;
+            if(x>1e4) break;
+        }
+        
+        int cnt=0;
+        if(n<=3) return n;
+        
+       
+        int prev_sq=1;
+        vector<ll> dp(n+1, 0);
+        dp[1]=1;
+        dp[2]=2;
+        dp[3]=3;
+        
+        for(int i=4; i<=n; i++){
+            if(m.find(i)!=m.end()) {dp[i]=1; prev_sq=i;}
+            else{
+                ll mi = 1e4+1; 
+                for(auto j: m ){
+                    if(j.ff >=i ) break;
+                    mi= min(mi, 1+dp[abs(i- j.ff)] );
+                }
+                dp[i]=mi;
+                  
+            }
+        }
+        
+        
+        return dp[n];
+        
+    }
+};
