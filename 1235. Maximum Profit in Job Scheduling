@@ -1,0 +1,43 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        
+        map<ll, ll> st;
+        map<ll, vector<pair<ll,ll>>> m;
+
+        int n=startTime.size();
+        rep(i,n){
+            st[startTime[i]]=0;
+            m[startTime[i]].pb({endTime[i], profit[i]});
+        }
+        ll mx=0;
+        for(auto it= st.rbegin();it!=st.rend(); it++ ){
+           
+           for(auto i = m[it->ff].begin(); i!= m[it->ff].end(); i++ ){
+               auto lb= st.lower_bound(i->ff);
+
+               mx= max(mx, (lb==st.end() ? 0: lb->ss ) + i->ss );
+
+           }
+
+            it->ss= mx;
+
+        }
+
+        
+        return mx;
+    }
+};
