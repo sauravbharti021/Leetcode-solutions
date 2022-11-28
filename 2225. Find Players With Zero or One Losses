@@ -1,0 +1,43 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        int n=matches.size();
+        set<int> s;
+        map<int, int> m;
+        rep(i,n) {
+            s.insert(matches[i][0]);
+            m[matches[i][1]]++;
+
+            
+        }
+
+        vector<vector<int>> ans;
+
+        vector<int> b;
+
+        for(auto i: m){
+            if(s.find(i.ff) != s.end()) s.erase(i.ff);
+            if(i.ss==1) b.pb(i.ff);
+        }
+
+        vector<int> a;
+        for(auto i: s) a.pb(i);
+
+        ans.pb(a); ans.pb(b);
+
+        return ans;
+    }
+};
