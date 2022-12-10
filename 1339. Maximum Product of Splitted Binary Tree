@@ -1,0 +1,51 @@
+ #define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    ll sum=0;
+    ll mx= 0;
+    int maxProduct(TreeNode* root) {
+        TreeNode* head= root;
+        TreeNode* now= root;
+
+
+        recur(head);
+        ll x= recur1(now);
+
+        return mx%mod;
+
+    }
+    void recur(TreeNode* head){
+        if(head==NULL) return;
+
+        sum+=(head->val);
+
+        recur(head->left);
+        recur(head->right);
+    }
+
+    int recur1(TreeNode* now){
+
+        if(now == NULL) return 0;
+
+        ll lol = now->val + recur1(now->left) + recur1(now->right);
+
+        ll pro = (lol * (sum-lol));
+        mx= max(mx, pro); 
+        return lol;
+
+
+    }
+
+};
