@@ -1,0 +1,53 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<ll>> dp;
+    vector<vector<ll>> d {{1,0}, {1,-1}, {1,1}};
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n=matrix.size(),m=matrix[0].size();
+        dp.assign(n+1, vector<ll>(m+1, -1));
+            ll mi= 1e10;
+
+        rep(i,m){
+            ll x= recur(0, i, matrix);
+            mi=min(mi, x);
+        }
+
+        return mi;
+
+    }
+    ll recur(int i,int j, vector<vector<int>>& g ){
+        int n=g.size(),m=g[0].size();
+        
+        ll sum=g[i][j];
+
+        if(dp[i][j]!=-1) return dp[i][j];
+
+        ll mi = 1e10;
+        ll flag=0;
+        rep(k, 3){
+            int x=i+d[k][0], y= j+d[k][1];
+
+            if(x>=0 && x<n && y>=0 && y<m){
+                flag=1;
+                mi= min(mi, recur(x,y, g));
+            }
+        }
+
+        return dp[i][j] = sum+(flag ? mi : 0);    
+
+    }
+
+};
