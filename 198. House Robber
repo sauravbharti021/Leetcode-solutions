@@ -1,0 +1,39 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<ll> dp;
+    int rob(vector<int>& nums) {
+        dp.assign(nums.size()+1, -1);
+
+        ll mx=-1;
+        ll x= recur(0,nums );
+
+        rep(i, nums.size()) {
+              mx=max(mx, dp[i]);} 
+
+        return mx;
+
+    }
+    int recur(int i, vector<int> &nums){
+        if(i>=nums.size()) return 0;
+
+        if(dp[i]!=-1) return dp[i];
+
+        dp[i] = max( nums[i]+recur(i+2, nums) ,  recur(i+1, nums) );
+
+        return dp[i]; 
+
+    }
+};
