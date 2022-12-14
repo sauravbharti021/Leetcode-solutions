@@ -20,10 +20,8 @@ public:
         ll mx=-1;
         ll x= recur(0,nums );
 
-        rep(i, nums.size()) {
-              mx=max(mx, dp[i]);} 
 
-        return mx;
+        return x;
 
     }
     int recur(int i, vector<int> &nums){
