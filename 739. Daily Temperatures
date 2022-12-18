@@ -14,23 +14,20 @@
 class Solution {
 public:
     vector<int> dailyTemperatures(vector<int>& temperatures) {
-        stack<int> s;
+        stack<pair<int,int>> s;
         int n= temperatures.size();
         vector<int> ans(n, 0);
         rrep(i, n){
-            
-            m[temperatures[i]]= i;
-            
-            int mi=1e7;
-            
-            for(int j= temperatures[i]+1; j<=100; j++){
-                if(m.find(j)!=m.end()){
-                    mi= min(mi, m[j]);
-                }
+            ll cnt=0;
+            while(!s.empty() && s.top().ff<=temperatures[i]){
+                s.pop();
             }
             
-            if(mi==1e7) continue;
-            else ans[i] = mi- i;
+            if(s.empty()) s.push({temperatures[i], i});
+            else{
+                ans[i]=s.top().ss - i;
+                s.push({temperatures[i],i});
+            }
         }
         
         return ans;
