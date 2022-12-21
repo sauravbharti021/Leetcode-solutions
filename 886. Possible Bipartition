@@ -1,0 +1,50 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<ll>> adj;
+    vector<int> d;
+    int flag;
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+        
+        adj.assign(n+1, vector<ll>{});
+        d.assign(n+1, 0);
+        flag=1;
+        rep(i , dislikes.size()){
+            adj[dislikes[i][0]].pb(dislikes[i][1]);
+            adj[dislikes[i][1]].pb(dislikes[i][0]);
+        }
+        
+        for(int i=1; i<=n; i++){
+            if(d[i]==0) dfs(i, 1);
+        }
+        
+        return flag;
+        
+        
+    }
+    void dfs(int n, int parity){
+        
+        if(d[n]!=0){
+            if(d[n]!=parity)flag=0;
+                return;
+        }
+        d[n]=parity;
+        
+        for(auto i: adj[n]){
+            dfs(i, (parity==1 ? -1: 1));
+        }
+        
+    }
+};
