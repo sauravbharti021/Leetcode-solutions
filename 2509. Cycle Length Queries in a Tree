@@ -1,0 +1,56 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> cycleLengthQueries(int n, vector<vector<int>>& queries) {
+        vector<int> ans;
+        
+        
+        rep(i, queries.size()){
+            ll x= queries[i][0];
+            ll y= queries[i][1];
+            if(y>x) swap(x,y);
+            
+            ll xx= x;
+            
+            set<ll> s;
+            
+            while(x>=1){
+                s.insert(x);
+                x/=2;
+                
+            }
+            
+            int cnt1=0;
+            int check=y;
+            while(y>=1 && s.find(y)==s.end()){
+                y/=2;
+                check=y;
+                cnt1++;
+            }
+            
+            int cnt2=0;
+            x= xx;
+            while(x>=1 && x!=check){
+                x/=2;
+                cnt2++;
+            }
+            
+            ans.pb(cnt1+cnt2+1);
+            
+        }
+        return ans;
+        
+    }
+};
