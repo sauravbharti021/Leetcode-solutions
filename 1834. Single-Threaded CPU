@@ -1,0 +1,89 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> getOrder(vector<vector<int>>& tasks) {
+       
+        map<ll, set<ll>> m;
+        map<pair<ll,ll> , set<ll>> m1;
+        ll n=tasks.size();
+        
+        priority_queue< pair<ll,ll> , vector<pair<ll,ll>>, greater<pair<ll,ll>>> pq;
+        
+        rep(i,n){
+            m1[ {tasks[i][0], tasks[i][1]}].insert(i);
+            pq.push({tasks[i][0], tasks[i][1]});
+        }
+       
+        
+        
+       vector<int> ans;
+        
+        multiset<ll> ms;
+        
+        ll start= 0;
+        while(true ){
+             
+            int flag=0;
+            while(!pq.empty() && pq.top().ff<=start){
+                
+                flag=1;
+                ms.insert({pq.top().ss});
+                
+                ll now= *(m1[{pq.top().ff, pq.top().ss}].begin());
+                
+                m[pq.top().ss].insert(now);
+                m1[{pq.top().ff, pq.top().ss}].erase(now);
+                
+                pq.pop();
+                }
+            
+            
+            
+            
+            if(!ms.empty()){
+                ll p = *(ms.begin());
+                
+                ll now = *(m[p].begin());
+                m[p].erase(now);
+                
+                start+=p;
+                
+               ans.pb(now); 
+                ms.erase(ms.equal_range(p).ff);
+            }
+            
+            
+            if(!pq.empty() && start< pq.top().ff && ms.empty()){
+                
+                start = pq.top().ff;
+                start+= pq.top().ss;
+                
+                 ll lol = pq.top().ss;
+                
+                 ll now= *(m1[{pq.top().ff, pq.top().ss}].begin());
+                 m1[{pq.top().ff, pq.top().ss}].erase(now);
+                
+                
+               ans.pb(now); 
+                pq.pop();
+                
+            }
+            if(ans.size() == n) break;    
+        }
+        
+        
+        return ans;
+    }
+};
