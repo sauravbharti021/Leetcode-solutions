@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int flag=0;
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        recur(p, q);
+        return !flag;
+    }
+    void recur(TreeNode* p, TreeNode* q){
+        if(p==NULL && q!=NULL){
+             
+            flag=1;
+            return;
+        }else if(p!=NULL && q==NULL){
+            flag=1;
+            return;
+        }else if(p==NULL && q==NULL){
+            return;
+        }
+        
+        if(p->val!=q->val){
+           
+            flag=1;
+        }
+        recur(p->left, q->left);
+        recur(p->right, q->right);
+        
+    }
+};
