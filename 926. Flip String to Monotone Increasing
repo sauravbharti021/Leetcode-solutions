@@ -1,0 +1,35 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minFlipsMonoIncr(string s) {
+        
+        ll n= s.size();
+        
+        vector<ll> pre(n, 0);
+        rep(i,n) pre[i] = (i>0 ? pre[i-1] : 0 )+ (s[i]=='1' ? 1 : 0);
+        
+        ll mi =n;
+        
+        rep(i,n){
+            ll now= pre[i] + (n-i-1)- ( pre[n-1] - pre[i] );
+            
+            mi= min(mi, now);
+        }
+        
+        mi= min({mi, pre[n-1], n-pre[n-1]});
+        
+        return mi;
+    }
+};
