@@ -1,0 +1,77 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        
+        vector<int> a=nums;
+        ll n=nums.size();
+        vector<ll> pre(n+1, 0);
+        
+        rep(i,n){
+            a[i]%=k;
+        }
+        
+        rrep(i,n) {
+            pre[i]= pre[i+1] + a[i];
+            pre[i]%=k;
+        }
+        
+        map<ll, ll> m;
+        
+        ll cnt=0;
+        vector<ll> dp(n+1, 0);
+        map<ll, ll> m1;
+        
+        rrep(i,n){
+            
+            m[pre[i]]++;
+            m1[pre[i]]=i;
+            ll prev=0;
+            if(i==0){
+                prev=0;
+            }
+            else prev=pre[i-1];
+            
+            
+            ll l1= prev%k, l2= (prev-k)%k, l3= (prev+k)%k; 
+            
+            set<int> ind;
+            if(m.find(l1) != m.end()) {
+                ind.insert(m1[l1]);
+            }
+            if(m.find(l2)!= m.end()) {
+                ind.insert(m1[l2]);
+            }if(m.find(l3)!=m.end()) {
+                ind.insert(m1[l3]);
+            }
+            
+            
+            
+            if(!ind.empty())
+            dp[i] += 1+ dp[*(ind.begin())+1];
+            
+            
+        }
+        
+       
+        rep(i,n) cnt+=dp[i];
+       
+        
+        return cnt;
+        
+        
+        
+    }
+};
