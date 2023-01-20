@@ -1,0 +1,39 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        
+        ll n= nums.size();
+        set<vector<int>> now;
+        
+        rep(i, (1ULL<<n)){
+            vector<int> a;
+            rep(j, n){
+                if((i& (1ULL<<j))) a.pb(nums[j]);
+            }
+            
+            int f=0, lol=a.size();
+            rep(j,lol-1){
+                if(a[j+1]<a[j]) f=1;
+            }
+            if(!f && lol>=2)now.insert(a);
+        }
+        
+        vector<vector<int>> ans;
+        for(auto i: now) ans.pb(i);
+        
+        return ans;
+    }
+};
