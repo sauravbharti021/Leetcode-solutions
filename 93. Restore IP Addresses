@@ -1,0 +1,68 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        
+        vector<string> c;
+        
+        ll n=s.size();
+            
+        
+        for(int j=0; j<n-3; j++){
+            for(int k=j+1; k<n-2; k++){
+                for(int l=k+1; l<n-1; l++){
+                         
+                        string now;
+                        rep(i,n){
+                            now+=s[i];
+                            if(i==j || i==k || i==l) now+='.';
+                        }
+                        c.pb(now);
+                    
+                }
+            }    
+        }
+        
+        vector<string> ans;
+        
+        for(auto i: c){
+            string f= i;
+            int flag=0;
+            rep(j,n+3){
+                if(f[j]!='.'){
+                    string lol="";
+                    while(j<n+3 && f[j]!='.') {
+                        lol+=f[j], j++;
+                    }
+                    
+                     if( (lol.size()>1 && lol[0]=='0') || (lol.size()>3  )) { flag=1; break;}
+                    ll x= stoll(lol);
+                    if(x>255){
+                        flag=1;
+                        break;
+                    }
+                    
+                        
+                }
+            }
+            if(!flag) ans.pb(i);
+        }
+        
+        
+        
+        return ans;
+        
+    }
+};
