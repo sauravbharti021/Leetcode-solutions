@@ -1,0 +1,52 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<string>> res;
+    void recur(int i,  string &s, vector<string> lol){
+        if(i>=s.size()){
+            
+            res.pb(lol);
+            
+            return;
+        }
+        
+        
+        string f="";
+        for(int j=i; j<s.size(); j++){
+            int flag=0;
+            f+=s[j];
+             ll n=f.size();
+                rep(k, n/2){
+                    if(f[k]!=f[n-k-1]) flag=1;
+                }
+            if(!flag){
+                vector<string> now=lol;
+                now.pb(f);
+                recur(j+1, s, now );
+            }
+        }
+        
+        
+        
+    }
+    
+    vector<vector<string>> partition(string s) {
+       
+        vector<string> f;    
+        recur(0, s, f);
+        
+        return res;
+    }
+};
