@@ -1,0 +1,72 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        
+        ll n= board.size(), cnt= 1;
+        vector<vector<int>> adj((n*n)+10, vector<int>{});
+        
+        vector<int> b(n*n+10);
+        ll row=0;
+        rrep(i,n){
+            if(row%2==0){
+                rep(j,n){
+                    b[cnt] = board[i][j];
+                    cnt++;
+                }
+            }else{
+                rrep(j,n){
+                    b[cnt] = board[i][j];
+                    cnt++;
+                }
+            }
+            row++;
+            
+        }
+    
+        
+         vector<ll> dis( (n*n)+10, 1e9);
+        
+        dis[1]=0;
+        queue<ll> q;
+        q.push(1);
+        
+        while(!q.empty()){
+            ll x= q.front();
+            q.pop();
+            
+            for(int i=x+1; i<= min(x+6, n*n) ;i++  ){
+                
+                if(b[i]==-1){
+                    if(dis[x]+1 < dis[i]){
+                        dis[i] = dis[x]+1;
+                        q.push(i);
+                    }
+                }else{
+                    if(dis[x]+1 < dis[b[i]]){
+                        dis[b[i]] = dis[x]+1;
+                        q.push(b[i]);
+                    }
+                }    
+            }
+        }
+        
+        
+        return dis[n*n]==1e9 ? -1 : dis[n*n];
+        
+        
+        
+    }
+};
