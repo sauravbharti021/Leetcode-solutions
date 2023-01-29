@@ -1,0 +1,123 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class LFUCache {
+public:
+    
+    /* map and set */
+    
+    map<ll ,ll> m;
+    set< pair<ll, ll>> si;
+    map<ll, ll> mi;
+    
+    set<pair<ll, pair<ll,ll>>> ms;
+    map<ll, ll> val;
+    
+    
+    ll total=0;
+    
+    ll limit=0;
+    
+    LFUCache(int capacity) {
+       limit= capacity; 
+    }
+    
+    int get(int key) {
+        if(m.find(key) == m.end()) return -1;
+        
+        
+        m[key]++;
+        
+        pair<ll, ll> p= {mi[key], key };
+        
+        ll now= (*(--si.end())).ff;
+        si.erase(p);
+        pair<ll, pair<ll,ll>> lol= {m[key]-1, {mi[key], key}};
+        ms.erase(lol);
+        
+        mi[key]= now+1;
+        
+        
+        ms.insert({m[key], {mi[key], key}} );
+        
+        si.insert({mi[key], key});
+        
+        
+        return val[key];
+    }
+    
+    void put(int key, int value) {
+        
+        
+        if(limit==0) return;
+        
+        if(m.find(key) != m.end()){
+            m[key]++;
+            
+            pair<ll, ll> p= {mi[key], key };
+        
+            ll now= (*(--si.end())).ff;
+            si.erase(p);
+            
+            pair<ll, pair<ll,ll>> lol= {m[key]-1, {mi[key], key}};
+        
+            ms.erase(lol);
+
+            mi[key]= now+1;
+            
+            ms.insert({m[key], {mi[key], key}} );
+            si.insert({mi[key], key});
+            
+            val[key] = value;
+            return;
+            
+        }
+        
+        
+        if(m.size() < limit){
+            
+            m[key]++;
+            
+            mi[key] = m.size();
+            
+            
+            ms.insert({m[key], {mi[key], key}} );
+            si.insert({mi[key] , key });
+            val[key] = value;
+            
+            return;
+        }
+        
+        
+        pair<ll, pair<ll,ll>> lol = *(ms.begin());
+        
+        
+        pair<ll, ll> p = {lol.ss.ff, lol.ss.ss};
+        ll now= (*(--si.end())).ff;
+        si.erase(p);
+        
+        ms.erase(lol);
+        m.erase(lol.ss.ss);
+        val.erase(lol.ss.ss);
+        mi.erase(lol.ss.ss);
+        
+        m[key]++;
+        mi[key] = now+1;
+        si.insert({mi[key], key});
+        ms.insert({ m[key],{mi[key], key } });
+        val[key] = value;
+        
+        
+    }
+};
