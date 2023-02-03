@@ -1,0 +1,64 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod1 1000000007
+#define mod2 1000000009
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        
+        ll cnt=0, n=s.size();
+        if(numRows==1) return s;
+        
+        vector<vector<char>> ans(numRows+1, vector<char>(1e3+1, '*') );
+        
+        ll dtu=0, i=0, j=0;
+        while(cnt<n){
+            if(i==0 ){
+                dtu=0;
+                while(i<numRows && cnt<n){
+                  ans[i][j]= s[cnt];
+                    cnt++;
+                    i++;
+                }
+                
+                if(i==numRows && cnt<n){
+                    dtu=1;
+                    i=numRows-2;
+                    j++;
+                }
+                
+            }
+            if(dtu && cnt<n && i>0){
+                ans[i][j]= s[cnt];
+                cnt++;
+                i--;
+                j++;
+            }
+            
+            if(cnt>=n) break;
+            
+        }
+        
+        string res="";
+        rep(i,numRows){
+            rep(j,1001){
+                if(ans[i][j]!='*') res+=ans[i][j];
+            }
+        }
+        
+        return res;
+        
+       
+        
+    }
+};
