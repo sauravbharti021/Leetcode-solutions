@@ -1,0 +1,49 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod1 1000000007
+#define mod2 1000000009
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+      
+        vector<ll> f(26, 0);
+        rep(i,s1.size()){
+            f[s1[i]-'a']++;
+        }
+        if(s2.size()<s1.size()) return false;
+        
+        ll n=s2.size();
+        vector<vector<ll>> fre(n, vector<ll>(26, 0) );
+        
+        rep(i,n){
+            
+            rep(j, 26){
+                fre[i][j]= (i>0 ? fre[i-1][j] : 0) + ((s2[i]-'a') == j ? 1: 0);
+            }
+        }
+        ll m=s1.size();
+        
+        for(int i=0; i+m<=n; i++){
+            ll flag=0;
+            
+            rep(j, 26){
+                ll have= fre[i+m-1][j] - (i>0 ? fre[i-1][j] : 0);
+                if(have< f[j]) flag=1;
+            }
+            if(!flag) return true;
+            
+        }
+        
+        return false;
+    }
+};
