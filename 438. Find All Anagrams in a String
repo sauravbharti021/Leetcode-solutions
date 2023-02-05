@@ -1,0 +1,44 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        
+        vector<int> fre(26, 0);
+        
+        rep(i, p.size()) fre[p[i]-'a']++;
+        
+        ll n=s.size();
+        vector<vector<int>> f(n+1, vector<int>(26, 0) );
+        vector<int> ans;
+        
+        rep(i,n){
+            rep(j,26){
+                f[i][j]= (i>0 ? f[i-1][j] : 0) + ((s[i]-'a'==j) ? 1: 0);
+            }
+        }
+        ll m=p.size();
+        for(int i= p.size()-1; i<n ;i++){
+            int flag=0;
+            rep(j,26){
+                if( (f[i][j]- (i-m>=0 ? f[i-m][j] : 0) ) != fre[j] ) { flag=1; break; }
+            }
+            if(!flag){
+                ans.pb(i-m+1);
+            }
+        }
+        
+        return ans;
+    }
+};
