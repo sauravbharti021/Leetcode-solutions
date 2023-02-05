@@ -1,0 +1,85 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    long long minCost(vector<int>& basket1, vector<int>& basket2) {
+        
+        map<ll, ll> tot, b1, b2;
+
+        ll n=basket1.size();
+
+        rep(i,n){
+            tot[basket1[i]]++;
+            tot[basket2[i]]++;
+
+            b1[basket1[i]]++;
+            b2[basket2[i]]++;
+
+
+        }
+        int flag=0;
+
+        ll cost=0,mi=0,prev=0;
+        set<pair<int,int>> s;
+        ll mini=1e18;
+        
+        for(auto i: tot){
+            mini= min(mini, i.ff);
+            if(i.ss%2==1 ) return -1;
+
+            ll h= i.ss/2;
+            prev=mi;
+
+            if(b1.find(i.ff)!=b1.end() || b1[i.ff]!=h)
+            mi+= abs(h- b1[i.ff]);
+            else
+             mi+= abs(h- b2[i.ff]);
+
+            if((mi-prev) > 0){
+            s.insert({i.ff, mi-prev});
+                cost+= (mi-prev);
+            }
+            
+            b1[i.ff] = h;
+            b2[i.ff]= h;
+        }
+        
+        
+        mi=0;
+        ll cnt= cost;
+        
+        
+        ll ans=0; 
+        while(cnt>0){
+
+            pair<ll,ll> x= *s.begin();
+            s.erase(x);
+           
+            ll now= min(x.ss*2, cnt) * mini;
+            
+            ll lol = min( (ll)ceil((1.0*cnt)/2), x.ss )*x.ff;
+            
+            if(now<=lol) break;
+            
+            ans+=lol;
+            cnt-= min(x.ss*2, cnt);
+            
+    
+        }
+        if(cnt>0)
+        ans+=(cnt*mini);
+        return ans;
+        
+    }
+};
