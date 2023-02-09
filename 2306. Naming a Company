@@ -1,0 +1,54 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    long long distinctNames(vector<string>& ideas) {
+        ll n= ideas.size();
+        map<char, set<string>> m;
+        rep(i,n){
+            char x= ideas[i][0];
+            string f="";
+            for(int j=1; j<ideas[i].size(); j++)        
+                f+=ideas[i][j];
+            
+                m[x].insert(f);
+        }
+
+    
+        ll ans= 0;
+
+        rep(i,26){
+            char a= 'a'+i;
+            rep(j,26){
+                
+                char b= 'a'+j;
+                if(a==b) break;
+
+                ll good_t=0,good_b=0;
+                for(auto k : m[a]){
+                    if(m[b].find(k)== m[b].end()) good_t++;
+                }
+                for(auto k: m[b]){
+                    if(m[a].find(k)==m[a].end()) good_b++;
+                }
+            
+                ans+= (good_t * good_b);
+                
+            }
+        }
+
+        return ans*2;
+    }
+
+};
