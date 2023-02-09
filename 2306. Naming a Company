@@ -15,17 +15,18 @@ class Solution {
 public:
     long long distinctNames(vector<string>& ideas) {
         ll n= ideas.size();
-        map<char, set<string>> m;
+       vector<set<string>> m(26);
         rep(i,n){
             char x= ideas[i][0];
             string f="";
             for(int j=1; j<ideas[i].size(); j++)        
                 f+=ideas[i][j];
             
-                m[x].insert(f);
+                m[x-'a'].insert(f);
         }
 
     
+
         ll ans= 0;
 
         rep(i,26){
@@ -36,11 +37,11 @@ public:
                 if(a==b) break;
 
                 ll good_t=0,good_b=0;
-                for(auto k : m[a]){
-                    if(m[b].find(k)== m[b].end()) good_t++;
+                for(auto k : m[i]){
+                    if(m[j].find(k)== m[j].end()) good_t++;
                 }
-                for(auto k: m[b]){
-                    if(m[a].find(k)==m[a].end()) good_b++;
+                for(auto k: m[j]){
+                    if(m[i].find(k)==m[i].end()) good_b++;
                 }
             
                 ans+= (good_t * good_b);
