@@ -11,74 +11,59 @@
 #define min4(a, b, c, d) min(d, min(c, min(a, b)))
 #define rrep(i, n) for(int i=n-1;i>=0;i--)
 #define rep(i,n) for(int i=0;i<n;i++)
-#define Jhunjhar_Hova ios_base::sync_w
 class Solution {
 public:
-    vector<int> a;
-    vector<bool> vis;
-    vector<vector<ll>> adj;
-    
-    vector<int> d;
-    
     ll ans=0;
+    ll dfs(int n, int par, int seats, vector<ll> &dis, vector<vector<ll>> &adj){
+        ll cnt=0;
+        
+        for(auto i: adj[n]){
+            if(i!=par){
+                cnt+=  dfs(i, n, seats, dis, adj);
+            }
+        }
+        
+        if(cnt>=seats && n!=0){
+            
+            ans+= (dis[n] * (cnt/seats));
+            ans+= (cnt/seats)*seats;
+            cnt-= (cnt/seats)*seats;
+            
+            return cnt+1;
+        }
+        
+        return cnt+1;
+    }
     
     long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
-        int n=roads.size();
         
-        adj.assign(n+1, vector<ll>{});
+        ll n=roads.size();
         
+        vector<vector<ll>> adj(n+2, vector<ll>{});
         rep(i,n){
             adj[roads[i][0]].pb(roads[i][1]);
             adj[roads[i][1]].pb(roads[i][0]);
         }
-        vis.assign(n+1, false);
-        d.assign(n+1, 0);
-         
-        hei(0, -1, 0);
         
-        ll now = recur(0,-1, seats);
+        queue<ll> q;
+        q.push(0);
+        vector<ll> dis(n+2, 1e8);
+        dis[0]=0;
         
-        return ans;
-        
-        
-    }
-    
-    ll recur(int n, int par, int seats){
-        
-        
-        
-        ll people=1;
-        
-        for(auto i: adj[n]){
-            if(i!=par){
-               people+= recur(i, n, seats);
+        while(!q.empty()){
+            ll x= q.front();
+            q.pop();
+            
+            for(auto i: adj[x]){
+                if(dis[x]+1<dis[i]){
+                    dis[i]= dis[x]+1;
+                    q.push(i);
+                }
             }
         }
-        if( n==0){
-            return ans;
-        }
         
-        ans+= (people/seats )* d[n] + ((people%seats ==0) ? 0:1);
-        
-        return people%seats;
-        
-        
+        ll now= dfs(0, -1, seats, dis, adj);
+        return ans+now-1;
         
     }
-    
-    void hei(int n, int par, int level){
-        
-        d[n]=level;
-        if(adj.size()==1){
-            return;
-        }
-        
-        for(auto i: adj[n]){
-            if(i!=par){
-               hei(i, n, level+1); 
-            }
-        }
-    }
-    
-    
 };
