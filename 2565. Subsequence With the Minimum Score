@@ -1,0 +1,79 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+   int minimumScore(string s, string t) {
+
+       ll n= t.size(), m=s.size();
+
+       vector<int> suf(n+1, -1), pre(n+1, -1);
+       
+       ll r1=n-1, r2=m-1;
+
+       while(r2>=0 && r1>=0){
+            if(t[r1] == s[r2]){
+                suf[r1]= r2;
+                r1--; r2--;
+            }else{
+                r2--;
+            }
+       }
+
+       r1=0, r2=0; 
+
+       while(r1<n && r2<m){
+            if(t[r1]== s[r2]){
+                pre[r1]= r2;
+                r1++; r2++;
+            }
+            else{
+                r2++;
+            }
+       } 
+
+       ll l=-1, r=n;
+
+       while(r-l>1){
+            ll mid= (l+r)/2;
+            
+            ll flag=0;
+            if(mid==n){
+                flag=1;
+            }
+            else{
+            ll left=-2,right=-2;
+                for(int i=0; i+mid<=n; i++){
+                    if(i==0){
+                        left=1;
+                    }
+                    else if(pre[i-1]==-1) continue;
+                    if(i+mid==n){
+                        right=1;    
+                    }
+                    else if(suf[i+mid]==-1) continue;
+
+                    if( ( i>0 && i+mid<n && pre[i-1]>=suf[i+mid] )  || (i>0 && i+mid<n && suf[i+mid]<= pre[i-1] ) ) continue;
+
+                    flag=1;
+                    break;
+                } 
+            }
+            
+            if(flag) r=mid;
+            else l=mid;
+       } 
+
+        return r;
+    }
+};
