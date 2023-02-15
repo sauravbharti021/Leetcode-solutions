@@ -1,0 +1,52 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> addToArrayForm(vector<int>& num, int k) {
+        
+        ll carry=0;
+        vector<int> ans;
+        
+        string s= to_string(k);
+        ll n= s.size(), m=num.size();
+        
+        ll i= n-1, j=m-1;
+        
+        while(i>=0 || j>=0){
+            
+            ll sum= (i>=0 ? (s[i]-'0'):0) + (j>=0 ? (num[j]) : 0);
+            
+            if(carry){
+                if(sum<=8){
+                    ans.pb(sum+1);
+                    carry=0;
+                }else{
+                    ans.pb((sum+1)%10);
+                }
+            }
+            else{
+               if(sum<=9){
+                    ans.pb(sum);
+                }else{
+                    ans.pb((sum)%10);
+                   carry++;
+                } 
+            }
+            i--; j--;
+        }
+        if(carry) ans.pb(1);
+        reverse(all(ans));
+        return ans;
+    }
+};
