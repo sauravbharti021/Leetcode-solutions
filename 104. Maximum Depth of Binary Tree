@@ -1,0 +1,17 @@
+#define ll long long
+class Solution {
+public:
+    ll recur(TreeNode* root ){
+        if(root==NULL) return  0;
+        
+        ll cnt= 1;
+        
+        cnt+=  max(recur(root->left) , recur(root->right) );
+        
+        return cnt;
+    }
+    int maxDepth(TreeNode* root) {
+        
+        return recur(root);
+    }
+};
