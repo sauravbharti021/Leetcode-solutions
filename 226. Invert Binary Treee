@@ -1,0 +1,19 @@
+class Solution {
+public:
+    TreeNode* now=NULL;
+    TreeNode* invertTree(TreeNode* root) {
+        now=root;
+        recur(now);
+        return now;
+    }
+    void recur(TreeNode* now){
+        if(now==NULL) return;
+        
+        recur(now->left);
+        recur(now->right);
+        TreeNode* lol= now->left;
+        now->left=now->right; now->right= lol;
+        
+        
+    }
+};
