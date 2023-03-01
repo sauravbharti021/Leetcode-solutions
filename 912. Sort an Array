@@ -1,0 +1,73 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    //merge sort
+    
+    vector<int> a;
+    vector<int> sortArray(vector<int>& nums) {
+        a=nums;
+        recur1(0, nums.size()-1);
+        
+        return a;
+        
+    }
+    void recur1(int l, int r){
+        if(r-l<1) return;
+        
+        ll m =(l+r)/2;
+        
+        recur1(l, m);
+        recur1(m+1, r);
+        
+        recur(l, r, m);
+    }
+    
+    void recur(int l, int r, int mid){
+        if(r-l<1) return;
+        
+        
+        ll d= r-l+1;
+        vector<int> b(d+1, 0);
+        
+        ll left=l, right= r, k=0;
+        
+        r=mid+1;
+        while(l<=mid && r<=right){
+            if(a[l]<= a[r]){
+                b[k] = a[l];
+                l++;
+            }else{
+                b[k]= a[r];
+                r++;
+            }
+            
+            k++;
+        }
+        
+        while(l<=mid) {b[k]=a[l]; k++; l++;}
+        
+        while(r<=right) { b[k]=a[r]; k++; r++; }
+        
+        
+        k=0;
+        for(int i=left ; i<=right; i++){
+            
+            a[i]=b[k];
+            k++;
+        }
+        
+    }
+};
