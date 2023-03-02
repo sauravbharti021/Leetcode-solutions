@@ -1,0 +1,72 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int compress(vector<char>& chars) {
+        
+        
+        ll n=chars.size();
+        
+        map<pair<ll,char> , ll> m;
+        
+        vector<char> lol;
+        
+         
+        rep(i,n){
+            
+            char now= chars[i];
+            
+            ll cnt=0, index=i;
+            while(i<n && chars[i]==now){
+                i++;
+                cnt++;
+                
+            }
+            m[{index, now}] = cnt;
+            i--;
+        }
+        
+        // for(auto i: m) cout<<i.ff.ff<<" "<<i.ff.ss<<" k "<<i.ss<<"\n";
+        
+        ll cnt=0;
+        
+        for(auto i : m){
+            cnt++;
+            
+            lol.pb(i.ff.ss);
+            
+            if(i.ss==1) continue;
+            
+            ll d= 0;
+            ll x= i.ss;
+            
+            vector<char> f;
+            while(x>0){
+                ll r= (x%10)+'0';
+                
+                f.pb(r);
+                x/=10;
+                cnt++;
+            }
+            
+            reverse(all(f));
+            
+            rep(j, f.size()) lol.pb(f[j]);
+            
+        }
+        
+        chars= lol;
+        return cnt;
+    }
+};
