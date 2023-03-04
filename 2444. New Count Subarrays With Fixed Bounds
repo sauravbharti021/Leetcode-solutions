@@ -1,0 +1,102 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    
+    long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+        
+        ll ans=0, n=nums.size();
+        
+        if(minK == maxK){
+            
+            
+            rep(i,n){
+                
+                if(nums[i]== minK){
+                    ll cnt=0;
+                    while(i<n && nums[i]==minK){
+                        i++;
+                            cnt++;
+                    }
+                    i--;
+                    ans+= ((cnt * (cnt+1))/2);
+                    
+                }
+            }
+            
+            return ans;
+            
+        }
+        else{
+          
+            vector<int> a;
+            nums.pb(1e7);
+            
+            rep(i,n+1){
+                if(nums[i]>maxK || nums[i]<minK){
+                    
+                    int m=a.size();
+                    int mx=-1,mi= 1e7;
+                    int mxi=-1,mii=-1;
+                    int cnt=0;
+                    
+                    int prev=-1;
+                    
+                    rep(j,m){ 
+                        
+                        if(mi>=a[j]){
+                            mi=a[j]; mii=j;
+                        }
+                        if(mx<= a[j]){
+                            mx=a[j];
+                            mxi=j;
+                        }
+                        
+                        
+                        if(mi==minK && mx==maxK ){
+                            
+                            
+                            ll x= (a.size()-j);
+                            ll y= min(mxi, mii)-prev;
+                            ans+= (x*y);
+                            cnt++;
+                            
+                            if(a[j]==mi){
+                                mx=-1;
+                                prev=mxi;
+                            }else{
+                                mi= 1e7;
+                                prev=mii;
+                            }
+                        }
+                    }
+                    
+                    
+                    a.clear();
+                    
+                }else{
+                    a.pb(nums[i]);
+                }
+            }
+            
+            
+          
+            
+            
+        }
+       return ans;
+        
+    }
+};
