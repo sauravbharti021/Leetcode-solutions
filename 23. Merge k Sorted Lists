@@ -1,0 +1,59 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        
+        if(lists.size()==0) return NULL;
+       
+        return recur( lists, 0, lists.size() - 1);
+       
+    }
+    
+    ListNode* recur( vector<ListNode*> &lists, int l, int r ){
+        if(l==r) return lists[l];
+        
+        ll m= (l+r)/2;
+        
+        ListNode* left= recur(lists, l , m);
+        ListNode* right= recur(lists, m+1, r);
+        
+        return merge( left, right);
+    }
+    
+    ListNode* merge( ListNode* left, ListNode* right  ){
+        if(left==NULL) return right;
+        if(right== NULL) return left;
+        
+        if(left->val < right->val){
+            left->next = merge(left->next, right);
+            return left;
+        }else{
+            right->next= merge(left, right->next);
+            return right;
+        }
+    }
+    
+};
