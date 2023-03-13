@@ -1,0 +1,51 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+    
+    bool static myComp(vector<int> &a, vector<int> &b){
+        if(a[1]!=b[1]) return a[1]<b[1];
+        
+        return a[0]<b[0];
+    }
+    
+public:
+    int findMinimumTime(vector<vector<int>>& tasks) {
+        
+       ll n= tasks.size();
+        
+        sort(all(tasks), myComp);
+      
+        vector<ll> avail(2002, 0);
+        rep(i,n ){
+            ll cnt=0, d= tasks[i][2];
+            
+            for(int j= tasks[i][1]; j>= tasks[i][0]; j--  )
+                    if(avail[j]) cnt++;
+            
+            if(cnt<d){
+              for(int j= tasks[i][1]; j>= tasks[i][0] && cnt<d; j--  )
+                    if(!avail[j]) {
+                        avail[j]=1;
+                        cnt++;
+                    }
+            }
+            
+        }
+        
+        ll ans=0;
+        
+        rep(i, 2001) if(avail[i]) ans++;
+        return ans;
+    }
+};
