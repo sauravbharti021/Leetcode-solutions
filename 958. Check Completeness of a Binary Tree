@@ -1,0 +1,61 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    vector<ll> dis;
+    ll flag=0;
+    bool isCompleteTree(TreeNode* root) {
+       
+        
+        TreeNode* head= root; 
+        ll flag=0;
+        queue<TreeNode*> q;
+        q.push(head);
+        
+        while(!q.empty()){
+            ll size= q.size();
+            while(size>0){
+                size--;
+                
+                TreeNode* now= q.front();
+                q.pop();
+                
+                if(flag && (now->left!=NULL || now->right!=NULL )) return false;
+                if( now->left==NULL || now->right==NULL) {flag=1;}
+                if(now->left==NULL && now->right!=NULL) return false;
+                
+                if(now->left!=NULL)
+                q.push(now->left);
+                if(now->right!=NULL)
+                q.push(now->right);
+            }
+        }
+            
+            return true;
+    }
+    
+    
+};
