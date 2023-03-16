@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right   (nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        
+        stack<TreeNode*> st;
+        ll n=inorder.size();
+        TreeNode* root= new TreeNode(postorder[n-1]);
+        
+        st.push(root);
+        
+        map<ll ,ll> m;
+        rep(i,n){m[inorder[i]]=i;}
+        
+        for(int i=n-2; i>=0; i--){
+            
+            TreeNode* node= new TreeNode(postorder[i]);
+            if(m[postorder[i]]> m[st.top()->val] ){
+                st.top()->right= node; 
+            }
+            else{
+                
+                TreeNode* parent= NULL;
+                while(!st.empty() && m[postorder[i]]<m[st.top()->val] ){
+                    
+                    parent= st.top();
+                    st.pop();
+                }
+                if(parent!=NULL)
+                parent->left= node;
+                
+                
+            }
+            st.push(node);
+            
+        }
+        
+        
+        return root;
+    }
+};
