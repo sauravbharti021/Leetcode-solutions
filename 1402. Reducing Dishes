@@ -1,0 +1,35 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<ll>> dp;
+    ll recur(int i, int cnt, vector<int> &a ){
+        if(i>=a.size()) return 0;
+        if(dp[i][cnt]!=-1) return dp[i][cnt];
+        
+        ll cost = -1e18;
+        cost = max({cost, cnt*a[i] + recur(i+1, cnt+1, a) , recur(i+1, cnt, a)   });
+        
+        return dp[i][cnt]=cost;
+        
+    }
+    int maxSatisfaction(vector<int>& satisfaction) {
+        dp.assign(501, vector<ll>(501, -1));
+        ll n=satisfaction.size();
+        sort(all(satisfaction));
+        
+        ll x= recur(0, 1, satisfaction);
+        return x;
+    }
+};
