@@ -1,0 +1,72 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int collectTheCoins(vector<int>& coins, vector<vector<int>>& edges) {
+        map<int, set<ll>> m;
+        ll n=coins.size();
+        rep(i,n-1){
+            m[edges[i][0]].insert(edges[i][1]);
+            m[edges[i][1]].insert(edges[i][0]);
+        }
+        queue<int> q;
+        rep(i,n){
+            if(m[i].size()==1 && coins[i]==0){
+                q.push(i);
+            }
+        }
+        
+        while(!q.empty()){
+            ll x= q.front();
+            q.pop();
+            
+            ll lol= *m[x].begin();
+            m[lol].erase(x);
+            m[x].erase(lol);
+            
+            if(m[lol].size()==1 && coins[lol]==0)
+                q.push(lol);
+            
+        }
+        
+        queue<pair<ll,ll>> q1;
+        rep(i,n){
+            if(m[i].size()==1 && coins[i]==1 ){
+                q1.push({i, 0});
+            }
+        }
+        
+        while(!q1.empty()){
+            pair<ll, ll> x=q1.front();
+            q1.pop();
+            
+            ll lol= *m[x.ff].begin();
+            m[lol].erase(x.ff);
+            m[x.ff].erase(lol);
+            
+            if(x.ss+1<2 && m[lol].size()==1 ){
+                q1.push({lol, 1});
+            }
+            
+        }
+        
+        
+        ll ans=0;
+        rep(i,n){
+            ans+= (m[i].size());
+        }
+        
+        return ans;
+    }
+};
