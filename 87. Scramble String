@@ -1,0 +1,63 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    unordered_map<string,bool> m;
+    bool isScramble(string s1, string s2) {
+        
+        if(s1.size()!=s2.size()) return false;
+         int flag=0;
+        return check(s1,s2);
+       
+    }
+    
+    bool check(string a, string b){
+        string k= a+b;
+        if(m.find(k)!=m.end()) return m[k];
+        
+        if(a==b) {return m[k]= true;}
+        if(a.size()!=b.size()) return m[k]=false;
+        
+        int n=a.size();
+       
+        int g=0;
+        vector<ll> fre(26,0);
+        rep(i,n) fre[a[i]-'a']++;
+        rep(i,n) fre[b[i]-'a']--;
+        
+        rep(i,26) if(fre[i]!=0) return m[k]=false;
+        
+        
+        
+        
+        if(n<=3) return m[k]=true;
+        
+        
+        
+        for(int i=1;i<n;i++){
+            if (check(a.substr(0,i) ,b.substr(n-i, i)) && check(a.substr(i, n-i) ,b.substr(0, n-i)))  
+             {
+
+                return m[k]=true;
+            }
+            if (check(a.substr(0,i) ,b.substr(0,i)) && check(a.substr(i, n-i) ,b.substr( i, n-i))){
+           
+                return m[k]=true;
+                
+            }    
+        }
+        
+        return m[k]=false;
+    }
+};
