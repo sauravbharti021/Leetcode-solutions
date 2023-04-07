@@ -1,0 +1,55 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    ll cnt;
+    vector<vector<ll>> d{{1,0},{-1,0},{0,1},{0,-1}};
+    vector<vector<bool>> vis;
+    bool recur(int i, int j, vector<vector<int>> &grid, ll &n , ll &m){
+        
+        vis[i][j]=true;
+        bool flag= false;
+        cnt++;
+        
+        if(i==0 || i==n-1 || j==0 || j==m-1) flag=true;
+        
+        rep(k,4){
+            ll x= i+ d[k][0];
+            ll y= j+ d[k][1];
+            
+            if(x>=0 && x<n && y>=0 && y<m && grid[x][y]==1 && !vis[x][y] )
+                flag |= recur(x, y, grid, n, m);
+        }
+        
+        return flag;
+        
+    }
+    int numEnclaves(vector<vector<int>>& grid) {
+        ll n=grid.size(), m=grid[0].size();
+        ll ans=0;
+        vis.assign(n+1, vector<bool>(m+1, false));
+        
+        rep(i,n){
+            rep(j,m){
+                if(!vis[i][j] && grid[i][j]==1){
+                    cnt=0;
+                    
+                    if(!recur(i, j ,grid, n, m)) ans+=cnt;
+                }
+            }
+        }
+        
+        return ans; 
+    }
+};
