@@ -1,0 +1,83 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minimumVisitedCells(vector<vector<int>>& grid) {
+        ll n= grid.size(), m=grid[0].size();
+       
+        vector<vector<ll>> best(n+100, vector<ll>(m+100, 1e11) );
+        queue<pair<ll,ll>> q;
+        q.push({0,0});
+        best[0][0]=1;
+        vector<set<ll>> row(n), col(m);
+        for(int i = 0 ;i<n;i++){
+            for(int j = 0 ;j<m;j++){
+                if(i==0 && j==0) continue;
+                row[i].insert(j);
+                col[j].insert(i);
+            }
+        }
+        
+        
+        
+        while(!q.empty()){
+            pair<ll,ll> a = q.front();
+            q.pop();
+            if(a.ff>=n || a.ss>=m) break;
+            if(a.ff==n-1 && a.ss==m-1) return best[a.ff][a.ss];
+            
+            ll down = min(a.ff+grid[a.ff][a.ss], n-1 );
+            
+
+            
+            while(true){
+                auto it = col[a.ss].lower_bound(a.ff);
+                if(it==col[a.ss].end() || *it>  down) break;
+                
+                q.push({*it, a.ss});
+                
+                
+                best[*it][a.ss] = 1+best[a.ff][a.ss];
+                
+                row[*it].erase(a.ss);
+                
+                col[a.ss].erase(it);
+                
+                
+                
+                
+            }
+            
+            ll right = min(a.ss+grid[a.ff][a.ss], m-1 );
+            
+            
+            while(true){
+                auto it = row[a.ff].lower_bound(a.ss);
+                if(it==row[a.ff].end() || *it>  right) break;
+                
+                q.push({a.ff, *it});
+                
+                best[a.ff][*it] = 1+best[a.ff][a.ss];
+                
+                col[*it].erase(a.ff);
+                row[a.ff].erase(it);
+                
+                
+            }
+            
+        }
+        
+        return -1;
+    }
+};
