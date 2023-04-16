@@ -1,0 +1,51 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    ll dp[1001][1001];
+    ll M;
+    ll recur(int i, vector<vector<ll>> &fre, string &target, int k ){
+        
+        
+        if(k>=target.size()) return 1;
+        if(i>=M) return 0;
+        
+        if(dp[i][k]!=-1) return dp[i][k];
+        
+        ll cnt=recur(i+1,fre, target, k)%mod;
+        
+            
+        cnt = (cnt + (fre[i][target[k]-'a']* recur(i+1, fre, target, k+1))%mod )%mod;
+        if(cnt<0) cnt+=mod;
+        
+        return dp[i][k] = cnt%mod;
+        
+    }
+    
+    int numWays(vector<string>& words, string target) {
+        memset(dp, -1, sizeof dp);
+        ll n= words.size(), m = words[0].size();
+        vector<vector<ll>> fre(m+1, vector<ll>(26, 0));
+        M=m;
+        rep(i,n){
+            rep(j,m){
+                fre[j][ words[i][j]-'a' ]++;
+            }
+        }
+        
+        
+        return recur(0, fre, target, 0 );
+        
+    }
+};
