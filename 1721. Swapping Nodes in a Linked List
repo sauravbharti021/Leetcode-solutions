@@ -1,0 +1,57 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ #define ll long long 
+class Solution {
+public:
+    ll cnt=0, now=-1;
+    ListNode* swapNodes(ListNode* head, int k) {
+        tot(head);
+        ll index = cnt-k+1; 
+        ListNode* root1= head;
+        ListNode* root2= head;
+        find(root1, 1, k, 0, -1);
+        ll left = now;
+        now=-1;
+        find(root2, 1, index, 0, -1);
+        ll right= now;
+        
+        
+        root1=head;
+        root2=head;
+        
+        find(root1, 1, k, 1, right);
+        find(root2, 1, index, 1, left);
+        
+        return head;
+        
+    }
+    
+    void tot(ListNode* root){
+        if(root == NULL) return;
+        
+        cnt++;
+        tot(root->next);
+    }
+    void find(ListNode *root, int cur, int reach, int flag, int value){
+        if(root==NULL) return;
+        if(cur==reach) {
+            
+            if(!flag)
+            now = root->val;
+            else root->val=value;
+            
+            return;
+        }
+        find(root->next, cur+1, reach, flag, value);
+        
+    }
+    
+};
