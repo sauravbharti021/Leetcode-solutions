@@ -1,0 +1,45 @@
+class Solution {
+    int vis[];
+    ArrayList<ArrayList<Integer>> adj;
+    public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+        
+        int par[] = new int[n+1];
+        Arrays.fill(par, -1);
+        vis = new int[n];
+        Arrays.fill(vis, 0);
+        
+        adj = new ArrayList<>();
+        for(int i=0; i<n;i++)
+            adj.add(new ArrayList<>());
+        
+        
+        for(int i=0; i<edges.size(); i++){
+            int u = edges.get(i).get(0), v = edges.get(i).get(1);
+            
+            adj.get(u).add(v);
+            par[v]=u;
+        }
+        
+        List<Integer> ans = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            if(vis[i]==0 && par[i]==-1){
+                ans.add(i);
+                dfs(i);
+            }
+        }
+        
+        return ans;
+        
+    }
+    void dfs(int n){
+        
+        vis[n] =1;
+        
+        for(int i=0; i<adj.get(n).size(); i++){
+            if(vis[adj.get(n).get(i)] == 0) {
+                dfs(adj.get(n).get(i));
+            }
+        }
+    }
+    
+}
