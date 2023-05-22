@@ -1,0 +1,31 @@
+#define ll long long
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int fre[20004];
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        ll n=nums.size();
+        
+        rep(i,n){
+            ll x = nums[i]+ 10000;
+            fre[x]++;
+        }
+        
+        priority_queue<pair<int,int>> p;
+        for(int i=0;i<=20000;i++){
+            p.push({fre[i],i-10000});
+        }
+        
+        vector<int> ans;
+        while(k--){
+            pair x = p.top();
+            p.pop();
+            
+            ans.push_back(x.second);
+        }
+        
+        return ans;
+        
+        
+    }
+};
