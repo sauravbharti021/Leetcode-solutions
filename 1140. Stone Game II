@@ -1,0 +1,49 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+//      index- choice - player
+    int dp[101][251][2];
+    
+    vector<int> pre;
+    ll recur(int i, ll m, int player, int n, vector<int> &piles){
+        if(i>=n) 
+            return 0;
+        
+        if(dp[i][m][player]!=-1) return dp[i][m][player];
+        
+        ll sum = 0, cnt=0, mx = !player ? 0 : 1e9;
+        
+        for(int j=i; j<i+2*m && j<n; j++){
+            cnt++;
+            sum+= piles[j];
+            if(!player){
+                mx = max(mx, sum+recur(j+1, max(m,cnt) , player^1, n, piles));
+                
+            }else{
+                mx = min(mx, recur(j+1, max(m,cnt) , player^1, n, piles));
+            }
+        }
+        
+        return dp[i][m][player] = mx;
+        
+    }
+    
+    int stoneGameII(vector<int>& piles) {
+        memset(dp, -1, sizeof dp);
+        ll now= recur(0, 1, 0, piles.size(), piles);
+        
+        return dp[0][1][0];
+    }
+};
