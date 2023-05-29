@@ -1,0 +1,19 @@
+class ParkingSystem {
+public:
+    vector<int> fre;
+    ParkingSystem(int big, int medium, int small) {
+        fre.assign(4,0);
+        fre[1]=big;
+        fre[2]=medium;
+        fre[3]= small;
+    }
+    
+    bool addCar(int carType) {
+        if(fre[carType]==0)
+            return false;
+        
+        fre[carType]--;
+        
+        return true;
+    }
+};
