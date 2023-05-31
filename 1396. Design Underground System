@@ -1,0 +1,37 @@
+#define ff first
+#define ss second
+class UndergroundSystem {
+public:
+    map<int, pair<string,int>> m;
+    
+    map<pair<string,string>, pair<int,int>> avg;
+    
+    UndergroundSystem() {
+        
+    }
+    
+    void checkIn(int id, string stationName, int t) {
+        m[id]= {stationName, t};
+    }
+    
+    void checkOut(int id, string stationName, int t) {
+        
+        string start = m[id].ff;
+        int time = m[id].ss;
+        
+        if(avg.find({start, stationName})==avg.end()){
+            avg[{start, stationName}].ff = 0; 
+            avg[{start, stationName}].ss = 0;
+        }
+        avg[{start, stationName}].ff += (t-time); 
+        avg[{start, stationName}].ss += 1;
+        
+     }
+    
+    double getAverageTime(string startStation, string endStation) {
+        
+        double res = (1.0* (avg[{startStation, endStation}].ff))/avg[{startStation, endStation}].ss;
+        
+        return res;
+    }
+};
