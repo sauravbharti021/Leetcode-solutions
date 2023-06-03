@@ -1,0 +1,36 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> adj;
+    ll dfs(int n, vector<int> &time){
+        
+        ll ans=time[n];
+        ll mx = 0;
+        for(auto i: adj[n]){
+            mx = max(mx, dfs(i, time));
+        }
+                     
+        return time[n] + mx; 
+    }
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+        adj.assign(n+1, vector<int>{});
+        rep(i, manager.size()){
+            if(manager[i]==-1) continue;
+            adj[manager[i]].pb(i);
+        }
+        return dfs(headID, informTime);
+        
+    }
+};
