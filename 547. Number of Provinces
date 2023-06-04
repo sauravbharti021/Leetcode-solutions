@@ -1,0 +1,55 @@
+#define ll long long
+#define rep(i,n) for(int i=0;i<n; i++)
+class Solution {
+
+    struct DSU{
+        vector<int> par, rank;
+        void makeset(int n){
+            rank.assign(n+2, 1);
+            par.assign(n+3, 0);
+            rep(i,n+3) par[i]=i;
+        }
+        int find(int x){
+            while(par[x]!=x) x= par[x];
+            return x;
+        }
+        
+        void unite(int u, int v){
+            u = find(u);
+            v = find(v);
+            
+            if(u!=v){
+                if(rank[u]>rank[v]){
+                    par[v]=u;
+                    rank[u]+= rank[v];
+                }else{
+                    par[u]=v;
+                    rank[v]+= rank[u];
+                }
+            }
+        }
+    };
+    
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        DSU d;
+        d.makeset(n+1);
+        
+        rep(i,n){
+            rep(j,n){
+                if(isConnected[i][j]==1){
+                    d.unite(i,j);
+                }
+            }
+        }
+        
+        set<int> s;
+        rep(i,n){
+            s.insert(d.find(i));
+        }
+        
+        return s.size();
+        
+    }
+};
