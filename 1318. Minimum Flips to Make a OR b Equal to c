@@ -1,0 +1,49 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minFlips(int a, int b, int c) {
+        vector<int> f1(32,0), f2(32,0), f3(32,0);
+        
+        while(a>0){
+            ll x = 31- __builtin_clz(a);
+            f1[x]++;
+            a-=(1<<x);
+        }
+        while(b>0){
+            ll x = 31- __builtin_clz(b);
+            f2[x]++;
+            b-=(1<<x);
+        }
+        while(c>0){
+            ll x = 31 - __builtin_clz(c);
+            f3[x]++;
+            c-=(1<<x);
+        }
+        
+        ll ans=0;
+        
+        rep(i, 32){
+            if(f3[i]==1){
+                if(f2[i]==1 || f1[i]==1) continue;
+                else ans++;
+            }else{
+                if(f2[i]==1 && f1[i]==1) ans+=2;
+                else if(f2[i]==1 || f1[i]==1) ans+=1;
+            }
+        }
+        return ans;
+        
+    }
+};
