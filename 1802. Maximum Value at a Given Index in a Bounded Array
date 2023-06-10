@@ -1,0 +1,37 @@
+#define ll long long
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    ll cal(ll m, int n){
+        ll ans=0;
+        if(n>=m){
+            ll left = n-m;
+            ans+= left;
+            ans+= (m*(m+1))/2;
+        }else{
+            ll left = m-n;
+            ans+= (m*(m+1))/2;
+            ll lol = (left*(left+1))/2;
+            ans-=lol;
+        }
+        return ans;
+    }
+    int maxValue(int n, int index, int maxSum) {
+        
+        ll l = 0, r=maxSum+1;
+        
+        while(r-l>1){
+            ll m = (l+r)/2;
+            ll sum=0;
+            
+            sum+= cal(m, index+1);
+            sum+= cal(m-1, n-(index+1));
+            
+            
+            if(sum<=maxSum) l=m;
+            else r=m;
+        }
+        
+        return l;
+    }
+};
