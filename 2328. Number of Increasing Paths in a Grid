@@ -1,0 +1,72 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> d {{0,1},{0,-1}, {1,0},{-1,0}};
+    vector<vector<int>> dp;
+    
+    ll modp(ll a,ll b,ll m){ 
+ a %= m;     ll res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+    
+    int recur(int i, int j, vector<vector<int>> &grid){
+        ll n=grid.size(), m=grid[0].size();
+        
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        ll ans=1;
+        rep(k, 4){
+            ll x= i+d[k][0], y= j+d[k][1];
+            
+            if(x>=0 && y>=0 && x<n && y<m && grid[x][y]>grid[i][j]){
+                ans = (ans+ recur(x, y, grid))%mod;
+            }
+        }
+        ans%=mod;
+        if(ans<0) ans+= mod;
+        
+        return dp[i][j]=ans;
+    }
+    
+    int countPaths(vector<vector<int>>& grid) {
+        ll n=grid.size(), m=grid[0].size();
+        dp.assign(n+1, vector<int>(m+1, -1));
+        
+        ll ans=0;
+        
+        rep(i,n){
+            rep(j,m){
+                if(dp[i][j]==-1){
+                    ll lol = recur(i, j, grid);
+                }
+            }
+        }
+        
+        rep(i,n){
+            rep(j,m){
+                ll now= dp[i][j];
+                
+                ans= (ans+now)%mod;
+                ans%=mod;
+                if(ans<0) ans+= mod;
+                
+            }
+        }
+        ans%=mod;
+        if(ans<0) ans+= mod;
+        
+        return ans;
+        
+    }
+};
