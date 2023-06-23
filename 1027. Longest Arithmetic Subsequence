@@ -1,0 +1,59 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& nums) {
+        
+        ll n= nums.size();
+        int mx=0;
+        unordered_map<int, vector<int>>m;
+        rep(i,n) m[nums[i]].pb(i);
+        
+        for(auto i:m) mx=max(mx, (int)i.ss.size());
+        
+        rep(i,n){
+            for(int j=1;j<=500; j++){
+                ll d= j;
+                
+                int index= i, prev= nums[i], cnt=1;
+                while(true){
+                    int no = prev+d;
+                    if(m.find(no)==m.end()) break;
+                    
+                    auto it = lower_bound(all(m[no]), index);
+                    if(it==m[no].end()) break;
+                    
+                    index = *it;
+                    cnt++;
+                    prev=no;
+                }
+                mx= max(mx, cnt);
+                index= i, prev= nums[i], cnt=1;
+                while(true){
+                    int no = prev-d;
+                    if(m.find(no)==m.end()) break;
+                    
+                    auto it = lower_bound(all(m[no]), index);
+                    if(it==m[no].end()) break;
+                    
+                    index = *it;
+                    cnt++;
+                    prev=no;
+                }
+                mx= max(mx, cnt);
+            }
+        }
+        return mx;
+    }
+};
