@@ -1,0 +1,53 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+vector<vector<int>> adj;
+double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        adj.assign(n+1, vector<int>{});
+        vector<bool> vis(n+1, false);
+        vector<double> p(n+1, 0);
+        map<pair<int,int>, double> m;
+        rep(i, edges.size()){
+            ll u= edges[i][0], v= edges[i][1];
+            adj[u].pb(v);
+            adj[v].pb(u);
+            m[{u, v}] = succProb[i];
+            m[{v, u}] = succProb[i];
+        }
+    
+        queue<int> q;
+        q.push(start);
+        
+        p[start]= 1;
+    
+        while(!q.empty()){
+            int size= q.size();
+            while(size--){
+                ll x= q.front();
+                q.pop();
+                
+                for(auto i: adj[x]){
+                    double d= p[x]*m[{x,i}];
+                    if(d>p[i]){
+                        p[i]=d;
+                        q.push(i);
+                    }
+                }
+            }
+        }
+        
+        return p[end];
+    }
+};
