@@ -1,0 +1,63 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> d{{1,0},{-1,0}, {0,1},{0,-1}};
+    int shortestPathAllKeys(vector<string>& grid) {
+        ll n=grid.size(), m= grid[0].size();
+        vector<vector<vector<int>>> vis(n, vector<vector<int>>(m, vector<int>((1<<9),0) ));
+        
+        queue<pair<pair<int,int>, int>> q;
+        int keys=0;
+        rep(i,n){
+            rep(j,m){
+                if(grid[i][j]=='@'){
+                    q.push({{i,j},0});
+                    vis[i][j][0]=true;
+                }
+                if(grid[i][j]>='a' && grid[i][j]<='f') keys|=(1<<(grid[i][j]-'a'));
+            }
+        }
+        
+        ll path=0;
+        while(!q.empty()){
+            int size=q.size();
+            while(size--){
+                pair<pair<int,int>,int> p= q.front();
+                q.pop();
+                ll i=p.ff.ff, j=p.ff.ss;
+                ll mine= p.ss;
+                if(keys==mine) return path;
+                rep(k,4){
+                    int x= i+d[k][0], y= j+d[k][1];
+                    int now= mine;
+                    if(x<0 || y<0 || x>=n || y>=m || grid[x][y]=='#') continue;
+                    
+                    if(grid[x][y]>='a' && grid[x][y]<='f') now |= (1<<(grid[x][y]-'a'));
+                    if(grid[x][y]>='A' && grid[x][y]<='F'){
+                        if(!(now & (1<<(grid[x][y]-'A'))) ) continue;
+                    }
+                    if(!vis[x][y][now]){
+                        q.push({{x,y}, now});
+                        vis[x][y][now]=true;
+                    }
+                }
+                
+            }
+            path++;
+        }
+        
+        return -1;
+    }
+};
