@@ -1,0 +1,69 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> d{{-1,0},{1,0},{0,-1},{0,1}};
+    bool dfs(int i,int j, int row, int col, vector<vector<int>> &grid, vector<vector<int>> &dp, vector<vector<bool>> &vis){
+       
+        if(i>=row)return true; 
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        
+        vis[i][j]= true;
+        ll flag=0;
+        rep(k, 4){
+            int x= i+d[k][0], y= j+d[k][1];
+            if(x<0 || y<0 || y>=col) continue;
+            if(x==row)
+                flag|= dfs(x, y, row, col, grid, dp, vis);
+            if(x<row && grid[x][y]==0 && !vis[x][y])
+                flag|= dfs(x,y, row, col, grid, dp, vis);
+            
+        }
+        return dp[i][j]=flag;
+    }
+    
+    
+    
+    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+        vector<vector<int>> g(row, vector<int>(col, 0));
+        
+        ll l=-1, r=row*col +1;
+        while(r-l>1){
+            ll m=(l+r)/2;
+            vector<vector<int>> dp(row, vector<int>(col, -1));
+            vector<vector<bool>> vis(row, vector<bool>(col, false));
+            rep(i,m){
+                g[cells[i][0]-1][cells[i][1]-1]=1;
+            }
+            ll flag=0;
+            rep(i, col){
+                if(g[0][i]==0 && !vis[0][i]){
+                    flag|= dfs(0, i, row, col, g, dp, vis);
+                }
+            }
+            
+            if(flag){
+                l=m;
+            }else
+                r=m;
+            
+            rep(i,m){
+                g[cells[i][0]-1][cells[i][1]-1]=0;
+            }
+        }
+        return l;
+        
+    }
+};
