@@ -1,0 +1,48 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Solution {
+public:
+    int maximumRequests(int n, vector<vector<int>>& requests) {
+        
+        vector<int> c(n);
+        rep(i, requests.size()) c[requests[i][0]]++;
+        
+        vector<int> b=c;
+        ll m= requests.size();
+        int mx=0;
+        
+        rep(i, (1<<m)){
+            int cnt=0;
+            rep(j,m){
+                if((i&(1<<j))) {b[requests[j][0]]-=1; b[requests[j][1]]+=1; cnt++;}
+            }
+            int flag=0;
+            rep(j, n){
+                if(c[j]!=b[j]){
+                    flag=1;
+                    break;
+                }
+            }
+            
+            if(!flag) mx=max(mx, cnt);
+            rep(j,m) {
+                if((i&(1<<j))) {b[requests[j][0]]+=1; b[requests[j][1]]-=1;}
+            }
+        }
+        
+        return mx;
+        
+    }
+};
