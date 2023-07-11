@@ -1,0 +1,55 @@
+#define pb push_back
+class Solution {
+public:
+    vector<vector<int>> adj; 
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        adj.assign(501, vector<int>{});
+        recur(root);
+        vector<int> ans;
+        vector<int> dis(501,1e9 );
+        int x= target->val;
+        dis[x]=0;
+        queue<int> q;
+        q.push(x);
+        int cnt=0;
+        while(!q.empty()){
+            int size= q.size();
+            while(size--){
+                
+                int y= q.front();
+                q.pop();
+                if(cnt==k){
+                    ans.pb(y);
+                }
+                
+                for(auto i: adj[y]){
+                    if(dis[i]>1+dis[y]){
+                        dis[i]=1+dis[y];
+                        q.push(i);
+                    }
+                }
+            }
+            cnt++;
+        }
+        
+        
+        return ans;
+        
+    }
+    void recur(TreeNode* root){
+        if(root==NULL) return;
+        
+        if(root->left!=NULL){
+            adj[root->val].pb(root->left->val);
+            adj[root->left->val].pb(root->val);
+            recur(root->left);
+        }
+        if(root->right!=NULL){
+            adj[root->val].pb(root->right->val);
+            adj[root->right->val].pb(root->val);
+            recur(root->right);
+        }
+        
+        
+    }
+};
