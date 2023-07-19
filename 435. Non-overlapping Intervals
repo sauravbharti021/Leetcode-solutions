@@ -1,0 +1,35 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define pb push_back
+#define ll long long
+#define all(c) c.begin(), c.end()
+
+class Solution {
+public:
+    
+    vector<int> dp;
+    ll recur(int i, vector<vector<int>> &intervals, vector<int> &events){
+        if(i==intervals.size()) return 0;
+        if(dp[i]!=-1) return dp[i];
+        
+        ll ans= 1+ recur(i+1, intervals, events);
+        
+        auto it = lower_bound(all(events), intervals[i][1]) - events.begin();
+        
+        
+        ans= min(ans,  (it-i-1) + recur(it, intervals, events));
+        
+        return dp[i]=ans;
+    }
+    
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        int n=intervals.size();
+        dp.assign(n+1, -1);
+        sort(all(intervals));
+        vector<int> events;
+        rep(i,n) events.pb(intervals[i][0]);
+        
+        
+        return recur(0, intervals, events);
+        
+    }
+};
