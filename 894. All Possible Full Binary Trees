@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+#define pb push_back
+class Solution {
+public:
+    unordered_map<int, vector<TreeNode*>> m;
+    vector<TreeNode*> dup;
+    vector<TreeNode*> allPossibleFBT(int n) {
+        if(n%2==0) return dup;
+        
+        
+        return recur(n);
+    }
+    vector<TreeNode*> recur( int n){
+        vector<TreeNode*> ans;
+        if(n==0){
+            return ans;    
+        }
+        if(n==1){
+            TreeNode* lol =new TreeNode();
+            ans.pb(lol);
+            return ans;
+        }
+        if(m.find(n)!=m.end()) return m[n];
+        
+        for(int i=0;i<n; i++){
+            int left= i, right= n-i-1;
+            vector<TreeNode*> left_tree= recur(left);
+            vector<TreeNode*> right_tree= recur(right);
+            
+            for(auto l: left_tree){
+                for(auto r: right_tree){
+                    ans.pb(new TreeNode(0, l, r));
+                }
+            }
+        }
+        
+        return m[n]=ans;
+        
+    }
+};
