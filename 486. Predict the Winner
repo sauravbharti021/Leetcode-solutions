@@ -1,0 +1,32 @@
+#define ll long long
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Solution {
+public:
+    
+   int recur(int moves, int player, int l, int r, vector<int>&nums, int w){
+       if(l>=nums.size() || r<0 || l>r ){
+           
+           if(w>0) return false;
+           return true;
+       }
+       
+       int ans= 1;
+       
+       if(player==0){
+           ans= (recur(moves+1, player^1, l+1, r, nums, w-nums[l]) | recur(moves+1, player^1, l, r-1, nums, w-nums[r])); 
+       }
+       else{
+           ans= ( (recur(moves+1, player^1, l+1, r, nums, w+nums[l])) & (recur(moves+1, player^1, l, r-1, nums, w+nums[r])) ); 
+       }
+       
+       return ans;
+   } 
+    
+    bool PredictTheWinner(vector<int>& nums) {
+
+        int n= nums.size();
+        return recur(0, 0, 0, n-1, nums, 0);
+        
+    }
+};
