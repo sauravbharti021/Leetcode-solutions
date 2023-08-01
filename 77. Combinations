@@ -1,0 +1,53 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> res;
+    map< pair<int, int>, vector<vector<int>>> m;
+    
+    vector<vector<int>> recur(int i, int n, int k){
+        vector<vector<int>> now;
+        
+        if(m.find({i,k})!= m.end()) return m[{i,k}];
+        
+        if(k==0 ){
+            vector<int> lol;
+            now.pb(lol);
+            return m[{i,k}] = now;
+        }
+        
+        
+        for(int j=i;j<=n;j++){
+            vector<vector<int>> temp= recur(j+1, n, k-1);
+            for(auto k: temp){
+                vector<int> lol;
+                lol = k;
+                lol.push_back(j);
+                now.push_back(lol);
+            }
+        }
+        
+        return m[{i,k}]=now;
+    }
+    vector<vector<int>> combine(int n, int k) {
+        
+        
+        vector<vector<int>> ans= recur(1, n, k);
+        for(auto i: ans){
+            if(i.size()==k) res.pb(i);
+        }
+        return res;
+    }
+    
+};
