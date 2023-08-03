@@ -1,0 +1,48 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<string> ans;
+    map<int, vector<char>> m;
+    void recur(int i, string &digits, string temp){
+        if(i>=digits.size()){
+            if(temp!="")
+            ans.pb(temp);
+        }
+        
+        rep(j, m[digits[i]-'0'].size()){
+            temp+= m[digits[i]-'0'][j];
+            recur(i+1, digits, temp);
+            temp.pop_back();
+        }
+        
+    }
+    vector<string> letterCombinations(string digits) {
+        int str=2;
+        char a= 'a';
+        while(str<=9){
+                int lol=0;
+                while(lol< ((str!=7 && str!=9) ? 3: 4)  ){
+                    m[str].pb(a);
+                    a++;
+                    lol++;
+                }
+            str++;
+        }
+        string lol="";
+        recur(0, digits, lol);
+        
+        return ans;
+    }
+};
