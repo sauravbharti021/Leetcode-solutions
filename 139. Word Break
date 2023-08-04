@@ -1,0 +1,31 @@
+class Solution {
+public:
+    set<string> st;
+    vector<int> dp;
+    bool recur(int i, string &s){
+        if(i>=s.size()) return true;
+        
+        if(dp[i]!=-1) return dp[i];
+        
+        bool ans=false;
+        string f="";
+        for(int j=i;j<s.size();j++){
+            f+= s[j];
+            
+            if(st.find(f)!= st.end()){
+                ans |= recur(j+1, s);
+            }
+        }
+        
+        return dp[i]=ans;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        for(int i=0;i<wordDict.size();i++)
+            st.insert(wordDict[i]);
+        
+        int n=s.size();
+        dp.assign(n+1, -1);
+        
+        return recur(0, s);
+    }
+};
