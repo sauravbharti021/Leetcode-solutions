@@ -13,24 +13,30 @@
 #define rep(i,n) for(int i=0;i<n;i++)
 class Solution {
 public:
-    int numMusicPlaylists(int n, int goal, int k) {
-        const int MOD = 1e9 + 7;
-
-        // Initialize the DP table
-        vector<vector<long>> dp(goal + 1, vector<long>(n + 1, 0));
-        dp[0][0] = 1;
-
-        for (int i = 1; i <= goal; i++) {
-            for (int j = 1; j <= min(i, n); j++) {
-                // The i-th song is a new song
-                dp[i][j] = dp[i - 1][j - 1] * (n - j + 1) % MOD;
-                // The i-th song is a song we have played before
-                if (j > k) {
-                    dp[i][j] = (dp[i][j] + dp[i - 1][j] * (j - k)) % MOD;
-                }
-            }
+    vector<vector<ll>> dp;
+    ll recur(int len, int n, int dif, int goal, int k){
+        if(len== goal){
+            return dif== n;
         }
-
-        return dp[goal][n];
+        if(dp[len][dif]!=-1) return dp[len][dif];
+        
+        // dif
+        ll ans=0;
+        if(n>dif)
+        ans= ( (n-dif) * (recur(len+1, n, dif+1, goal, k)%mod))%mod;
+        
+        //same
+        ans= (ans+ ( max(0,(dif-k))*(recur(len+1, n, dif, goal, k)%mod) )%mod)%mod;
+        
+        ans%=mod;
+        if(ans<0) ans+=mod;
+        
+        return dp[len][dif]= ans;
+    }
+    
+    int numMusicPlaylists(int n, int goal, int k) {
+        dp.assign(105, vector<ll>(105, -1));
+        
+        return recur(0, n, 0, goal, k);
     }
 };
