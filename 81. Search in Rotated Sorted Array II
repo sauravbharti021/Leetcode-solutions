@@ -1,0 +1,39 @@
+#define all(c) c.begin(), c.end()
+class Solution {
+public:
+    /*
+        I I I I MINIMUM I I I
+        MINIMUM I I I I I I I  
+        
+        EQ EQ I I I MINIMUM I I EQ EQ EQ EQ 
+    
+    */
+    
+    bool recur(int left, int right, vector<int>&nums, int target){
+        if(left>right)
+            return false;
+        if(left==right)
+            return nums[left]==target;
+        
+        int mid= (left+right)/2;
+        if(nums[left]<nums[mid]){
+            if(nums[left]<=target && nums[mid]>=target)
+                return recur(left, mid, nums, target);
+            else 
+                return recur(mid+1, right, nums, target);
+        }else if(nums[mid+1]<nums[right]){
+            if(nums[mid+1]<=target && nums[right]>=target){
+                return recur(mid+1, right, nums, target);
+            }else
+                return recur(left, mid, nums, target);
+        }
+        
+        return recur(left, mid, nums, target ) | recur(mid+1, right, nums, target);
+    }
+    bool search(vector<int>& nums, int target) {
+        int n=nums.size();        
+        
+        
+        return recur(0, n-1, nums, target);
+    }
+};
