@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int recur(int i, int weight, vector<int>&coins){
+        if(i>=coins.size())
+            return weight==0;
+        if(weight==0) return 1;
+        if(dp[i][weight]!=-1) return dp[i][weight];
+        
+        if(weight-coins[i]>=0){
+            return dp[i][weight] = recur(i+1, weight, coins) + recur(i, weight-coins[i], coins);
+        }
+        return dp[i][weight] = recur(i+1, weight, coins);
+    }
+    int change(int amount, vector<int>& coins) {
+        int n=coins.size();
+        dp.assign(n+1, vector<int>(amount+1, -1));
+        
+        return recur(0, amount, coins);
+    }
+};
