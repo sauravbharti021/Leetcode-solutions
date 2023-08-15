@@ -1,0 +1,31 @@
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+       
+        ListNode* left = recur(head, x, 1);
+        ListNode* right = recur(head, x, 0);
+        ListNode* cur= left;
+        
+        if(left==NULL) return right;
+        
+        while(left!=NULL && left->next!=NULL){
+            left= left->next;
+        }
+        
+        left->next= right;
+        
+        
+        return cur;
+    }
+    ListNode* recur(ListNode* root, int x, int flag){
+        if(root==NULL) return NULL;
+        
+        if((flag && root->val < x ) || (!flag && root->val >= x) ){
+            
+            ListNode* ans= new ListNode(root->val, recur(root->next, x, flag)); 
+            return ans;
+        }
+        
+        return recur(root->next, x, flag);
+    }
+};
