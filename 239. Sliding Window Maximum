@@ -1,0 +1,36 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        
+        unordered_map<int,int> m;
+        priority_queue<int> p;
+        rep(i,k ) p.push(nums[i]);
+        int n= nums.size();
+        int index=1;
+        
+        vector<int> ans(n-k+1, 0);
+        ans[0] = p.top();
+        
+        for(int i=k; i<n; i++){
+            m[nums[i-k]]++;
+            p.push(nums[i]);
+            
+            while(!p.empty() ){
+                int x= p.top();
+                if(m.find(x)!=m.end()){
+                    p.pop();
+                    if(m[x]==1) m.erase(x);
+                    else
+                        m[x]--;
+                }else{
+                    ans[index] = x;
+                    index++;
+                    break;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
