@@ -1,0 +1,30 @@
+#define pb push_back
+#define rep(i,n) for(int i=0;i<n; i++)
+#define ll long long
+class Solution {
+public:
+    vector<vector<int>> adj;
+    int maximalNetworkRank(int n, vector<vector<int>>& roads) {
+        adj.assign(n+1, vector<int>{});
+        
+        map<pair<int,int>, int> m;
+        rep(i, roads.size()){
+            ll u = roads[i][0], v= roads[i][1];
+            adj[u].pb(v);
+            adj[v].pb(u);
+            m[{u,v}]++;
+            m[{v,u}]++;
+        }
+        ll mx=0;
+        rep(i, n){
+            for(int j=i+1;j<n;j++){
+                ll ans =  adj[i].size() + adj[j].size();
+                if(m.find({i,j})!=m.end()) ans--;
+                mx= max(mx, ans);
+            }
+        }
+        
+        return mx;
+        
+    }
+};
