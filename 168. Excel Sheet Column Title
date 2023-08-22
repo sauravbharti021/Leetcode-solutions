@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string convertToTitle(int columnNumber) {
+        string ans="";
+        while(columnNumber>0){
+            
+            char x =('A'+ (columnNumber%26 == 0 ? 25 : columnNumber%26- 1));
+            
+            ans+= x;
+            columnNumber-=(x-'A' +1);
+            columnNumber/=26;
+            
+            if(columnNumber==0) break;
+        }
+        
+        reverse(ans.begin(), ans.end());
+        
+     
+        
+        return ans;
+    }
+};
