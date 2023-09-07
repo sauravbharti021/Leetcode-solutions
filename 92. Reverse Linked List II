@@ -1,0 +1,34 @@
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        
+        int cnt=0;
+        ListNode* root= head;
+        ListNode* prev= NULL;
+        ListNode* cur= head;
+        while(left>1){
+            prev=cur;
+            cur=cur->next;
+            left--; right--;
+        }
+        
+        ListNode* connection= prev;
+        ListNode* tail= cur;
+        
+        while(right>0 && cur!=NULL){
+            ListNode* next= cur->next;
+            cur->next= prev;
+            prev= cur;
+            cur= next;
+            right--;
+        }
+        
+        if(connection!=NULL)
+            connection->next= prev;
+        else head= prev;
+        
+        tail->next= cur;
+        
+        return head;
+    }
+};
