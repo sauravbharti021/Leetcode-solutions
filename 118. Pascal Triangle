@@ -1,0 +1,28 @@
+#define pb push_back
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> ans;
+        vector<int> a{1};
+        ans.pb(a);
+        if(numRows==1){
+            return ans;
+        }
+        
+        for(int i=2;i<=numRows;i++){
+            vector<int> b;
+            b.pb(1);
+            if(i!=2){
+                int size= ans[i-2].size();
+                for(int j=0;j< size -1 ;j++){
+                    b.pb(ans[i-2][j]+ans[i-2][j+1]);
+                }
+            }
+            
+            b.pb(1);
+            ans.pb(b);
+        }
+        
+        return ans;
+    }
+};
