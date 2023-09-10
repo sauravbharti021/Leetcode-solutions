@@ -1,0 +1,43 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int dp[501][501];
+    
+    int recur(ll pick, ll drop){
+        if(pick==0 && drop==0)
+            return 1;
+        
+        if(dp[pick][drop]!=-1) return dp[pick][drop];
+        
+        ll ans= 0;
+        if(pick>0){
+            ans = (ans + (pick * recur(pick-1, drop+1)%mod)%mod)%mod;
+        }
+        if(drop>0){
+            ans = (ans + (drop * recur(pick, drop-1)%mod)%mod)%mod;
+        }
+        ans%=mod;
+        if(ans<0) ans+= mod;
+        
+        return dp[pick][drop]= ans;
+    }
+    
+    int countOrders(int n) {
+        memset(dp, -1, sizeof dp);
+        
+        
+        return recur(n, 0);
+    }
+};
