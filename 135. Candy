@@ -1,0 +1,68 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        
+        int n= ratings.size();
+        
+        vector<int> suf(n+1,0);
+        
+        int rig=-1e8;
+        rrep(i,n){
+            if(ratings[i]>rig){
+                suf[i]+=1;
+                suf[i]+= (suf[i+1]);
+                rig= ratings[i];
+            }
+            else{
+                suf[i]+=1;
+                rig= ratings[i];
+            }
+        }
+        
+        
+        ll ans=0;   
+        // will always try to start from 1.
+        rep(i,n){
+            ll cnt=0;
+            int j=i, prev=-1;
+            while(j<n && ratings[j]>prev){
+                cnt++;
+                prev=ratings[j];
+                j++;
+            }
+            if(j<n){
+                
+                ll right= suf[j];
+                if(ratings[j-1]==ratings[j]){
+                    ans+= (cnt*(cnt+1))/2;
+                }else{
+                    if(cnt>right){
+                        ans+= (cnt*(cnt+1))/2;
+                    }else{
+                        ll left= (right+1 - cnt);
+                        ans+= (left);
+                        ans+= (cnt*(cnt+1))/2;
+                    }
+                }
+            }else{
+                ans+= (cnt*(cnt+1))/2;
+            }
+            i=j-1;
+        }
+        
+        return ans;
+    }
+};
