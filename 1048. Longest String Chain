@@ -1,0 +1,54 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        int n=words.size();
+        vector<pair<int, string>> a(n);
+        rep(i,n){
+            a[i].ff=words[i].size();
+            a[i].ss=words[i];
+        }
+        sort(all(a));
+        vector<int> dp(n+1, 1);
+        int mx=1;
+        rep(i,n){
+            int flag=0;
+            string s=a[i].ss; 
+            for(int j=i-1;j>=0;j--){
+                string t= a[j].ss;
+                if(t.size()+1== s.size()){
+                    int k=0,l=0, cnt=0;
+                    while(k<t.size() && l<s.size()){
+                        if(t[k]==s[l]){
+                            k++;
+                            l++;
+                        }else{
+                            cnt++;
+                            l++;
+                        }
+                    }
+                    
+                    if( (l==s.size() && k==t.size() && cnt==1) || (l==s.size()-1 && k==t.size() && cnt==0) ){
+                        dp[i]=max(dp[i], dp[j]+1);
+                        mx=max(mx, dp[i]);
+                    }
+                }
+            }
+        }
+        
+        return mx;
+        
+    }
+};
