@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int qr, qc;
+    double dp[101][101];
+    double recur(int row, int col, double quantity){
+        
+        if(quantity<0) return 0.0;
+        
+        if(row==0 && col==0){
+            return quantity;
+        }
+        if(dp[row][col]>-1) return dp[row][col];
+        int pr=row-1;
+        double left=0;
+        if(col-1>=0)
+            left= (recur(row-1, col-1, quantity)-1)/2;
+        if(left<0) left=0;
+        
+        double right=0;
+        if(col<=pr)
+            right= (recur(row-1, col, quantity)-1)/2;
+        if(right<0) right=0;
+        
+        return dp[row][col]=left+right;
+    }
+    double champagneTower(int poured, int query_row, int query_glass) {
+       
+        qr=query_row, qc=query_glass;
+        
+        memset(dp, -1, sizeof dp);
+        return min(1.0, recur(qr,qc,poured));
+        
+        
+    }
+};
