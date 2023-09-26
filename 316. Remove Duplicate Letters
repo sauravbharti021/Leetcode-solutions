@@ -1,0 +1,61 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+       
+        vector<int> f(26,0);
+        int n=s.size();
+        rep(i,n) f[s[i]-'a']++;
+        
+        string ans="";
+        stack<char> st;
+        vector<bool> vis(26,false);
+        rep(i,n){
+            if(vis[s[i]-'a']){
+                f[s[i]-'a']--;
+                continue;
+            }
+            
+            if(st.empty()){
+                st.push(s[i]);
+                vis[(s[i]-'a')]=true;
+            }else if(st.top()<s[i]){
+                if(!vis[s[i]-'a']){
+                    st.push(s[i]);
+                    vis[s[i]-'a']=true;
+                }
+            }else if(st.top()>s[i]){
+                while(!st.empty() && f[(st.top()-'a')]>=1 && st.top()>s[i]){
+                    vis[st.top()-'a']=false;
+                    st.pop();
+                }
+                if(!vis[s[i]-'a']){
+                    st.push(s[i]);
+                    vis[s[i]-'a']=true;
+                }
+            }
+            f[(s[i]-'a')]--;
+        }
+        
+        while(!st.empty()) {
+            ans+= st.top();
+            st.pop();
+        }
+        
+        reverse(all(ans));
+        return ans;
+        
+    }
+};
