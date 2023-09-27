@@ -1,0 +1,40 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    string decodeAtIndex(string s, int k) {
+        
+        ll size=0;
+        int n=s.size();
+        rep(i,n){
+            if(isalpha(s[i])) size++;
+            else{
+                size+= ((s[i]-'0'-1)*(size));
+            }
+        }
+        string ans="";
+        rrep(i,n){
+            if(isdigit(s[i])){
+                size/= (s[i]-'0');
+                k%=size;
+            }else{
+                k%=size;
+                if(k==0) return ans+s[i];
+                size--;
+            }
+        }
+        
+        return "";
+    }
+};
