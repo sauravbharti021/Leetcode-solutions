@@ -1,0 +1,21 @@
+class Solution {
+public:
+long long dp[101];
+    long long recur(int n){
+        if(n==0) return 1;
+        if(dp[n]!=-1) return dp[n];
+        long long ans=1;
+        for(long long i=n;i>=1;i--){
+            ans = max(ans, i*recur(n-i));
+        }
+        
+        return dp[n]=ans;
+    }
+    
+    int integerBreak(int n) {
+        memset(dp, -1, sizeof dp);
+        if(n==2) return 1;
+        if(n==3) return 2;
+        return recur(n);
+    }
+};
