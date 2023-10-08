@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int mi;
+    int recur(int x, int y, vector<int> &nums1, vector<int> &nums2){
+        if(x>=nums1.size() || y>=nums2.size()) return 0;
+        if(dp[x][y]!=-1) return dp[x][y];
+        
+        int ans=0;
+        ans=max(ans, (nums1[x]*nums2[y])+ recur(x+1, y+1, nums1, nums2)  );
+        ans=max(ans, recur(x+1, y, nums1, nums2) );
+        ans=max(ans, recur(x, y+1, nums1, nums2) );
+        ans=max(ans, recur(x+1, y+1, nums1, nums2) );
+        
+        return dp[x][y]= ans;
+    }
+    int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+        
+        dp.assign(nums1.size()+1, vector<int>(nums2.size()+1, -1));
+        mi=-1e9;
+        for(int i=0;i<nums1.size();i++){
+            for(int j=0;j<nums2.size();j++){
+                mi=max(mi, (nums1[i]*nums2[j]));
+            }
+        }
+        int ans= recur(0,0, nums1, nums2);
+        if(ans==0) ans=mi;
+        
+        return ans;
+    }
+};
