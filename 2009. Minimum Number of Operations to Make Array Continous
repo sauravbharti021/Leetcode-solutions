@@ -1,0 +1,42 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        
+        sort(all(nums));
+        ll mi=1e6;
+        ll n= nums.size();
+        set<int> s;
+        rep(i,n){
+            s.insert(nums[i]);
+        }
+        nums.clear();
+        for(auto i: s){
+            nums.pb(i);
+        }
+        
+        rep(i,n){
+            ll tar= nums[i]+(n-1);
+            
+            auto it= upper_bound(all(nums), tar);
+            ll mine= (it-nums.begin())-i;
+            
+            mi=min(mi, (n-mine));
+        }
+        
+        return mi;
+        
+    }
+};
