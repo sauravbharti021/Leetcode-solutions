@@ -1,0 +1,59 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> adj;
+    vector<bool> vis;
+    bool dfs(int n){
+        vis[n]=true;
+        
+        bool ans=true;
+        for(auto i: adj[n]){
+            if(vis[i])
+                ans&= false;
+            else
+                ans&= dfs(i);
+        }
+        
+        return ans;
+    }
+    
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        
+        vector<int> child(n,0), par(n,-1);
+        
+        for(int i=0;i<n;i++){
+            if(leftChild[i]!=-1){
+                if(par[leftChild[i]]!=-1) return false;
+                par[leftChild[i]]=i;
+            }
+            
+            if(rightChild[i]!=-1){
+                if(par[rightChild[i]]!=-1) return false;
+                par[rightChild[i]]=i;
+            }
+        }
+        adj.assign(n, vector<int>{});
+        vis.assign(n, false);
+        rep(i,n){
+            if(leftChild[i]!=-1)
+                adj[i].push_back(leftChild[i]);
+            if(rightChild[i]!=-1)
+                adj[i].push_back(rightChild[i]);
+        }
+        int root=0, cnt=0;
+        rep(i,n){
+            if(par[i]==-1) {
+                cnt++;
+                root=i;
+            }
+        }
+        if(cnt!=1) return false;
+        
+        if(!dfs(root)) return false;
+        rep(i,n){
+            if(!vis[i]) return false;
+        }
+        
+        return true;
+    }
+};
