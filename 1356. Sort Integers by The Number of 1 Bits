@@ -1,0 +1,23 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> sortByBits(vector<int>& arr) {
+        
+        vector<pair<int,int>> a;
+        rep(i, arr.size()){
+            int cnt=0;
+            int x=arr[i];
+            while(x>0){
+                int y= 31 - __builtin_clz(x);
+                cnt++;
+                x-=(1<<y);
+            }
+            a.push_back({cnt, arr[i]});
+        }
+        sort(a.begin(), a.end());
+        vector<int> ans;
+        rep(i,arr.size()) ans.push_back(a[i].second);
+        
+        return ans;
+    }
+};
