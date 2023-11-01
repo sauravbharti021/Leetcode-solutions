@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> ans;
+    int mx=0;
+    unordered_map<int,int> m;
+    vector<int> findMode(TreeNode* root) {
+        recur(root);
+        for(auto i : m) if(i.second>mx) mx= i.second;
+        for(auto i : m) if(i.second==mx) ans.push_back(i.first);
+        
+        return ans;
+    }
+    void recur(TreeNode* root){
+        if(root==NULL) return;
+        
+        m[root->val]++;
+        recur(root->left);
+        recur(root->right);
+    }
+};
