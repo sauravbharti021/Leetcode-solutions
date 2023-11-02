@@ -1,0 +1,27 @@
+#define ff first 
+#define ss second
+class Solution {
+int cnt=0;
+public:
+    int averageOfSubtree(TreeNode* root) {
+        pair<int,int> x= recur(root);
+        
+        return cnt;
+    }
+    pair<int,int> recur(TreeNode* root){
+        if(root==NULL) return {0,0};
+        
+        pair<int,int> x= {0,0} ;
+        pair<int,int> y= recur(root->left);
+        pair<int,int> z= recur(root->right);
+        
+        x.ff = y.ff+ z.ff + 1;
+        x.ss = y.ss+ z.ss + root->val;
+        
+        int avg= (x.ss / x.ff);
+        if(avg==root->val) cnt++;
+        
+        
+        return x;
+    }
+};
