@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<string> buildArray(vector<int>& target, int n) {
+        int j=0, i=1;
+        
+        vector<string> ans;
+        stack<int> st;
+        
+        int last= target.back();
+        
+        while(i<=n && i<=last){
+            if(i== target[j]){
+                
+                if(j==0){
+                    while(!st.empty()){
+                        st.pop();
+                        ans.push_back("Pop");
+                    }
+                }else{
+                    while(!st.empty() && st.top()!= target[j-1]){
+                        st.pop();
+                        ans.push_back("Pop");
+                    }
+                }
+                
+                st.push(i);
+                ans.push_back("Push");
+                j++;
+                i++;
+                continue;
+            }else{
+                st.push(i);
+                ans.push_back("Push");
+                i++;
+            }
+        }
+        
+        
+        return ans;
+        
+    }
+};
