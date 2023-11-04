@@ -1,0 +1,19 @@
+#define all(c) c.begin(), c.end()
+class Solution {
+public:
+    int getLastMoment(int n, vector<int>& left, vector<int>& right) {
+        
+        sort(all(left));
+        sort(all(right));
+        
+        if(right.size()==0){
+            return left.back();
+        }
+        
+        if(left.size()==0){
+            return n-right[0];
+        }
+        
+        return max(left.back(), n-right[0]);
+    }
+};
