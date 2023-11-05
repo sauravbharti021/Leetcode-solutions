@@ -1,0 +1,55 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define all(c) c.begin(), c.end()
+#define pb push_back
+class Solution {
+public:
+    int getWinner(vector<int>& arr, int k) {
+        
+        int n= arr.size();
+        int mx= *(max_element(all(arr)));
+        
+        deque<int> d;
+        rep(i,n) d.pb(arr[i]);
+        int cnt=0;
+        
+        int ans=-1, lol=0, num=0, max_=0;
+        
+        while(cnt<=n){
+            int t1= d.front();
+            d.pop_front();
+            int t2= d.front();
+            d.pop_front();
+            
+            if(t1==mx) return mx;
+            
+            if(t1>t2){
+                if(num!=t1){
+                    num=t1;
+                    lol=1;
+                }else lol++;
+                
+                d.push_front(t1);
+                d.pb(t2);
+            }
+            else{
+                if(num!=t2){
+                    num=t2;
+                    lol=1;
+                }else lol++;
+                
+                d.push_front(t2);
+                d.pb(t1);
+            }
+            
+            if(lol>max_){
+                max_= lol;
+                ans=num;
+                if(max_>=k) return num;
+            }
+            
+            cnt++;
+        }
+        
+        return mx;
+    }
+};
