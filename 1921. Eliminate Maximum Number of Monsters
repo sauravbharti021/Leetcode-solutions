@@ -1,0 +1,25 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int eliminateMaximum(vector<int>& dist, vector<int>& speed) {
+        int time=0;
+        int n= dist.size();
+        priority_queue<int, vector<int>, greater<int>> p;
+        rep(i,n){
+            int x= ceil((1.0*dist[i])/speed[i]);
+            p.push(x);
+        }
+        int cnt=0;
+        while(!p.empty()){
+            int x= p.top();
+            p.pop();
+            
+            
+            if(x<=time) break;
+            cnt++;    
+            time++;
+        }
+        
+        return cnt;
+    }
+};
