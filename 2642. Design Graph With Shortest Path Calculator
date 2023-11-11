@@ -1,0 +1,55 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Graph {
+public:
+    vector<vector<pair<int,int>>> adj;
+    int N;
+    Graph(int n, vector<vector<int>>& edges) {
+        N=n;
+        adj.assign(n+1, vector<pair<int,int>>{});
+        rep(i,edges.size()){
+            int u= edges[i][0], v=edges[i][1], w=edges[i][2];
+            adj[u].pb({v,w});
+        }
+        
+    }
+    
+    void addEdge(vector<int> edge) {
+        int u= edge[0], v=edge[1], w=edge[2];
+        adj[u].pb({v,w});
+    }
+    
+    int shortestPath(int node1, int node2) {
+        vector<ll> dis(N+2, 1e11);
+        
+        queue<ll> q;
+        q.push(node1);
+        dis[node1]=0;
+        
+        while(!q.empty()){
+            ll x= q.front();
+            q.pop();
+            
+            for(auto i: adj[x]){
+                if(dis[i.ff]> dis[x]+ i.ss ){
+                    dis[i.ff]= dis[x]+i.ss;
+                    q.push(i.ff);
+                }
+            }
+        }
+        
+        if(dis[node2]==1e11) return -1;
+        return dis[node2];
+    }
+};
