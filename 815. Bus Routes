@@ -1,0 +1,60 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        
+        if(source==target) return 0;
+        
+        unordered_map<int, vector<int>> m;
+        rep(i, routes.size()){
+            rep(j, routes[i].size()){
+                m[routes[i][j]].pb(i);
+            }
+        }
+        
+        ll cnt=1;
+        
+        queue<int> q;
+        unordered_set<int> vis;
+        for(auto i: m[source]){
+            q.push(i);
+            vis.insert(i);
+        }
+        
+        while(!q.empty()){
+            
+            ll size=q.size();
+            
+            while(size--){
+                
+                int x= q.front();
+                q.pop();
+                
+                
+                for(auto i: routes[x]){
+                    if(i==target) return cnt;
+                    
+                    for(auto j: m[i]){
+                        if(vis.find(j)==vis.end()) { vis.insert(j); q.push(j);}
+                    }
+                    
+                }
+            }
+            cnt++;
+        }
+        
+        return -1;
+    }
+};
