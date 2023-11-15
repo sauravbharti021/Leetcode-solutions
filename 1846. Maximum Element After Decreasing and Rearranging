@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maximumElementAfterDecrementingAndRearranging(vector<int>& arr) {
+        int n=arr.size();
+        
+        priority_queue<int, vector<int>, greater<int>> p;
+        for(int i=0;i<n;i++){
+            p.push(arr[i]);
+        }
+        
+        int str=1;
+        int last=0;
+        for(int i=0;i<n;i++){
+            int x= p.top();
+            p.pop();
+            if(x<str) continue;
+            else{
+                last=str;
+                str++;
+            }
+        }
+        
+        return last;
+    }
+};
