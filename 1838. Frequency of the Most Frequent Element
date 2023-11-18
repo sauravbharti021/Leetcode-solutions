@@ -1,0 +1,44 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        int n= nums.size();
+        
+        sort(all(nums));
+        vector<ll> suf(n+1, 0);
+        
+        rrep(i,n){
+            suf[i] = suf[i+1] + nums[i];
+        }
+        
+        ll mx=0;
+        rrep(i,n){
+            ll l=0, r= i+1;
+            
+            while(r-l>1){
+                ll m= (r+l)/2;
+                
+                if( (((m+1)*nums[i]) - (suf[i-m]-suf[i+1])) <= k) l=m;
+                else r=m;
+            }
+            
+            mx= max(mx, l+1);
+            
+        }
+        
+        return mx;
+        
+    }
+};
