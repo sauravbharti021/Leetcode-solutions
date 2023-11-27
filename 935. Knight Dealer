@@ -1,0 +1,76 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> adj;
+    vector<vector<int>> dp;
+    
+    int recur(int n,  int move, int total){
+        if(move>=total)
+            return 1;
+        if(dp[move][n]!=-1) return dp[move][n];
+        ll ans=0;
+        
+        for(auto i: adj[n]){
+            ans = (ans+ recur(i, move+1, total)%mod)%mod;
+            ans%=mod;
+            if(ans<0) ans+= mod;    
+        }
+        ans%=mod;
+        if(ans<0) ans+= mod;
+        
+        return dp[move][n]= ans;
+    }
+    
+    
+    int knightDialer(int n) {
+        adj.assign(10, vector<int>{});
+        dp.assign(n+1, vector<int>(10, -1));
+        
+        adj[1].pb(6);
+        adj[6].pb(1);
+        adj[1].pb(8);
+        adj[8].pb(1);
+        
+        adj[2].pb(9);
+        adj[9].pb(2);
+        adj[2].pb(7);
+        adj[7].pb(2);
+        
+        adj[3].pb(4);
+        adj[4].pb(3);
+        adj[3].pb(8);
+        adj[8].pb(3);
+        
+        adj[4].pb(9);
+        adj[9].pb(4);
+        adj[4].pb(0);
+        adj[0].pb(4);
+        
+        adj[6].pb(0);
+        adj[0].pb(6);
+        adj[6].pb(7);
+        adj[7].pb(6);
+        
+        ll ans=0;
+        
+        rep(i, 10){
+            ans= (ans+ recur(i, 1, n)%mod)%mod;
+        }
+        ans%=mod;
+        if(ans<0) ans+= mod;
+        
+        return ans;
+    }
+};
