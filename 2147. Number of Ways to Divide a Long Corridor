@@ -1,0 +1,41 @@
+#define mod 1000000007
+#define ll long long
+class Solution {
+public:
+    vector<vector<ll>> dp;
+    ll recur(int i, int seat, string &corridor){
+        if(i>=corridor.size()){
+            if(seat==2) return 1;
+            return 0;
+        }
+        
+        if(dp[i][seat]!=-1) return dp[i][seat];
+        ll ans=0;
+        
+        if(seat<2){
+            if(corridor[i]=='S')
+                ans= (ans+ recur(i+1, seat+1, corridor)%mod)%mod;
+            else
+                ans= (ans+ recur(i+1, seat, corridor)%mod)%mod;
+        }else{
+            if(corridor[i]=='S')
+                ans= (ans+ recur(i+1, 1, corridor)%mod)%mod;
+            else 
+                ans = (ans + recur(i+1, seat, corridor)%mod + recur(i+1, 0, corridor)%mod)%mod;
+        }
+        
+        ans%=mod;
+        if(ans<0) ans+= mod;
+        
+        
+        return dp[i][seat]=ans;
+    }
+    int numberOfWays(string corridor) {
+        int n= corridor.size();    
+        dp.assign(n+1, vector<ll>(3, -1));
+        ll x= recur(0, 0, corridor);
+        
+        
+        return x;
+    }
+};
