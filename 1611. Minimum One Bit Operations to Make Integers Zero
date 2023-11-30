@@ -1,0 +1,13 @@
+
+class Solution {
+public:
+    int minimumOneBitOperations(int n) {
+        if(n==0) return 0;    
+        
+        long long ans=0;
+        int y = 31-__builtin_clz(n);
+        int x = (1<<y);
+        int val = ((1ULL<<(y+1))-1);
+        return val- minimumOneBitOperations(n-x);
+    }
+};
