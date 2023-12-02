@@ -1,0 +1,30 @@
+class Solution:
+    def countCharacters(self, words: List[str], chars: str) -> int:
+        
+        dic= {}
+        
+        for i in chars:
+            if i not in dic:
+                dic[i]=1
+            else:
+                dic[i]+=1
+            
+          
+        sum=0
+        for i in words:
+            f = dic.copy()
+            flag=0
+            for j in i:
+                if f.get(j)!=None:
+                    if(f[j]>1):
+                        f[j]-=1
+                    else:
+                        f.pop(j)
+                else:
+                    flag=1
+                    break;
+            if(flag==0):
+                sum+= len(i)
+                
+        
+        return sum
