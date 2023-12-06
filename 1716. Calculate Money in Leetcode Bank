@@ -1,0 +1,13 @@
+class Solution:
+    def totalMoney(self, n: int) -> int:
+        cnt=0
+    
+        tot=0
+        for i in range(n):
+            if(i%7==0):
+                cnt+=1
+                tot+=cnt
+            else:
+                tot+= (cnt+((i%7)))
+            
+        return tot
