@@ -1,0 +1,28 @@
+class Solution:
+    def tree2str(self, root: Optional[TreeNode]) -> str:
+        
+        def recur(root):
+            if(root==None):
+                return ""
+            
+            l_c= recur(root.left)
+            r_c= recur(root.right)
+            
+            if(l_c=="" and r_c!=""):
+                l_c="()"
+            
+            par= '('+ str(root.val)+l_c+r_c+')'
+            
+            return par
+        
+        ans= list(recur(root))
+        
+        ans.pop()
+        ans.pop(0)
+        
+        res= ''
+        for i in ans:
+            res+=i
+        
+        return res
+            
