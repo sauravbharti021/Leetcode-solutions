@@ -1,0 +1,27 @@
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        ans=[]
+        if(root==None):
+            return ans
+        
+        def recur(root):
+            if(root==None):
+                return None
+            
+            list =[]
+            l= recur(root.left)
+            r= recur(root.right)
+            
+            if(root.left!=None):
+                list.extend(l)
+                
+            list.append(root.val)
+            
+            if(root.right!=None):
+                list.extend(r)
+                
+            return list
+        
+        return recur(root)
+            
+            
