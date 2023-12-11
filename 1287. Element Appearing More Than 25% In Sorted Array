@@ -1,0 +1,17 @@
+class Solution:
+    def findSpecialInteger(self, arr: List[int]) -> int:
+        n= len(arr)
+        
+        for i in range(n):
+            st=arr[i]
+            j=i
+            cnt=0
+            while (j<n and arr[j]==st):
+                cnt+=1
+                j+=1
+            
+            per= (cnt*100)/n;
+            if(per>25):
+                return st
+            i=j-1
+            
