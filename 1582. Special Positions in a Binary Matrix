@@ -1,0 +1,27 @@
+class Solution:
+    def numSpecial(self, mat: List[List[int]]) -> int:
+        
+        cnt=0
+        for i in range(len(mat)):
+            for j in range(len(mat[0])):
+                if(mat[i][j]!=1):
+                    continue
+                flag=0
+                for l in range(len(mat)):
+                    if(l==i):
+                        continue
+                    if(mat[l][j]==1):
+                        flag=1
+                        break
+                    
+                for m in range(len(mat[0])):
+                    if(m==j):
+                        continue
+                    if(mat[i][m]==1):
+                        flag=1
+                        break
+                        
+                if(not flag):
+                    cnt+=1
+                    
+        return cnt
