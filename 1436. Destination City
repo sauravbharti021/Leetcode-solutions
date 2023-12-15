@@ -1,0 +1,12 @@
+from collections import defaultdict
+class Solution:
+    def destCity(self, paths: List[List[str]]) -> str:
+        
+        dic= defaultdict(list)
+        
+        for i,j in paths:
+            dic[i].append(j)
+            
+        for i,j in paths:
+            if(len(dic[j]) ==0):
+                return j
