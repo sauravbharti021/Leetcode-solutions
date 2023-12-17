@@ -1,0 +1,63 @@
+import collections
+from functools import cache
+from sortedcontainers import SortedSet
+class FoodRatings(object):
+    
+    def change_world(self, s):
+        s=list(s)
+        for i in range(len(s)):
+            s[i] = (25- (ord(s[i]) - ord('a') ))
+        
+        ans=""
+        for i in s:
+            ans+= chr(ord('a')+i)
+            
+        return ans
+    
+    def __init__(self, foods, cuisines, ratings):
+        """
+        :type foods: List[str]
+        :type cuisines: List[str]
+        :type ratings: List[int]
+        """
+        
+        
+        self.mc= collections.defaultdict(SortedSet)
+        self.f= dict()
+        self.father= dict()
+        
+        for i in range(len(foods)):
+            
+            self.mc[cuisines[i]].add((ratings[i], self.change_world(foods[i]) ))
+            self.f[foods[i]]=ratings[i]
+            self.father[foods[i]] = cuisines[i]
+        
+
+    
+    def changeRating(self, food, newRating):
+        """
+        :type food: str
+        :type newRating: int
+        :rtype: None
+        """
+        daddy= self.father[food]
+        self.mc[daddy].remove((self.f[food], self.change_world(food) ))
+        
+        self.f[food]= newRating
+        self.mc[daddy].add((newRating, self.change_world(food) ))
+        
+        
+    def highestRated(self, cuisine):
+        """
+        :type cuisine: str
+        :rtype: str
+        """
+        
+        size= len(self.mc[cuisine])
+        return self.change_world(self.mc[cuisine][size-1][1])
+
+
+# Your FoodRatings object will be instantiated and called as such:
+# obj = FoodRatings(foods, cuisines, ratings)
+# obj.changeRating(food,newRating)
+# param_2 = obj.highestRated(cuisine)
