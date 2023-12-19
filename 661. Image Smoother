@@ -1,0 +1,24 @@
+class Solution:
+    def imageSmoother(self, img: List[List[int]]) -> List[List[int]]:
+       
+        d=[[-1,-1],[1,1],[1,-1],[-1,1],[0,1],[1,0],[-1,0], [0,-1] ]
+        
+        ans=[[0]*len(img[0]) for _ in range(len(img))]
+        for i in range(len(img)):
+            for j in range(len(img[i])):
+                    
+                cnt=1
+                s= img[i][j]
+                for k in range(len(d)):
+                    u=i + d[k][0]
+                    v=j + d[k][1]
+                    
+                    if(u>=0 and v>=0 and u<len(img) and v<len(img[i])):
+                        s+= img[u][v]
+                        cnt+=1
+                        
+                    ans[i][j] = (s//cnt)
+                    
+            
+        return ans
+                      
