@@ -1,0 +1,17 @@
+class Solution:
+    def maxScore(self, s: str) -> int:
+        
+        p=[0]*len(s)
+        n=len(s)
+        for i in range(len(s)):
+            
+            p[i]= (p[i-1] if(i>0) else 0)+(1 if s[i]=='1' else 0)
+            
+        mx=0
+        for i in range(0, len(s)-1):
+            left= (i+1 - p[i])
+            right= p[n-1] - (p[i])
+            
+            mx= max(mx, (left+right))
+            
+        return mx
