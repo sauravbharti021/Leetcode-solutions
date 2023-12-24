@@ -1,0 +1,18 @@
+class Solution:
+    def minOperations(self, s: str) -> int:
+        
+        st=0
+        op1=0
+        for i in s:
+            if(st!=(int(i))):
+                op1+=1
+            st^=1
+            
+        st=1
+        op2=0
+        for i in s:
+            if(st!=(int(i))):
+                op2+=1
+            st^=1
+            
+        return min(op1, op2)
