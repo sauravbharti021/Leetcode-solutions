@@ -1,0 +1,25 @@
+class Solution:
+    def minDifficulty(self, jobDifficulty: List[int], d: int) -> int:
+        
+        if(d>len(jobDifficulty)):
+            return -1
+        @cache
+        def recur(ind, day):
+            if(day>d):
+                if(ind==len(jobDifficulty)):
+                    return 0
+                return 1000000000000
+            if(ind>=len(jobDifficulty)):
+                return 100000000000
+            
+            mx=0
+            ans=10000000000000
+            for i in range(ind, len(jobDifficulty)):
+                mx=max(mx, jobDifficulty[i])
+                ans= min(ans, mx+ recur(i+1, day+1))
+                
+            return ans
+        
+        
+        return recur(0, 1)
+                
