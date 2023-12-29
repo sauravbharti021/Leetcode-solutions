@@ -1,0 +1,40 @@
+import collections
+class Solution:
+    def getLengthOfOptimalCompression(self, s: str, k: int) -> int:
+       
+        n=len(s)
+      
+        
+        def finder(have):
+            addT=0
+            if(have>0):
+                addT+=1
+            
+            if(1<have<10): addT+=1
+            elif(10<=have<100): addT+=2
+            elif(100<=have<1000): addT+=3
+                
+            return addT
+            
+            
+        @cache
+        def recur(i1, k, last_c, good):
+            if(k<0):
+                return 100000000000000
+            if(i1>=n):
+                return finder(good)
+            
+            ans= 10000000000
+            ans= min(ans, recur(i1+1, k-1, last_c, good))
+            
+            if(s[i1]==last_c):
+                ans= min(ans, recur(i1+1, k, last_c, good+1))
+            else:
+                ans= min(ans, finder(good)+ recur(i1+1, k, s[i1], 1 ))
+                
+                
+            return ans
+          
+            
+        return recur(0, k, '', 0)
+            
