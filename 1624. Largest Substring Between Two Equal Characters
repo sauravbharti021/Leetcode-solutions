@@ -1,0 +1,20 @@
+import collections
+class Solution:
+    def maxLengthBetweenEqualCharacters(self, s: str) -> int:
+        
+        d= collections.defaultdict(list)
+        n=len(s)
+        for i in range(n):
+            d[s[i]].append(i)
+            
+            
+        mx=-1
+        
+        for key, vals in d.items():
+            # print(key, vals)
+            if(len(vals)>1):
+                mx= max(mx, (vals[len(vals)-1] - vals[0]-1))
+            
+            
+        return mx
+        
