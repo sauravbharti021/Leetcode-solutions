@@ -1,0 +1,27 @@
+class Solution:
+    def numberOfBeams(self, bank: List[str]) -> int:
+        
+        n= len(bank)
+        
+        f= [0]*n
+        
+        for index,i in enumerate(bank):
+            for j in i:
+                if(j=='1'):
+                    f[index]+=1
+                    
+        
+        ans=0
+        
+        for i in range(n):
+            if(f[i]>0):
+                j=i+1
+                while(j<n and f[j]==0):
+                    j+=1
+                    
+                    
+                if(j<n and f[j]>0):
+                    ans+= (f[i]*f[j])
+                
+        # print(f)
+        return ans
