@@ -1,0 +1,21 @@
+import collections
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+        m=collections.Counter(nums)
+        
+        ans=0
+        for i in m.values():
+            if(i==1):
+                return -1
+            
+            temp=i
+            if(temp%3==0):
+                ans+= (temp//3)
+            elif(temp%3==2):
+                ans+= (temp//3 + 1)
+            else:
+                temp-=4
+                ans+= (temp//3 + 2)
+            
+            
+        return ans
