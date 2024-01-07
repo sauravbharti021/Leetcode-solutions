@@ -1,0 +1,55 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    vector<vector<ll>> dp;
+    
+    
+    ll recur(ll i, ll prev, ll d, vector<ll> &nums){
+        ll  ans=0;
+        
+        if(dp[i][prev]!=-1)
+            return dp[i][prev];
+        
+        for(int k=i+1;k<nums.size(); k++){
+            if((nums[k] - nums[i])==d){
+                ans= (ans + 1 + recur(k, i, d, nums));
+            }
+        }
+        return dp[i][prev]= ans;
+    }
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        ll n= nums.size();
+        dp.assign(n+1, vector<ll>(n+1, -1));
+        
+       vector<ll> a;
+        rep(i,n) a.pb(nums[i]);
+        
+        ll mx=0;
+        rep(i,n){
+            for(int j=i+1;j<n;j++){
+                ll x= 2+ recur(j, i, (a[j]-a[i]), a);
+                
+                if(x>=3) {
+                    mx+= (x-2);
+                }
+            }
+        }
+        
+        return mx;
+        
+        
+    }
+};
