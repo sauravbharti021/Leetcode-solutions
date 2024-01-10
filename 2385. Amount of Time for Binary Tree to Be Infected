@@ -1,0 +1,35 @@
+class Solution:
+    def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+        
+        '''
+            approach 1- make a graph and bfs
+            approach 2 - wherever confront the start, make it's depth in (-), so we can identify that they will form one single path
+        '''
+        mx=0
+        
+        def recur(root):
+            if(root==None):
+                return 0;
+            nonlocal mx;
+            
+            left_d= recur(root.left)
+            right_d= recur(root.right)
+            
+            
+            if(root.val==start):
+                mx= max(mx,left_d, right_d)
+                depth= -1
+            elif(left_d>=0 and right_d>=0):
+                mx = max(mx, left_d+1, right_d+1)
+                depth = max(left_d, right_d) + 1
+            else:
+                mx= max(mx, abs(left_d) + abs(right_d))
+                depth = min(left_d, right_d) -1
+             
+            return depth
+        
+        
+        recur(root)
+        return mx
+        
+        
