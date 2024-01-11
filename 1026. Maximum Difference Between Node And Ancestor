@@ -1,0 +1,29 @@
+class Solution:
+    def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
+        
+        mx=0
+        
+        def recur(root):
+            
+            nonlocal mx
+            
+            (x, y) = (root.val, root.val)
+            if(root.left!=None):
+                (a, b) = recur(root.left)
+                mx =max(mx, abs(a-root.val), abs(b - root.val) )
+                x= min(a, x)
+                y= max(b, y)
+                
+            if(root.right!=None):
+                (a,b) = recur(root.right)
+                mx = max(mx, abs(a- root.val), abs(b- root.val))
+                x= min(a, x)
+                y= max(b, y)
+                
+                
+            return (x,y)
+                
+        
+        recur(root)
+        return mx        
+            
