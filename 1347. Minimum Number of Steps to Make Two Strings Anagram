@@ -1,0 +1,16 @@
+class Solution:
+    def minSteps(self, s: str, t: str) -> int:
+        m= Counter(s)
+        cnt=0
+        
+        for i in t:
+            if(i in m):
+                if(m[i]==1):
+                    m.pop(i)
+                else:
+                    m[i]-=1
+            else:
+                cnt+=1
+                
+                
+        return cnt;
