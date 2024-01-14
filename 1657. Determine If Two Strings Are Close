@@ -1,0 +1,20 @@
+class Solution:
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        a=Counter(word1)
+        b= Counter(word2)
+        
+        f1=[]
+        f2=[]
+        for keys, vals in a.items():
+            f1.append(vals)
+            if(keys not in b):
+                return False
+        for keys, vals in b.items():
+            f2.append(vals)
+            if(keys not in a):
+                return False
+            
+        f1.sort()
+        f2.sort()
+        
+        return True if (f1==f2) else False
