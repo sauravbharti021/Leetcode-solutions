@@ -1,0 +1,39 @@
+class Solution:
+    def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
+        
+        winners= dict()
+        losers= dict()
+        
+        for i in matches:
+            u,v = i
+            if(u not in winners):
+                winners[u]=1
+            else:
+                winners[u]+=1
+                
+            if(v not in losers):
+                losers[v]=1
+            else:
+                losers[v]+=1
+                
+        
+        print(winners, losers)
+        l1= list()
+        for i in winners:
+            if(i not in losers):
+                l1.append(i)
+                
+        l2= list()
+        for keys, vals in losers.items():
+            if(vals==1):
+                l2.append(keys)
+                
+        ans=[]
+        l1.sort()
+        l2.sort()
+        ans.append(l1)
+        ans.append(l2)
+        
+            
+        
+        return ans
