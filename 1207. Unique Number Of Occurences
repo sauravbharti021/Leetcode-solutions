@@ -1,0 +1,13 @@
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        m= Counter(arr)
+        
+        s=set()
+        for keys, vals in m.items():
+            if(vals in s):
+                return False
+            else:
+                s.add(vals)
+                
+                
+        return True
