@@ -1,0 +1,30 @@
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        d=[[1,0],[1,-1],[1,1]]
+        
+        n=len(matrix)
+        
+        @cache
+        def dfs(i, j):
+            if(i>=n):
+                return 0;
+            
+            ans= 10000000000
+            
+            for k in d:
+                (u,v) =k
+                x,y= i+u, j+v
+                
+                if(x>=0 and y>=0 and x<=n and y<n):
+                    ans= min(ans, dfs(x,y))
+                    
+            return ans+ matrix[i][j]
+        
+        
+        mi = 10000000000
+        for i in range(n):
+            mi = min(mi, dfs(0, i))
+            
+        return mi
+        
+        
