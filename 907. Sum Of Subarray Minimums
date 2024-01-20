@@ -1,0 +1,53 @@
+#define mod 1000000007
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int n= arr.size();
+        stack<pair<int,int>> st;
+        
+        vector<int> pre(n), suf(n);
+        for(int i=0;i<arr.size();i++){
+            if(st.empty()){
+                st.push({arr[i], i+1});
+                pre[i]=0;
+            }else{
+                while(!st.empty() && st.top().first>=arr[i]) st.pop();
+                if(!st.empty()){
+                    pre[i] = st.top().second;
+                }else{
+                    pre[i]=0;
+                }
+                st.push({arr[i], i+1});
+            }
+        }
+        while(!st.empty()) st.pop();
+        
+        for(int i=n-1;i>=0;i--){
+            if(st.empty()){
+                st.push({arr[i], i+1});
+                suf[i]=n+1;
+            }else{
+                while(!st.empty() && st.top().first>arr[i]) st.pop();
+                if(!st.empty()){
+                    suf[i]= st.top().second;
+                }else{
+                    suf[i]=n+1;
+                }
+                st.push({arr[i], i+1});
+            }
+        }
+        
+        long long ans=0;
+        for(int i=0;i<n;i++){
+            long long now= ((suf[i] - (i+1)) * ( (i+1) - pre[i]))%mod;
+            now = (now* arr[i])%mod;
+            ans= (ans+ now)%mod;
+        }
+        ans%=mod;
+        if(ans<0) ans+= mod;
+        
+        return ans;
+        
+        
+    }
+};
