@@ -1,0 +1,33 @@
+#define ll long long
+#define mod 1000000007
+class Solution {
+public:
+    vector<vector<int>> d{{1,0},{-1,0},{0,1},{0,-1}};
+    vector<vector<vector<ll>>> dp;
+    ll recur(int i, int j, int move, int n, int m){
+        if(i<0 || j<0 || i>=n || j>=m)
+            return 1;
+        if(move<=0){
+            return 0;
+        }
+        if(dp[i][j][move]!=-1)
+            return dp[i][j][move];
+        
+        ll ans=0;
+        for(int k=0;k<4;k++){
+            int x= i+ d[k][0];
+            int y= j+ d[k][1];
+            ans = (ans+ recur(x, y, move-1, n, m)%mod)%mod;
+        }
+        ans%=mod;
+        if(ans<0) ans+=mod;
+        
+        return dp[i][j][move] = ans;
+    }
+    
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        dp.assign(m+1, vector<vector<ll>> (n+1, vector<ll>(maxMove+1, -1)));
+        
+        return recur(startRow, startColumn, maxMove, m, n);
+    }
+};
