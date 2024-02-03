@@ -1,0 +1,43 @@
+#define rep(i,n) for(int i=0;i<n ; i++)
+#define ll long long
+class Solution {
+public:
+    
+    vector<int> dp;
+    int recur(int i, vector<int> &a, int k){
+        
+        if(i>=a.size()){
+            return 0;
+        }
+        
+        if(dp[i]!=-1) return dp[i];
+        
+        
+        ll ans = -1e18;
+        ll mx_int= a[i];
+        
+        for(int j= i;(j<a.size() && j<(i+k)); j++){
+            
+            if(a[j]> mx_int){
+                mx_int = a[j];
+            }
+            
+            ans = max(ans, (ll)((j-i+1)*(mx_int) + recur(j+1, a, k)) );
+            
+        }
+        
+        return dp[i] = ans;
+        
+    }
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+       
+        int n= arr.size();
+        
+        dp.assign(n+1, -1);
+        
+        ll x= recur(0, arr, k);
+    
+        return x;
+        
+    }
+};
