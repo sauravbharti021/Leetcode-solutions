@@ -1,0 +1,29 @@
+#define pb push_back
+#define rep(i,n) for(int i=0;i<n;i++)
+#define all(c) c.begin(), c.end()
+#define ss second
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        
+        int n = strs.size();
+        map<string, vector<int>> m;
+        
+        rep(i,n){
+            string now = strs[i];
+            sort(all(now));
+            m[now].pb(i);
+        }
+                
+        vector<vector<string>> ans;
+        for(auto i : m){
+            vector<string> temp;
+            rep(j, i.ss.size()){
+                temp.pb(strs[i.ss[j]]);
+            }
+            ans.pb(temp);
+        }
+                
+        return ans;
+    }
+};
