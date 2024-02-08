@@ -1,0 +1,52 @@
+#define ll long long
+class Solution {
+public:
+    
+    vector<vector<ll>> dp;
+    vector<int> p_s;
+    Solution(){
+        
+        for(int i=1; ; i++){
+            if(i*i > 1e4) break;
+            else p_s.push_back(i*i);
+        }
+    }
+    
+    ll recur(int i, int left){
+        if(i>=p_s.size()){
+            
+            if(left==0){
+                return 0;
+            }
+            return 1e7;
+        }
+        
+        if(left==0){
+            return 0;
+        }else if(left<0){
+            return 1e7;
+        }
+        
+        
+        if(dp[i][left] != -1)
+            return dp[i][left];
+        
+        if(left>= p_s[i]){
+            return dp[i][left] = min( recur(i+1, left), 1 + recur(i, left- p_s[i]) );
+        }
+        
+        
+        return dp[i][left] = recur(i+1, left);
+        
+    }
+    
+    int numSquares(int n) {
+        int size= p_s.size();
+        
+        dp.assign(size+1, vector<ll>(n+1, -1));
+        
+        ll x= recur(0, n);
+        
+        return x;
+    }
+};
