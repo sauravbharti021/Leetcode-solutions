@@ -1,0 +1,66 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ll long long
+
+class Solution {
+public:
+    
+    vector<vector<ll>> dp;
+    ll recur(int i, int j, string &s){
+        
+        if(i>=s.size() || j<0 ){
+            return -1e8;
+        }
+        
+        if(i==j)
+            return 1;
+        
+        if(i>j)
+            return -1e8;
+        
+        
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        
+        ll ans=0;
+        
+        if(s[i] == s[j]){
+            
+            if(i+1 == j)
+                return dp[i][j] =1 ;
+            
+            ans =  recur(i+1, j-1, s);
+            
+        }
+        else{
+            return -1e8;
+        }
+        
+        
+        return dp[i][j] = ans;    
+        
+    }
+    int countSubstrings(string s) {
+    
+        
+        
+        int n= s.size();
+        dp.assign(n+1, vector<ll>(n+1, -1));
+        
+        ll ans=0;
+        rep(i,n){
+            for(int j=n-1;j>=i;j--){
+                
+                ll temp= recur(i, j, s);
+                
+                if(temp>0){
+                    ans+= 1;
+                    
+                }
+                
+            }
+        }
+        
+        return ans;
+        
+    }
+};
