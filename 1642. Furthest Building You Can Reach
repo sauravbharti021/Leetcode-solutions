@@ -1,0 +1,66 @@
+#define pb push_back
+#define ll long long
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+        
+        // dp
+        // binary search
+        
+        int n= heights.size();
+        vector<int> d;
+        
+        for(int i=1;i<n;i++){
+            d.pb(heights[i]-heights[i-1]);
+        }
+        
+        ll l=0, r=n;
+        
+        while(r-l>1){
+            
+            ll mid= (l+r)/2;
+            
+            priority_queue<int> p;
+            
+            for(int i=0;i<mid;i++){
+                p.push(d[i]);
+            }
+            
+            int lad= ladders, bri= bricks;
+            while(!p.empty()){
+                ll x= p.top();
+                p.pop();
+                
+                if(x<=0) continue;
+                
+                if(lad>0){
+                    lad-=1;
+                    x=0;
+                }
+                else{
+                    if(bri>= x){
+                        bri-=x;
+                        x=0;
+                    }
+                    else{
+                        p.push(x);
+                        break;
+                    }
+                }
+                
+                
+            }
+            
+            if(p.empty()){
+                l=mid;
+            }else{
+                r=mid;
+            }
+            
+        }
+        
+        return l;
+        
+    }
+};
