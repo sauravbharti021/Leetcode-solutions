@@ -1,42 +1,58 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ss second
+#define ff first
+#define ll long long
 class Solution {
 public:
     int mostBooked(int n, vector<vector<int>>& meetings) {
-        vector<int> meetingCount(n, 0);
-        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> usedRooms;
-        priority_queue<int, vector<int>, greater<int>> unusedRooms;
-        for (int i = 0; i < n; i++) {
-            unusedRooms.push(i);
-        }
+      
+        vector<int> fre(n, 0);
+        
+        priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> p;
+        
+        priority_queue<ll, vector<ll>, greater<ll>> ava;
+        
+        rep(i,n) ava.push(i);
         sort(meetings.begin(), meetings.end());
-
-        for (auto meeting : meetings) {
-            int start = meeting[0], end = meeting[1];
-
-            while (!usedRooms.empty() && usedRooms.top().first <= start) {
-                int room = usedRooms.top().second;
-                usedRooms.pop();
-                unusedRooms.push(room);
+        
+        rep(i,meetings.size()){
+            
+            while(!p.empty() && p.top().ff<= meetings[i][0]){
+                ava.push(p.top().ss);
+                p.pop();
             }
-            if (!unusedRooms.empty()) {
-                int room = unusedRooms.top();
-                unusedRooms.pop();
-                usedRooms.push({end, room});
-                meetingCount[room]++;
-            } else {
-                auto [roomAvailabilityTime, room] = usedRooms.top();
-                usedRooms.pop();
-                usedRooms.push({roomAvailabilityTime + end - start, room});
-                meetingCount[room]++;
+            
+            if(!ava.empty()){
+                fre[ava.top()]++;
+                p.push({meetings[i][1],  ava.top()});
+                ava.pop();
+            }
+            else{
+                pair<ll,ll> available_first = p.top();
+                p.pop();
+                
+                ll end= meetings[i][1];
+                
+                ll avail_end= available_first.ff;
+                ll start = meetings[i][0];
+                
+                p.push({avail_end + end - start,  available_first.ss });
+                
+                fre[available_first.ss]++;
+            }
+            
+        }
+        
+        int mx = -1, index=-1;
+        
+        rep(i, n){
+            cout<<fre[i]<<" ";
+            if(fre[i]>mx){
+                mx=fre[i];
+                index=i;
             }
         }
-
-        int maxMeetingCount = 0, maxMeetingCountRoom = 0;
-        for (int i = 0; i < n; i++) {
-            if (meetingCount[i] > maxMeetingCount) {
-                maxMeetingCount = meetingCount[i];
-                maxMeetingCountRoom = i;
-            }
-        }
-        return maxMeetingCountRoom;
+        return index;
+        
     }
 };
