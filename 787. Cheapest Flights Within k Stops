@@ -1,0 +1,55 @@
+#define ff first
+#define ss second
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        
+        vector<vector<pair<int,int>>> adj(n+1);
+        
+        for(int i=0;i<flights.size(); i++){
+            int u= flights[i][0], v= flights[i][1], price = flights[i][2];
+            
+            pair<int,int> now = {v, price};
+            
+            adj[u].push_back(now);
+            
+        }
+        vector<vector<int>> dis(n+1, vector<int>(k+3, 1e9));
+        
+        queue<pair<int,int>> q;
+        q.push({src, 0});
+        int move =0;
+        dis[src][move]=0;
+        
+        while(!q.empty() && move<=k){
+            int size = q.size();
+            while(size--){
+                
+                pair<int,int> x= q.front();
+                q.pop();
+                
+                for(auto i: adj[x.ff]){
+                    int v = i.ff;
+                    int price = i.ss;
+                    
+                    if(dis[v][x.ss+1] > ( dis[x.ff][x.ss]+price)){
+                        q.push({v, x.ss+1});
+                        dis[v][x.ss+1] = dis[x.ff][x.ss] +price;
+                    }
+                }
+            }
+            
+            move+=1;
+        }
+        
+        
+        int mi = 1e9;
+        rep(i,k+2){
+            mi =min (mi, dis[dst][i]);
+        }
+       
+        return mi == 1e9 ? -1 : mi;
+        
+    }
+};
