@@ -1,0 +1,110 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+
+class Solution {
+public:
+  
+    vector<int> prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313};
+
+   
+    struct dsu{
+    map<int,int> rank, par;
+   
+
+    int Find(int x){
+        if(par.find(x)==par.end())
+            return -1;
+        
+        while(x!=par[x])
+            x=par[x];
+    
+        return x;
+    }
+
+    void unite(int u, int v){
+        int prev_u=u;
+        u =Find(u);
+        
+        if(u==-1){
+            
+            par[prev_u]=prev_u;
+            rank[prev_u]=1;
+        }
+        
+        int prev_v=v;
+        v= Find(v);
+        if(v==-1){
+            par[prev_v]=prev_v;
+            rank[prev_v]=1;
+        }
+        
+        
+        u = Find(prev_u);
+        v = Find(prev_v);
+        
+        if(u!=v){
+            if(rank[u]>rank[v]){
+                par[v]= u;
+                rank[u]+=rank[v];
+            }else{
+                par[u]= v;
+                rank[v]+= rank[u];
+            }
+        }
+    }
+};
+    
+    
+    bool canTraverseAllPairs(vector<int>& nums) {
+        
+        
+        ll n = nums.size();
+        dsu d;
+        if(n==1) return true;
+        if(count(all(nums),1)>0)
+            return false;
+        
+        rep(i, n){
+            
+            ll x = nums[i];
+            
+            rrep(j, prime.size()){
+                if(x%prime[j]==0){
+                
+                d.unite(i, prime[j]+1e5);
+                while(x>1 && x%prime[j] == 0) x/=prime[j];
+                    
+                }
+            }
+                if(x>1){
+                    d.unite(i, x+1e5);
+                }
+            
+            
+        }
+        
+       int chk = d.Find(0);
+        rep(i, n){
+            // cout<<i<<" : "<<d.Find(i)<<"\n";
+                
+            if(d.Find(i)!=chk)
+                return false;
+        }
+            
+        
+        return true;
+        
+    }
+};
