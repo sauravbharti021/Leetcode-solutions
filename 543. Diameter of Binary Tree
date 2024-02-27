@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int mx=0;
+    int diameterOfBinaryTree(TreeNode* root) {
+        
+        int ans = recur(root);
+        
+        return mx;
+    }
+    
+    int recur(TreeNode* root){
+        if(root==NULL)
+            return 0;
+        
+        
+        int left = recur(root->left);
+        int right = recur(root->right);
+        
+        mx=max(mx, left+right);
+        
+        return 1+ max(left, right);
+    }
+};
