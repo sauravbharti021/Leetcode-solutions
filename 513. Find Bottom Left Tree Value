@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        
+        queue<TreeNode*> q;
+        int dis =0;
+        
+        int left_most = root->val;
+        
+        q.push(root);
+        
+        while(!q.empty()){
+            dis+=1;
+            int size = q.size();
+            int flag=0;
+            
+            while(size--){
+                TreeNode* now = q.front();
+                q.pop();
+                
+                if(now->left!=NULL){
+                    if(!flag){
+                        flag=1;
+                        left_most = now->left->val;
+                    }
+                    q.push(now->left);
+                }
+                
+                if(now->right!=NULL){
+                    if(!flag){
+                        flag=1;
+                        left_most = now->right->val;
+                    }
+                    q.push(now->right);
+                }
+                
+            }
+        }
+        
+        return left_most;
+        
+        
+    }
+};
