@@ -1,0 +1,47 @@
+class Solution {
+public:
+    bool isEvenOddTree(TreeNode* root) {
+        
+        queue<TreeNode*> q;
+        int dis=0;
+        
+        q.push(root);
+        
+        while(!q.empty()){
+            int size= q.size();
+            vector<int> val;
+            while(size--){
+                TreeNode* now = q.front();
+                q.pop();
+                val.push_back(now->val);
+                
+                if(dis%2==0){
+                    if(now->val%2==0) return false;
+                    
+                }
+                else{
+                    if(now->val%2==1) return false; 
+                }
+                if(now->left!=NULL) q.push(now->left);
+                if(now->right!=NULL) q.push(now->right);
+                
+            }
+            
+            if(dis%2==0){
+                int n= val.size();
+                for(int i=0;i<n-1;i++){
+                    if(val[i+1]<=val[i]) return false;
+                }
+            }else{
+                int n= val.size();
+                for(int i=0;i<n-1;i++){
+                    if(val[i+1]>=val[i]) return false;
+                }
+            }
+            
+            dis++;
+        }
+        
+        return true;
+    }
+};
