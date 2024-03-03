@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int flag=0;
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        
+        recur(head, NULL, n);
+        if(flag)
+            return head->next;
+        
+        return head;
+    }
+    int recur(ListNode* root, ListNode* prev, int n){
+        if(root==NULL)
+            return 0;
+        
+        int ans = 1+ recur(root->next, root, n);
+        
+        if(ans == n){
+            if(prev==NULL) {
+                flag=1;
+                return ans;   
+            }
+            
+            prev->next = root->next;
+        }
+        
+        return ans;
+    }
+};
