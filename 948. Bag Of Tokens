@@ -1,0 +1,33 @@
+#define all(c) c.begin(),c.end()
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& tokens, int power) {
+      
+        sort(all(tokens));
+        int n = tokens.size();
+        int l=0, r= n-1;
+        int score = 0, mx=0;
+        
+        
+            
+        while(r>=l){
+            if(power>= tokens[l]){
+                power-= tokens[l];
+                score++;
+                l++;
+            }else{
+                if(score>0){
+                    power += tokens[r];
+                    r--;
+                    score--;
+                    
+                }else{
+                    break;
+                }
+            }
+            mx = max(mx, score);
+        }
+        
+        return mx;
+    }
+};
