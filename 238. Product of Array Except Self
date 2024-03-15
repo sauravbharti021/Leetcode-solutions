@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        
+        int n= nums.size();
+        vector<int> z(n,0);
+        
+        long long pro = 1;
+        for(int i=0;i<n;i++){
+            z[i] = (i>0 ? z[i-1]: 0) + ((nums[i]==0 )? 1 : 0);
+            
+            if(nums[i]!=0){
+                pro*=nums[i];
+            }
+        }
+        
+        vector<int> ans(n,0);
+        for(int i=0;i<n;i++){
+            
+            int flag= ((i>0 ? z[i-1] : 0) + (z[n-1] - z[i]));
+            if(flag>0){
+                continue;
+            }else{
+                if(nums[i]==0) {
+                    ans[i]= pro;   
+                }
+                else{
+                    ans[i] = pro/nums[i];
+                }
+            }
+            
+        }
+        
+        return ans;
+        
+        
+    }
+};
