@@ -1,0 +1,32 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ll long long
+class Solution {
+public:
+    int findMinArrowShots(vector<vector<int>>& points) {
+       
+        sort(points.begin(), points.end());
+        
+        int n = points.size();
+        
+        ll prev= (1ULL<<31) * -1  -1;
+        ll far = prev;
+        int ans =0;
+        
+        rep(i,n){
+            if(points[i][0]  > far){
+                ans+=1;
+                far = points[i][1];
+                
+                int j=i;
+                while(j<n && points[i][0]>= far){
+                    j++;
+                    far= min(far, (ll)points[i][1]);
+                }
+                i= j-1;
+            }else{
+                far= min(far, (ll)points[i][1]);
+            }
+        }
+        return ans;
+    }
+};
