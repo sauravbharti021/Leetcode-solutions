@@ -1,0 +1,53 @@
+#define rep(i,n) for(int i=0;i<n;i++) 
+#define ll long long
+#define all(c) c.begin(),c.end()
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+
+        int m= tasks.size();
+        vector<int> fre(26, 0);
+        
+        for(int i=0;i<m;i++){
+            fre[(tasks[i]-'A')]++;
+        }
+        
+        int mx=0;
+        priority_queue<int> p;
+        rep(i, 26){
+            if(fre[i]>0){
+                p.push(fre[i]);
+            }
+        }
+        
+        
+        while(!p.empty()){
+            int range = n+1;
+            vector<int> temp;
+            int cnt=0;
+            
+            while(range>0 && !p.empty()){
+                int x= p.top();
+                p.pop();
+                
+                if((x-1)>=1){
+                    temp.push_back(x-1);
+                }
+                cnt+=1;
+                range--;
+            }
+            
+            rep(i, temp.size()){
+                p.push(temp[i]);
+            }
+            
+            mx += (p.empty() ? cnt : (n+1));
+            
+            
+        }
+        
+        return mx;
+        
+    }
+};
