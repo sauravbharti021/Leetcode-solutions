@@ -1,0 +1,42 @@
+class Solution {
+public:
+    ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) {
+        
+        
+        ListNode* cur = merge_b(list2, list1, b);
+        ListNode* now = merge_a(list1, 1, a, list2);
+        
+        return list1;
+    }
+    
+    ListNode* merge_b(ListNode* list2, ListNode* list1, int b){
+        if(list2->next==NULL)
+        {
+            
+            return list2 = findb(list1, b, -1, list2);
+        }
+        
+        return merge_b(list2->next, list1, b);
+        
+    }
+    ListNode* findb(ListNode* list1, int b, int cnt, ListNode* list2){
+        if(list1==NULL)
+            return NULL;
+        
+        int ans =0;
+        ans+=1;
+        if(cnt == b){
+            return list2->next = list1;
+        
+        }else
+           return findb(list1->next, b, cnt+1, list2);
+        
+    }
+    ListNode* merge_a(ListNode* list1, int cnt, int a, ListNode* list2){
+        if(cnt==a){
+            return list1->next = list2;
+        }
+        
+        return merge_a(list1->next, cnt+1, a, list2);
+    }
+};
