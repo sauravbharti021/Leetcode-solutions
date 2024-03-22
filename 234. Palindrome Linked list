@@ -1,0 +1,62 @@
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+      
+        
+        ListNode* mid= findMid(head);
+        ListNode* right = reverse(mid);
+        
+        return recur(head, right);
+    }
+    
+    bool recur(ListNode* slow, ListNode* fast){
+        if(slow==NULL || fast==NULL  ){
+            return true;
+        }
+        
+        bool ans  = true;
+        // cout<<slow->val<<" "<<fast->val<<"\n";
+        if(slow->val != fast->val){
+            return false;
+        }
+        
+        return (ans && recur(slow->next, fast->next));
+        
+    }
+    ListNode* print(ListNode* x){
+        
+        if(x==NULL) return NULL;
+        
+        cout<<x->val<<"f\n";
+        ListNode* now= print(x->next);
+        return now;
+    }
+    
+    ListNode* findMid(ListNode* head){
+        ListNode* fast = head;
+        ListNode* slow= head;
+        while(fast!=NULL && fast->next!=NULL){
+            
+            fast= fast->next->next;
+            slow=slow->next;
+        }
+        
+        return slow;
+    }
+    
+    ListNode* reverse(ListNode* slow){
+         ListNode* cur= slow;
+        ListNode* prev= NULL;
+        
+        while(cur!= NULL){
+            ListNode* next= cur->next;
+            cur->next = prev;
+            prev= cur;
+            
+            if(cur==NULL) break;
+            cur= next;
+        }
+        
+        return prev;
+    }
+};
