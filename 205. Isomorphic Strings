@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        
+        map<char, int> mT, mB;
+        
+        int n= s.size();
+        for(int i=0; i<n; i++){
+            
+            char x= s[i];
+            char y= t[i];
+            
+            if(mT.find(x) != mT.end()){
+                if(mT[x]!= y){
+                    return false;
+                }
+            }
+            if(mB.find(y) != mB.end()){
+                
+                if(mB[y] != x){
+                    return false;
+                }
+            }
+            
+            mT[x] = y;
+            mB[y] = x;
+        }
+        
+        return true;
+    }
+};
