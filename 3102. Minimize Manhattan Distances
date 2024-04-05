@@ -1,0 +1,84 @@
+#define ll long long
+#define ff first
+#define ss second
+class Solution {
+public:
+    
+    /*
+        maybe have the count of,
+        dp?
+        sorting + some kind of binary search?
+        x1, y1
+        x2, y2
+        {
+            abs(x1 - x2) + abs(y1 - y2);
+            
+            (x1 -x2) + (y1-y2)
+            (x1-x2) - (y1-y2)
+            -(x1 - x2) + (y1-y2)
+            -(x1 - x2) - (y1 - y2)
+        }
+        
+        {
+        (x1+y1) - (x2+y2)
+        (x1-y1) - (x2-y2)
+        -(x1-y1) + (x2-y2)
+        -(x1+y1) + (x2+y2)
+        }
+        
+        
+        
+    */
+    pair<int,int> findGoodPair(vector<vector<int>> &points, int selected=-1){
+        
+        int maxS = -1e9, minS= 1e9, maxD= -1e9, minD= 1e9;
+        int maxSi, minSi, maxDi, minDi;
+        int n= points.size();
+        
+        for(int i=0;i<n;i++){
+            if(i==selected) continue;
+            
+            int s= points[i][0] + points[i][1];
+            int d= points[i][0] - points[i][1];
+            
+            if(s>maxS){
+                maxS=s;
+                maxSi = i;
+            }
+            if(s<minS){
+                minS= s;
+                minSi= i;
+            }
+            if(d>maxD){
+                maxD=d;
+                maxDi=i;
+            }
+            if(d<minD){
+                minD=d;
+                minDi=i;
+            }
+        }
+        
+        ll sum = maxS-minS;
+        ll d= maxD-minD;
+        if(sum >= d){
+            return {maxSi, minSi};
+        }
+        return {maxDi, minDi};
+    }
+    
+    int minimumDistance(vector<vector<int>>& points) {
+        
+        pair<int,int> extremes = findGoodPair(points);
+        
+        pair<int,int> now = findGoodPair(points, extremes.first);
+        
+        pair<int,int> here= findGoodPair(points, extremes.second);
+        
+        
+        int d= min(abs(points[now.first][0] - points[now.second][0] ) + abs(points[now.first][1] - points[now.second][1] ),
+                 abs(points[here.first][0] - points[here.second][0] ) + abs(points[here.first][1] - points[here.second][1] ) 
+                 );
+        return d;
+    }
+};
