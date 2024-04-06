@@ -1,0 +1,41 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ff first
+#define ss second
+
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        int n= s.size();
+        vector<int> vis(n, -1);
+        
+        stack<pair<char,int>> st;
+        rep(i,n){
+            
+            if(s[i]!=')' && s[i]!='(') continue;
+            if(s[i]==')' && st.empty()){
+                vis[i]=1;
+                continue;
+            }
+            
+            if(!st.empty() && st.top().ff != s[i]){
+                st.pop();
+            }else{
+                st.push({s[i], i});
+            }
+        }
+        
+        while(!st.empty()){
+            vis[st.top().ss] = 1;
+            st.pop();
+        }
+        
+        string ans="";
+        rep(i,n) {
+            if(vis[i]!=1) ans+= s[i];
+        }
+        
+        return ans;
+        
+        
+    }
+};
