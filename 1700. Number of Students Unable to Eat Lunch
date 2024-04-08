@@ -1,0 +1,49 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define rrep(i,n) for(int i=n-1;i>=0;i--)
+class Solution {
+public:
+    int countStudents(vector<int>& students, vector<int>& sandwiches) {
+        
+        int n= students.size();
+        int rOne=0, rZero=0;
+        rrep(i,n){
+            if(students[i]=='1') rOne+=1;
+            else rZero+=1;
+        }
+        
+        deque<int> d;
+        rep(i,n) d.push_back(students[i]);
+        
+        rep(i,n){
+            if(sandwiches[i] == '1' && rOne==0 )
+                return n-i;
+            if(sandwiches[i] == '0' && rZero==0 )
+                return n-1;
+            
+            int cnt=0;
+            while(!d.empty() && d.front()!=sandwiches[i] ){
+                int x= d.front();
+                d.pop_front();
+                d.push_back(x);
+                
+                cnt+=1;
+                if(cnt>n) break;
+            }
+            
+            if( !d.empty() && d.front()==sandwiches[i]){
+                if(d.front()==1)
+                    rOne-=1;
+                else 
+                    rZero-=1;
+                
+                d.pop_front();
+                
+            }else{
+                return n-i;
+            }
+            
+        }
+        
+        return 0;
+    }
+};
