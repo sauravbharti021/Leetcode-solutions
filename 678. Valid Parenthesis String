@@ -1,0 +1,92 @@
+
+class Solution {
+public:
+    
+    vector<vector<int>> dp;
+    bool recur(int i, string s, stack<char> &st){
+        if(i>=s.size()){
+            if(st.empty())
+                return true;
+            return false;
+        }
+        
+        if(dp[i][st.size()] != -1)
+            return dp[i][st.size()];
+        
+        bool ans = false;
+        if(s[i]==')'){
+            
+            if(st.empty())
+                return false;
+            st.pop();
+            ans |= recur(i+1, s, st);
+            st.push('(');
+        }
+        else if(s[i]=='*'){
+            
+            if(st.empty()){
+                st.push('(');
+                ans |= recur(i+1, s, st);
+                
+                st.pop();
+                
+                // case where we ignore *
+                ans |= recur(i+1, s, st);
+                
+                return ans;
+            }
+            
+            char x= st.top();
+            
+            if(x=='('){
+                st.push('(');
+                ans |= recur(i+1, s, st);
+                
+                // removing the current pushed
+                st.pop();
+                // removing previous
+                st.pop();
+                
+                ans|= recur(i+1, s, st);
+                
+                // another case
+                st.push(x);
+                st.push(')');
+                
+                ans |= recur(i+1, s, st);
+                st.pop();
+            }
+            
+            ans |= recur(i+1, s, st);
+            
+        }
+        else{
+                
+                st.push('(');
+                ans |= recur(i+1, s, st);
+                st.pop();
+            }
+        
+        return dp[i][st.size()] = ans;
+        
+        
+    }
+    
+    bool checkValidString(string s) {
+        
+        /*
+            choices around *
+            
+            if left ( is less than * or ) count, return false or take * as (
+            
+            remove ( as soon as you can
+        */
+        int n= s.size();
+        dp.assign(n+2, vector<int>(n+2, -1));
+        
+        stack<char> st;
+        bool x= recur(0, s, st);
+        
+        return x;
+    }
+};
