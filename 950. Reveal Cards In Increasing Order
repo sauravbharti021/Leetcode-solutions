@@ -1,0 +1,32 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> deckRevealedIncreasing(vector<int>& deck) {
+        
+        int n= deck.size();
+        vector<int> ans(n, 0);
+        
+        queue<int> q;
+        for(int i=0;i<n;i++) q.push(i);
+        vector<int> shuffled;
+        while(!q.empty()){
+            
+            shuffled.push_back(q.front());
+            q.pop();
+            
+            if(!q.empty()) {
+                q.push(q.front());
+                q.pop();
+            }
+        }
+        vector<int> nDeck = deck;
+        sort(nDeck.begin(), nDeck.end());
+        
+        rep(i,n){
+            ans[shuffled[i]] = nDeck[i];
+        }
+        
+        return ans;
+        
+    }
+};
