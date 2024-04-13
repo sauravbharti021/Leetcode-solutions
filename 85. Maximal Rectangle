@@ -1,0 +1,45 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ff first
+#define ss second
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        
+        int n= matrix.size(), m = matrix[0].size();
+        vector<vector<int>> p(n, vector<int>(m, 0));
+        
+        for(int i=0;i<m;i++){
+            int cnt=0;
+            for(int j=n-1;j>=0;j--){
+                int str= matrix[j][i];
+                int flag=0;
+                while(j>=0 && matrix[j][i]=='1'){
+                    flag=1;
+                    p[j][i] += (j+1<n? p[j+1][i] : 0) + 1;
+                    j--;
+                }
+                if(flag)
+                    j+=1;
+            }
+            
+        }
+        
+        int mx= 0;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int mi=1e8;
+            
+                for(int k=j;k<m;k++){
+                    if(p[i][k]==0) break;
+                    mi = min(mi, p[i][k]);
+                    int ans= mi*(k-j+1);
+                    mx=max(mx, ans);
+                }
+            }
+        }
+        
+        return mx;
+        
+    }
+};
