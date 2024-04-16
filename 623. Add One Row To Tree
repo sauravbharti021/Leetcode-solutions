@@ -1,0 +1,47 @@
+class Solution {
+public:
+    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+        if(depth == 1){
+            TreeNode* cur = new TreeNode(val);
+            cur->left = root;
+            return cur;
+        }
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        
+        while(!q.empty()){
+            int size = q.size();
+            while(size--){
+                
+                if(depth == 2){
+                    TreeNode* x= q.front();
+                    q.pop();
+                    
+                        TreeNode* cur = new TreeNode(val);
+                        cur->left = x->left;
+                        x->left = cur;
+                        q.push(x);
+                    
+                        TreeNode* now = new TreeNode(val);
+                        now->right= x->right;
+                        x->right=now;
+                        q.push(x);
+                }else{
+                    TreeNode* x= q.front();
+                    q.pop();
+                    
+                    if(x->left!=NULL){
+                        q.push(x->left);
+                    }
+                    if(x->right!=NULL){
+                        q.push(x->right);
+                    }
+                }
+            }
+            
+            depth--;
+        }
+        return root;
+    }
+};
