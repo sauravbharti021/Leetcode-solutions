@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string smallestFromLeaf(TreeNode* root) {
+        string ans="";
+        
+        int cnt=0;
+        queue<TreeNode*> q;
+        
+        queue<string> s;
+        
+        q.push(root);
+        s.push("");
+        
+        vector<string> mi;
+        
+        while(!q.empty()){
+            int size = q.size();
+            
+            while(size--){
+                TreeNode* cur = q.front();
+                q.pop();
+                
+                string now = s.front();
+                s.pop();
+                
+                string f= char(cur->val + 'a') + now;
+                
+                if(cur->left == NULL && cur->right==NULL){
+                    mi.push_back(f);
+                }
+                
+                if(cur->left!=NULL){
+                    s.push(f);
+                    q.push(cur->left);
+                }
+                if(cur->right !=NULL){
+                    s.push(f);
+                    q.push(cur->right);
+                }
+            }
+            
+            
+            
+        }
+        
+        sort(mi.begin(), mi.end());
+        return mi[0];
+        
+    }
+};
