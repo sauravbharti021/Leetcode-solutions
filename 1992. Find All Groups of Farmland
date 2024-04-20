@@ -1,0 +1,53 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> dir{{0,1},{0,-1}, {1,0}, {-1,0}};
+    vector<vector<bool>> vis;
+    int r,c;
+    void dfs(int u,int v, vector<vector<int>> &g){
+        int n= g.size(), m= g[0].size();
+        vis[u][v] = true;
+        if(u==r){
+            if(v>=c){
+                c=v;
+            }
+        }else if(u>r){
+            r=u;
+            c=v;
+        }
+        
+        
+        rep(k, 4){
+            int i=u+dir[k][0];
+            int j=v+dir[k][1];
+            
+            if(i>=n || j>=m || i<0 || j<0) continue;
+            if(!vis[i][j] && g[i][j]){
+                dfs(i, j, g);
+            }
+        }
+        
+    }
+    vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        int n= land.size(), m= land[0].size();
+        vis.assign(n+1, vector<bool>(m+1, false));
+        
+        vector<vector<int>> ans;
+        
+        rep(i,n){
+            rep(j,m){
+                if(!vis[i][j] && land[i][j]){
+                    int x= i, y= j;
+                    r=-1;
+                    c=-1;
+                    dfs(i,j, land);
+                    vector<int> temp{x,y, r,c};
+                    ans.push_back(temp);
+                }
+            }
+        }
+        
+        return ans;
+    }
+    
+};
