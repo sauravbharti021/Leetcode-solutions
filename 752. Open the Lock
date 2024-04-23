@@ -1,0 +1,91 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int find_cost(string target, int ignore){
+        int cost = 0;
+        
+        rep(i,4){
+            if(i==ignore)
+                continue;
+            int x= (target[i] - '0');
+            cost += min(x, (9-x+1) );
+        }
+        return cost;
+    }
+    
+    int temp;
+    bool check(set<string> &s, int limit, int index, string t ){
+        int flag1=0;
+        
+        for(int i=0;i<=limit;i++){
+            t[index] = (i+'0');
+            if(s.find(t) !=s.end()){
+                flag1=1;
+                break;
+            }
+        }
+        if(!flag1){
+            temp = limit;
+        }
+        
+        int flag2=0;
+        
+        for(int i=9;i>=limit; i--){
+            t[index] = (i+'0');
+            if(s.find(t) !=s.end()){
+                flag2=1;
+                break;
+            }
+        }
+        if(!flag2){
+            temp= min(temp, 9-(limit)+1 );
+        }
+        
+        if(flag1 && flag2)
+            return false;
+        
+        return true;
+    }
+    
+    int openLock(vector<string>& deadends, string target) {
+        
+        if(target == "0000")
+            return 0;
+        
+        set<string> s;
+        rep(i, n){
+            s.insert(deadends[i]);
+        }
+        
+        queue<string> q;
+        q.push("0000");
+        unordered_map<string, int> ans;
+        ans["0000"] =0;
+        
+        while(!q.empty()){
+            string f= q.front();
+            q.pop();
+            
+            rep(i,4){
+                string t= target;
+                int x= (target[i]-'0');
+                
+                t[i] = (((x+1)%9)+ '0');
+                
+                if(s.find(t) != s.end()){
+                    ans[t] = (ans[f]+1);
+                    q.push(t);
+                }
+                
+                t = target;
+                t[i] = (((x-1 + 9)%9) + '0');
+                if(s.find(t) != s.end()){
+                    ans[t] = (ans[f]+1);
+                    q.push(t);
+                }
+                
+            }
+        }
+        
+    }
+};
