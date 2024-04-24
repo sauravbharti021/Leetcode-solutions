@@ -1,0 +1,17 @@
+#define ll long long
+class Solution {
+public:
+    vector<ll> p;
+    Solution(){
+        p.assign(38+1, 0);
+        p[1]=1;
+        p[2]=1;
+        
+        for(int i=3;i<=37;i++){
+            p[i] = (p[i-1]+ p[i-2]+p[i-3]);
+        }
+    }
+    int tribonacci(int n) {
+        return p[n];
+    }
+};
