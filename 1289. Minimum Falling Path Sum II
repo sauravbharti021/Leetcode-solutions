@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    
+    int recur(int row, int prev, vector<vector<int>> &grid){
+        int n= grid.size(),m = grid[0].size();
+        if(row>=n) return 0;
+        
+        int ans=1e8;
+        
+        if(dp[row][prev] != 1e9)
+            return dp[row][prev];
+        
+        for(int i=0;i<m;i++){
+            if(i==prev) continue;
+            
+            ans= min(ans, grid[row][i] + recur(row+1, i, grid) );  
+        }
+        
+        return dp[row][prev]= ans;
+    }
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        int n= grid.size(),m = grid[0].size();
+        dp.assign(n+1, vector<int>(m+1, 1e9));
+        
+        int mi = 1e8;
+        for(int i=0;i<m;i++){
+            mi = min(mi, grid[0][i] + recur(1, i, grid));
+        }
+        
+        return mi;
+    }
+};
