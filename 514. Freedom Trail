@@ -1,0 +1,47 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int recur(int start, int j, string &ring, string &key){
+        if(j>= key.size()) return 0;
+        
+        int n = ring.size();
+        
+        if(dp[j][start]!=-1)
+            return dp[j][start];
+        
+        int mi = 1e8;
+        for(int i=0;i<n;i++){
+            int now = start+i;
+            int index = now%n;
+            
+            if(ring[index] == key[j]){
+                mi = min(mi, i+1+recur(index, j+1, ring, key));
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            int now = start -i;
+            int index = (start -i +n)%n;
+            
+            if(ring[index] == key[j]){
+                mi = min(mi, i+1+recur(index, j+1, ring, key));
+            }
+            
+        }
+        
+        return dp[j][start] = mi;
+        
+    }
+    
+    int findRotateSteps(string ring, string key) {
+        int n= key.size();
+        int m= ring.size();
+        dp.assign(n+1, vector<int>(m+1, -1));
+        
+        int x= recur(0, 0, ring, key);
+        
+        return x;
+        
+    }
+};
