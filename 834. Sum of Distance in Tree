@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<vector<int>> adj;
+    vector<int> subtree, dist;
+    vector<int> ans;
+    
+    void find_info(int n, int par){
+       
+        subtree[n]=1;
+        dist[n]=0;
+        
+        for(auto i: adj[n]){
+            if(i!=par){
+                find_info(i, n);
+                subtree[n] += subtree[i];
+                dist[n] += dist[i] + subtree[i];
+                
+            }
+        }
+    }
+    
+    void reroot(int n, int par){
+        
+        for(auto i: adj[n]){
+            if(i!= par){
+                int other_node = subtree[0] - subtree[i];
+                ans[i] = ans[n] + other_node - subtree[i];
+                
+                reroot(i, n);
+            }
+        }
+    }
+    
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        
+        adj.assign(n+1, vector<int> {});
+        
+        for(int i=0;i<edges.size();i++){
+            int u= edges[i][0], v=edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        
+        subtree.assign(n+1, 0);
+        dist.assign(n+1, 0);
+        ans.assign(n, 0);
+        
+        
+        find_info(0, -1);
+        ans[0] = dist[0];
+        reroot(0, -1);
+        
+        
+        return ans;
+        
+    }
+};
