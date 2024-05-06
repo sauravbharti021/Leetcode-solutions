@@ -1,0 +1,38 @@
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        
+        head= reverse(head);
+        recur(head);
+        head= reverse(head);
+        return head;
+    }
+    void recur(ListNode* temp){
+        
+        temp->next= findNext(temp->next, temp->val);
+        
+        if(temp->next!=NULL)
+            recur(temp->next);
+        
+    }
+    ListNode* findNext(ListNode* now, int value){
+        while(now!=NULL && now->val < value ){
+            now=now->next;
+        }
+        
+        return now;
+    }
+    ListNode* reverse(ListNode* head){
+        ListNode* cur=head;
+        ListNode* prev=NULL;
+        
+        while(cur!=NULL){
+            ListNode* temp = cur->next;
+            cur->next = prev;
+            prev=cur;
+            cur= temp;
+        }
+        return prev;
+        
+    }
+};
