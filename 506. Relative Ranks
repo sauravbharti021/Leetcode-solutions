@@ -1,0 +1,40 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define all(c) c.begin(), c.end()
+#define ff first 
+#define ss second
+class Solution {
+public:
+    static bool mycomp(const pair<int, int> &a, const pair<int, int> &b){
+        if(a.ss!= b.ss){
+            return a.ss<b.ss;
+        }
+        return a.ff<b.ff;
+        
+    }
+    vector<string> findRelativeRanks(vector<int>& score) {
+        vector<pair<int,int>> a;
+        int n= score.size();
+        for(int i=0;i<n;i++){
+            a.push_back({score[i], i});
+        }
+        sort(all(a), greater<pair<int,int>>());
+        
+        vector<string> temp{"Gold Medal", "Silver Medal", "Bronze Medal"};
+        for(int i=0;i<n;i++){
+            a[i].first = i+1;
+        }
+        
+        sort(all(a), mycomp);
+        vector<string> ans(n);
+        for(int i=0;i<n;i++){
+            if(a[i].ff <= 3){
+                ans[i] = temp[a[i].ff-1];
+            }else{
+                ans[i] = to_string(a[i].ff);
+            }
+        }
+        
+        return ans;
+        
+    }
+};
