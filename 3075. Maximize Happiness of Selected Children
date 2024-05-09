@@ -1,0 +1,26 @@
+#define ll long long
+class Solution {
+public:
+    long long maximumHappinessSum(vector<int>& happiness, int k) {
+        priority_queue<int> q;
+        ll n= happiness.size();
+        
+        for(int i=0;i<n;i++){
+            q.push(happiness[i]);
+        }
+        
+        ll cnt=0, ans=0;
+        while(!q.empty() && k>0){
+            int x= q.top();
+            q.pop();
+            
+            if(x-cnt>0){
+                ans+=(x-cnt);
+                cnt++;
+            }
+            k--;
+        }
+        
+        return ans;
+    }
+};
