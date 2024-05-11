@@ -1,0 +1,39 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    static bool mycomp(const pair<int,int> &a, const pair<int,int> &b){
+        long double x= ((1.0*a.first)/a.second);
+        long double y = ((1.0*b.first)/b.second);
+        
+        return x>y;
+    }
+    
+    double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) {
+        int n= quality.size();
+        
+        priority_queue<long double> p;
+        vector<pair<int,int>> a;
+        for(int i=0;i<n;i++){
+            a.push_back({quality[i], wage[i]});
+        }
+        sort(a.begin(), a.end(), mycomp);
+        double total = 0, ans=1e9;
+        for(int i=0;i<n;i++){
+            total+= a[i].first;
+            
+            p.push(a[i].first);
+            while(p.size()>k){
+                double x= p.top();
+                p.pop();
+                total-=x;
+            }
+            if(p.size()==k){
+                ans =min (ans, total*double((1.0*a[i].second)/a[i].first));
+            }
+            
+            
+        }
+        
+        return ans;
+    }
+};
