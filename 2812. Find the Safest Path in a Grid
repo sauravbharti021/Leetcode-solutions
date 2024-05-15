@@ -1,0 +1,106 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    bool vis[401][401];
+    int dir[4][2] = {{0,1}, {0,-1}, {1,0}, {-1, 0}};
+    int diagonal[4][2] = {{1,1}, {-1,-1}, {-1,1}, {1, -1}};
+    int minD[401][401];
+    
+    void dfs(int i, int j, vector<vector<int>>& grid, int size){
+        if(vis[i][j])
+            return;
+        int n = grid.size(), m = grid[0].size();
+        if(minD[i][j] <= size)
+            return;
+        
+        vis[i][j] = true;
+        rep(k, 4){
+            int u = i + dir[k][0];
+            int v = j + dir[k][1];
+            if(u >= 0 && v >= 0 && u < n && v < m && !vis[u][v] && minD[u][v] > size){
+                dfs(u, v, grid, size);                    
+            }
+        }
+    }
+    
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int n = grid.size(), m = grid[0].size();
+        memset(vis, false, sizeof(vis));
+        vector<pair<int,int>> dif;
+        
+        int ans = 0;
+        rep(i,n){
+            rep(j,m){
+                if(grid[i][j]){
+                    dif.push_back({i, j});
+                }
+            }
+        }
+        rep(i, n){
+            rep(j, m){
+                minD[i][j] = 1e8;
+            }
+        }
+        int distance = 0;
+        queue<pair<int,int>> q;
+        rep(i, dif.size()){
+            int u = dif[i].first, v = dif[i].second;
+            minD[u][v] = 0;
+            q.push({u,v});
+        }
+        
+        while(!q.empty()){
+            int size = q.size();
+            while(size--){
+                pair<int,int> x = q.front();
+                q.pop();
+                rep(k, 4){
+                    int u = x.first + dir[k][0];
+                    int v = x.second + dir[k][1];
+                    if(u >= 0 && v >= 0 && u < n && v < m && minD[u][v] > 1 + minD[x.first][x.second]){
+                        minD[u][v] = 1 + minD[x.first][x.second];
+                        q.push({u,v});
+                    }
+                }
+                rep(k, 4){
+                    int u = x.first + diagonal[k][0];
+                    int v = x.second + diagonal[k][1];
+                    if(u >= 0 && v >= 0 && u < n && v < m && minD[u][v] > 2 + minD[x.first][x.second]){
+                        minD[u][v] = 2 + minD[x.first][x.second];
+                        q.push({u,v});
+                    }
+                }
+            }
+        }
+        
+        int l = -1, r = n + 1;
+        
+        while(r - l > 1){
+            int mid = (r + l) / 2;
+            int flag = 0;
+            
+            memset(vis, false, sizeof(vis));
+            if(minD[n-1][m-1] <= mid || minD[0][0] <= mid ){
+                flag = 1;
+            }
+            if(!flag)
+                dfs(0, 0, grid, mid);
+            
+            if(!vis[n-1][m-1]){
+                flag = 1;
+            }
+            
+            if(!flag){
+                ans = 1;
+                l = mid;
+            }else{
+                r = mid;
+            }
+        }
+        
+        if(!ans)
+            return 0;
+        
+        return l + 1;
+    }
+};
