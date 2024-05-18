@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int ans=0;
+    int distributeCoins(TreeNode* root) {
+        
+        int temp= recur(root);
+        return ans;
+    }
+    int recur(TreeNode* root){
+        if(root==NULL)
+            return 0;
+        
+        int currentBalance= root->val -1;
+        int leftBalance = recur(root->left);
+        int rightBalance = recur(root->right);
+        
+        ans += abs(leftBalance) + abs(rightBalance);
+        
+        return currentBalance + leftBalance + rightBalance;
+    }
+};
