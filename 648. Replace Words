@@ -1,0 +1,60 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<string> splitter(string &sen){
+        vector<string> temp;
+        int m= sen.size();
+        
+        rep(i,m){
+            int str = i;
+            string now="";
+            while(str<m && sen[str]!=' '){
+                now+= sen[str];
+                str++;
+            }
+            i= str;
+            temp.push_back(now);
+        }
+        
+        return temp;
+    }
+    string replaceWords(vector<string>& dictionary, string sentence) {
+
+        set<string> st;
+        int n= dictionary.size();
+        rep(i,n) st.insert(dictionary[i]);
+        
+        vector<string> spl= splitter(sentence);
+        int m=spl.size(); 
+        vector<string> ans;
+        rep(i,m){
+            int t = spl[i].size();
+            string now="";
+            int flag=0;
+            string found="";
+            rep(j, t){
+                now+= spl[i][j];
+                
+                if(st.find(now)!=st.end()){
+                    flag=1;
+                    found= now;
+                    break;
+                }
+            }
+            
+            if(flag){
+                ans.push_back(found);
+            }else{
+                ans.push_back(now);
+            }
+        }
+        
+        string res="";
+        rep(i, ans.size()){
+            res+= ans[i];
+            res+= " ";
+        }
+        res.pop_back();
+        return res;
+    }
+};
