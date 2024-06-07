@@ -1,0 +1,48 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ff first 
+#define ss second
+class Solution {
+public:
+    bool helper(vector<int> &a){
+        int n= a.size();
+        rep(i,n-1){
+            if((a[i+1]-a[i])!=1) return false;
+        }
+            
+        return true;
+    }
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        int n= hand.size();
+        if((n%groupSize) != 0) return false;
+        
+        int l = n/groupSize;
+        int i= 0,j=0;
+        map<int, int> m;
+        rep(i,n) m[hand[i]]++;
+        
+        while(i<l){
+            
+            int cnt=0;
+            if(m.empty()) break;
+            vector<int> lol;
+            for(auto it=m.begin(); it!=m.end() && cnt<groupSize; it++){
+                lol.push_back(it->first);
+                cnt++;
+            }
+            if(!helper(lol) || lol.size()!=groupSize)
+                return false;
+            
+            rep(j, lol.size()){
+                if(m[lol[j]]==1){
+                    m.erase(lol[j]);
+                }else{
+                    m[lol[j]]-=1;
+                }
+            }
+            i++;
+        }
+        
+        return true;
+        
+    }
+};
