@@ -1,0 +1,48 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define all(c) c.begin(), c.end()
+#define ff first 
+#define ss second
+class Solution {
+public:
+    bool static comp(const pair<int,int> &a, const pair<int,int> &b){
+        if(a.ff!=b.ff)
+            return a.ff<b.ff;
+        return a.ss>b.ss;
+        
+    }
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        int n= capital.size();
+        vector<pair<int,int>> a;
+        rep(i,n){
+            a.push_back({capital[i], profits[i]});
+        }
+        sort(all(a), comp);
+        priority_queue<int> q;
+        int my_c= w;
+        rep(i,n){
+            if(k<=0) break;
+            int flag=0;
+            if(a[i].ff > my_c){
+                while(a[i].ff > my_c){
+                    if(q.empty()){
+                        flag=1;
+                        break;
+                    }
+                    my_c += q.top();
+                    k--;
+                    q.pop();
+                }
+                if(flag) break;
+            }
+            q.push(a[i].ss);
+        }
+        
+        while(k-- && !q.empty()){
+            my_c += q.top();
+            q.pop();
+        }
+        
+        return my_c;
+        int ans=0;
+    }
+};
