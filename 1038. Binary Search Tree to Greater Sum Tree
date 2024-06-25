@@ -1,0 +1,29 @@
+
+class Solution {
+public:
+    TreeNode* ans=NULL;
+    int sum=0;
+    TreeNode* bstToGst(TreeNode* root) {
+        recur(root);
+        return root;
+    }
+    void recur(TreeNode* root){
+        if(root == NULL)
+            return;
+        
+        int ans=0;
+        recur(root->right);
+        if(root->right!=NULL)
+            ans += root->right->val;
+        
+        root->val += (sum);
+        sum= ( root->val);
+        
+        recur(root->left);
+        if(root->left!=NULL)
+            ans += root->left->val;
+        
+        
+        
+    }
+};
