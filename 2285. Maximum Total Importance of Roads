@@ -1,0 +1,20 @@
+#define ll long long
+class Solution {
+public:
+    long long maximumImportance(int n, vector<vector<int>>& roads) {
+        vector<ll> fre(n+1, 0);
+        for(int i=0;i<roads.size();i++){
+            int u= roads[i][0], v= roads[i][1];
+            fre[u]+=1;
+            fre[v]+=1;
+        }
+        sort(fre.begin(), fre.end(), greater<int>());
+        ll ans=0;
+        for(int i=0;i<fre.size();i++){
+            ans += (n* fre[i]);
+            n--;
+        }
+        
+        return ans;
+    }
+};
