@@ -1,0 +1,81 @@
+struct DSU {
+  vector<int> par;
+  vector<double> rank;
+    void makeset(int n){
+        par.assign(n+1, 0);
+        for(int i=0;i<=n;i++) par[i]=i;
+        rank.assign(n+1, 0.1);
+    }
+    int findPar(int x){
+        while(par[x]!=x)
+            x= par[x];
+        return x;
+    }
+    void unite(int u, int v){
+        u = findPar(u);
+        v = findPar(v);
+        
+        if(rank[u]<rank[v]){
+            rank[v]+=rank[u];
+            par[u]= v;
+        }else{
+            rank[u]+= rank[v];
+            par[v] = u;
+        }
+    }
+};
+class Solution {
+public:
+    int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) {
+        DSU a;
+        DSU b;
+        a.makeset(n+1);
+        b.makeset(n+1);
+        
+        int ans=0;
+        for(int i=0;i<edges.size();i++){
+            int type = edges[i][0], u = edges[i][1], v= edges[i][2];
+            if(type == 3){
+                if(a.findPar(u) == a.findPar(v) && b.findPar(v)==b.findPar(u)){
+                    ans+=1;
+                }else{
+                    a.unite(u, v);
+                    b.unite(u, v);                
+                }
+            }
+        }
+        for(int i=0;i<edges.size();i++){
+            int type = edges[i][0], u = edges[i][1], v= edges[i][2];
+            if(type == 1){
+                if(a.findPar(u) == a.findPar(v)){
+                    ans+=1;
+                }else
+                    a.unite(u,v);
+            }else if(type==2){
+                if(b.findPar(u) == b.findPar(v)){
+                    ans+=1;
+                }else{
+                    b.unite(u,v);
+                }
+            }
+        }
+        set<int> s;
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][1], v= edges[i][2];
+            s.insert(a.findPar(u));
+            s.insert(a.findPar(v));
+        }
+        if(s.size()!=1)
+            return -1;
+        s.clear();
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][1], v= edges[i][2];
+            s.insert(b.findPar(u));
+            s.insert(b.findPar(v));
+        }
+        if(s.size()!=1)
+            return -1;
+        
+        return ans;
+    }
+};
