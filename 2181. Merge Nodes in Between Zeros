@@ -1,0 +1,35 @@
+class Solution {
+public:
+    ListNode* mergeNodes(ListNode* head) {
+        ListNode* prev = NULL;
+        int sum =0;
+        head = head->next;
+        while(head!=NULL){
+            if(head->val == 0){
+                ListNode* now = new ListNode(sum, prev);
+                prev= now;
+                sum= 0;
+            }else{
+                sum+= head->val;
+            }
+            head=head->next;
+        }
+        
+        return reverse(prev);
+    }
+    ListNode* reverse(ListNode* head){
+        ListNode* cur= head;
+        ListNode* prev= NULL;
+        
+        while(cur!=NULL){
+            ListNode* next = cur->next;
+            cur->next=prev;
+            prev = cur;
+            if(cur!=NULL){
+                cur = next;
+            }
+        }
+        
+        return prev;
+    }
+};
