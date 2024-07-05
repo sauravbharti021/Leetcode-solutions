@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> nodesBetweenCriticalPoints(ListNode* head) {
+        /*
+            peak and valleys
+        */
+        int cnt = 1;
+        int prev = head->val;
+        head = head->next;
+        vector<int> ct;
+        while(head->next!=NULL){
+            int cur = head->val;
+            int next = head->next->val;
+            if(cur>prev && cur>next){
+                ct.push_back(cnt);
+            }else if(cur<prev && cur<next){
+                ct.push_back(cnt);
+            }
+            cnt++;
+            prev = cur;
+            head= head->next;
+        }
+        if(ct.size()<=1){
+            return vector<int> {-1,-1};
+        }
+        
+        int mx = ct.back() - ct[0];
+        int mi = 1e9;
+        for(int i=0;i<ct.size()-1;i++){
+            mi = min(mi, (ct[i+1]-ct[i]));
+        }
+        
+        return vector<int> {mi, mx};
+    }
+};
