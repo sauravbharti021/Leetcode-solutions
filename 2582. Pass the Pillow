@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int passThePillow(int n, int time) {
+        int cnt=0;
+        int pos = 1;
+        int i=1;
+        while(time>0){
+            if(cnt%2==0){
+                while(time>0 && i<n){
+                    pos++;
+                    time--;
+                    i++;
+                }
+            }else{
+                while(time>0 && i>1){
+                    pos--;
+                    time--;
+                    i--;
+                }
+            }
+            cnt+=1;
+        }
+        return pos;
+    }
+};
