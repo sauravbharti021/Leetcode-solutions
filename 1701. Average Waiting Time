@@ -1,0 +1,23 @@
+#define ll long long
+class Solution {
+public:
+    double averageWaitingTime(vector<vector<int>>& customers) {
+        int n= customers.size();
+        ll time = 0;
+        ll waitTime = 0;
+        for(int i=0;i<n;i++){
+            ll arrived = customers[i][0];
+            ll timeToCook = customers[i][1];
+            if(time <= arrived){
+                time= arrived+timeToCook;
+                waitTime += (timeToCook );
+            }else{
+                time+= timeToCook;
+                waitTime += (time - arrived);
+            }
+        }
+        
+        double ans = ((1.0* waitTime)/n);
+        return ans;
+    }
+};
