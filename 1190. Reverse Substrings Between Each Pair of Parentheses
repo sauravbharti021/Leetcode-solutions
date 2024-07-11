@@ -1,0 +1,49 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define all(c) c.begin(),c.end()
+class Solution {
+public:
+    string reverseParentheses(string s) {
+        stack<char> st;
+        deque<string> d;
+        s.insert(s.begin(), '(');
+        s.push_back('(');
+        int n= s.size()+2;
+        string temp="";
+        string leftPart ="";
+        rep(i,n){
+            if(!isalpha(s[i])){
+                if(!st.empty() && s[i]!=st.top()){
+                    if(!d.empty()){
+                        reverse(all(temp));
+                        string last = d.back();
+                        d.pop_back();
+                        last+= temp;
+                        temp=last;
+                    }else{
+                        d.push_back(temp);
+                        temp="";
+                    }
+                    st.pop();
+                }else{
+                    if(!st.empty()){
+                        d.push_back(temp);
+                    }else{
+                        leftPart+=temp;
+                    }
+                    st.push(s[i]);
+                    temp="";
+                }
+                
+            }else temp+= s[i];
+        }
+        string ans = "";
+        if(!d.empty()){
+            ans= d.front();
+            reverse(all(ans));           
+        }
+            string res= leftPart+ans+temp;
+        reverse(all(res));
+        return res;
+
+    }
+};
