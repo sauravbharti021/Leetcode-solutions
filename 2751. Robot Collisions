@@ -1,0 +1,77 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    static bool myComp(const pair<int, pair<int,pair<int,char>>> &a, const pair<int, pair<int,pair<int,char>>> &b){
+        return a.ss.ff<b.ss.ff;
+    }
+    
+    vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, string directions) {
+
+        int n= positions.size();
+        // index position health  direction
+        vector<pair<int, pair<int,pair<int,char>>>> a(n);
+        for(int i=0;i<n;i++){
+            a[i].ff = i;
+            a[i].ss.ff = positions[i];
+            a[i].ss.ss = {healths[i], directions[i]};
+        }
+        sort(a.begin(), a.end(), myComp);
+        // index health direction
+
+        stack<pair<int, pair<int,char>>> st;
+        
+        for(int i=0;i<n;i++){
+            if(st.empty()){
+                st.push({a[i].ff, { a[i].ss.ss.ff, a[i].ss.ss.ss}});
+            }else{
+                int flag = 0, currentWinner = 1, draw = 0;
+                int curValue = a[i].ss.ss.ff;
+                while(!st.empty() && st.top().ss.ss != a[i].ss.ss.ss && st.top().ss.ss == 'R'){ 
+                    flag = 1;
+                    
+                    int prevValue = st.top().ss.ff;
+                    char lastChar = st.top().ss.ss;
+                    pair<int, pair<int, char>> x = st.top();
+                    st.pop();
+                    
+                    if(curValue == prevValue) {
+                        draw = 1;
+                        break;
+                    }
+                    else if(curValue> prevValue){
+                        // st.push( {a[i].ff, {curValue-1, a[i].ss.ss.ss }});
+                        curValue-=1;
+                    }else{
+                        currentWinner= 0;
+                        st.push( {x.ff, {prevValue - 1, lastChar}});
+                        break;
+                    }
+                }
+                
+                if(!flag){
+                    st.push({ a[i].ff, {a[i].ss.ss.ff, a[i].ss.ss.ss}});
+                    continue;
+                } 
+                if(draw) continue;
+                if(currentWinner){
+                    st.push({a[i].ff, {curValue , a[i].ss.ss.ss}});
+                }
+                
+            }
+        }
+        
+        vector<pair<int,int>> ans;
+        while(!st.empty()){
+            pair<int, pair<int, char>> x = st.top();
+            st.pop();
+            ans.push_back({x.ff, x.ss.ff});
+        }
+        sort(ans.begin(), ans.end());
+        vector<int> res;
+        for(int i=0;i<ans.size();i++){
+            res.push_back(ans[i].ss);
+        }
+        return res;
+    }
+};
