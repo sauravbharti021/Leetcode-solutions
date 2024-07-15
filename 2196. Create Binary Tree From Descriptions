@@ -1,0 +1,44 @@
+#define ff first 
+#define ss second
+class Solution {
+public:
+    TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
+        map<int, pair<int,int>> m;
+        map<int,int> parentMapper;
+        int n= descriptions.size();
+        for(int i=0;i<n;i++){
+            int parent = descriptions[i][0], child = descriptions[i][1], left = descriptions[i][2];
+            parentMapper[child] = parent;
+            if(m.find(parent)!=m.end()){
+                int leftChild = m[parent].ff;
+                int rightChild = m[parent].ss;
+                
+                if(left){
+                    m[parent] = {child, rightChild};
+                }else{
+                    m[parent] = {leftChild, child};
+                }
+            }else{
+               if(left){
+                    m[parent] = {child, NULL};
+                }else{
+                    m[parent] = {NULL, child};
+                } 
+            }
+        }
+        int root;
+        for(auto i: m){
+            if(parentMapper.find(i.ff)==parentMapper.end()){
+                root= i.ff;
+                break;
+            }
+        }
+        return recur(root, m);
+    }
+    
+    TreeNode* recur(int root, map<int, pair<int,int>> &m ){
+        if(root==NULL)
+            return NULL;
+        return new TreeNode(root, recur(m[root].ff, m), recur(m[root].ss, m));
+    }
+};
