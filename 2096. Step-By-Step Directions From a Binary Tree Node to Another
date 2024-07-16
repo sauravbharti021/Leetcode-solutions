@@ -1,0 +1,54 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    TreeNode* parent;
+    int flag = 0;
+    string getDirections(TreeNode* root, int startValue, int destValue) {
+        pair<int,int> temp = recur(root, startValue, destValue);
+        
+        string start ="", dest ="";
+        dfs(parent, startValue, start);
+        dfs(parent, destValue, dest);
+        
+        string ans ="";
+        for(int i=0;i<start.size();i++){
+           ans+= 'U'; 
+        }
+        for(int i=0;i<dest.size();i++){
+            ans+= dest[i];
+        }
+        return ans;
+    }
+    pair<int,int> recur(TreeNode* root,int str, int dest){
+        if(root==NULL)
+            return {0, 0};
+        pair<int,int> now = {(str==root->val ? 1: 0), (dest==root->val ? 1: 0)};
+        pair<int,int> tempLeft = recur(root->left, str, dest );
+        pair<int,int> tempRight = recur(root->right, str, dest);
+        
+        pair<int,int> res = {(now.ff || tempLeft.ff || tempRight.ff), (now.ss || tempLeft.ss || tempRight.ss)};
+        
+        if(res.ff && res.ss && !flag){
+            parent =  root;
+            flag =1;
+        }
+        return res;
+    }
+    bool dfs(TreeNode* root, int val, string &path){
+        if(root==NULL)
+            return false;
+        if(root->val ==val)
+            return true;
+        path+= 'L';
+        if(dfs(root->left, val, path))
+            return true;
+        path.pop_back();
+        path+= 'R';
+        if(dfs(root->right, val, path))
+            return true;
+        path.pop_back();
+        return false;
+    }
+    
+};
