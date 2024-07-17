@@ -1,0 +1,46 @@
+class Solution {
+public:
+    TreeNode* temp;
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        set<int> s;
+        int n= to_delete.size();
+        for(int i=0;i<n;i++){
+            s.insert(to_delete[i]);
+        }
+        vector<TreeNode*> ans;
+        for(int i=0;i<n;i++){
+            s.erase(to_delete[i]);
+            nodeFinder(root, to_delete[i]);
+            TreeNode* left = recur(temp->left, s);
+            if(left!=NULL)
+                ans.push_back(left);
+            TreeNode* right = recur(temp->right, s);
+            if(right!=NULL)
+                ans.push_back(right);
+            s.insert(to_delete[i]);
+        }
+        if(s.find(root->val)==s.end()){
+            TreeNode* parent = recur(root, s);
+            ans.push_back(parent);
+        }
+        return ans;
+    }
+    void nodeFinder(TreeNode* root, int val){
+        if(root==NULL) return;
+        if(root->val == val){
+            temp = root;
+            return;
+        }
+        nodeFinder(root->left, val);
+        nodeFinder(root->right, val);
+    }
+    TreeNode* recur(TreeNode* root, set<int> &s){
+        if(root==NULL)
+            return NULL;
+        if(s.find(root->val)!=s.end())
+            return NULL;
+        
+        
+        return new TreeNode(root->val, recur(root->left, s), recur(root->right, s));
+    }
+};
