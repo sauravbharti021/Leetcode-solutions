@@ -1,0 +1,60 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    int flag;
+    vector<int> topologicalSort(vector<vector<int>> &now, int k){
+        int n = now.size();
+        vector<vector<int>> childs(k);
+        vector<int> degree(k+1, 0);
+        for(int i=0;i<n;i++){
+            int a= now[i][0];
+            int b= now[i][1];
+            a-=1; b-=1;
+            childs[a].push_back(b);
+            degree[b]+=1;
+        }
+        
+        queue<int> q;
+        for(int i=0;i<k;i++){
+            if(degree[i]==0) q.push(i);
+        }
+        vector<int> topoSorted;
+        while(!q.empty()){
+            int x = q.front();
+            q.pop();
+            topoSorted.push_back(x);
+            
+            for(auto i: childs[x]){
+                degree[i] -=1;
+                if(degree[i]==0){
+                    q.push(i);
+                }
+            }
+        }
+        
+        if(topoSorted.size()!=k){
+            flag=1;
+        }
+        return topoSorted;
+    }
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
+        flag =0;
+        vector<int> row = topologicalSort(rowConditions, k);
+        if(flag) return vector<vector<int>> {};
+        vector<int> col = topologicalSort(colConditions, k);
+        if(flag) return vector<vector<int>> {};
+        
+        int n= rowConditions.size(), m = colConditions.size();
+        vector<vector<int>> ans(k, vector<int>(k, 0));
+        map<int,pair<int,int>> m1;
+        for(int i=0;i<k;i++){
+            m1[row[i]].ff = i;
+            m1[col[i]].ss = i;
+        }
+        for(auto i: m1){
+            ans[i.ss.ff][i.ss.ss] = (i.ff+1);;
+        }
+        return ans;
+    }
+};
