@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> dp;
+    int recur(int i, int remWidth, int shelfWidth, vector<vector<int>> &books){
+        if(i>=books.size())
+            return 0;
+        if(i==books.size()-1)
+            return books.back()[1];
+        
+        if(dp[i]!=-1)
+            return dp[i];
+        int mx =0;
+        int ans = 1e9;
+        for(int j=i;j<books.size();j++){
+            if((remWidth - books[j][0])<0) break;
+            mx = max(mx, books[j][1]);
+            remWidth -= books[j][0];
+            
+            ans = min(ans, mx+recur(j+1, shelfWidth, shelfWidth, books));
+        }
+        
+        return dp[i]= ans;
+    }
+    int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
+        int n= books.size();
+        dp.assign(n+1, -1);
+        
+        return recur(0, shelfWidth, shelfWidth, books);
+    }
+};
