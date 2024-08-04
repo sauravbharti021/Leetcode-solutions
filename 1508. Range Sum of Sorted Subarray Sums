@@ -1,0 +1,23 @@
+#define ll long long
+#define all(c) c.begin(),c.end()
+#define mod 1000000007
+class Solution {
+public:
+    int rangeSum(vector<int>& nums, int n, int left, int right) {
+        vector<ll> temp;
+        for(int i=0;i<n;i++){
+            ll sum = 0;
+            for(int j=i;j<n;j++){
+                sum+=nums[j];
+                temp.push_back(sum);
+            }
+        }
+        sort(all(temp));
+        ll ans = 0;
+        for(int i=left-1;i<right;i++){
+            ans = (ans+ temp[i])%mod;
+            if(ans<0) ans+=mod;
+        }
+        return ans;
+    }
+};
