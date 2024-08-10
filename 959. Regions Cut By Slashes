@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<vector<int>> d{{-1,0}, {0,-1}, {1, 0}, {0, 1}};
+    vector<vector<bool>> vis;
+    void dfs(int x, int y, vector<vector<int>> &g){
+        vis[x][y] = true;
+        int n= g.size();
+        for(auto i: d){
+            int u= (x+i[0]);
+            int v= (y+i[1]);
+            if(u<n && u>=0 && v<n && v>=0 && !vis[u][v] && !g[u][v]){
+                dfs(u, v, g);
+            }
+        }
+        
+    }
+    int regionsBySlashes(vector<string>& grid) {
+        int n= grid.size();
+        int ans=0;
+        vector<vector<int>> g(n*3, vector<int>(n*3, 0));
+        vis.assign(n*3, vector<bool>(n*3, false));
+        for(int i=0;i<n;i++){
+            int m = grid[i].size();
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == '\\'){
+                    g[i*3][j*3]=1;
+                    g[i*3+1][j*3+1]=1;
+                    g[i*3+2][j*3+2]=1;
+                } 
+                else if(grid[i][j] == '/'){
+                    g[i*3][j*3+2]=1;
+                    g[i*3+1][j*3+1]=1;
+                    g[i*3+2][j*3]=1;
+                }
+            }
+        }
+        n=n*3;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(!vis[i][j] && !g[i][j]){
+                    ans+=1;
+                    dfs(i, j, g);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
