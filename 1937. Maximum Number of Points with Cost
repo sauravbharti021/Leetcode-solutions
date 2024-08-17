@@ -1,0 +1,34 @@
+#define ll long long
+class Solution {
+public:
+    vector<vector<ll>> dp;   
+    long long maxPoints(vector<vector<int>>& points) {
+        ll n = points.size();
+        ll m = points[0].size();
+        dp.assign(n+1, vector<ll>(m+1, -1));
+        
+        ll res = -1e9;
+        for(int i=0;i<m;i++){
+            dp[0][i] = points[0][i];
+        }
+        
+        for(int i=1;i<n;i++){
+            ll prevBest = -1e9;
+            for(int j=0;j<m;j++){
+                prevBest = max(prevBest-1, dp[i-1][j]);
+                dp[i][j] = prevBest + points[i][j];
+            }
+            prevBest = -1e9;
+            for(int j=m-1;j>=0;j--){
+                prevBest = max(prevBest-1, dp[i-1][j]);
+                dp[i][j] = max(dp[i][j], prevBest+points[i][j]);
+            }
+        }
+        
+        for(int i=0;i<m;i++){
+            res = max(res, dp[n-1][i]);
+        }
+        
+        return res;
+    }
+};
