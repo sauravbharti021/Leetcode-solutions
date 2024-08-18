@@ -1,0 +1,35 @@
+#define ll long long
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        
+        priority_queue<ll, vector<ll>, greater<ll>> p;
+        p.push(1);
+        set<ll> s;
+        s.insert(1);
+        while(n--){
+            ll top= p.top();
+            p.pop();
+            if(n==0) return top;
+            
+            ll x = top*2;
+            ll y = top*3;
+            ll z = top*5;
+            
+            if(s.find(x)==s.end()){
+                s.insert(x);
+                p.push(x);
+            }
+            if(s.find(y)==s.end()){
+                s.insert(y);
+                p.push(y);
+            }
+            if(s.find(z)==s.end()){
+                s.insert(z);
+                p.push(z);
+            }
+        }
+        
+        return -1;
+    }
+};
