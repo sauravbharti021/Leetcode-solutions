@@ -1,0 +1,59 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    ll dp[101][101];
+    ll recur(int left, int right, string &s){
+        if(left==right) return 1;
+        if(left>right) return  0;
+        
+        
+        if(dp[left][right]!=-1) return dp[left][right];
+        
+        char str= s[left],prev=s[left];
+        int cnt=0;
+        
+        
+        ll ans= 1+ recur(left+1, right,s);
+        for(int i=left+1; i<=right; i++){
+            
+            if(s[i]==str){
+                
+                ans= min(ans, recur(left+1, i-1, s) + recur(i, right, s) );
+            }
+        }
+        
+        return dp[left][right]=ans;
+        
+    }
+    
+    int strangePrinter(string s) {
+        
+        string f="";
+        rep(i, s.size()){
+            char str=  s[i];
+            f+= s[i];
+            int j=i;
+            while(j<s.size() && s[j]==str) j++;
+            
+            i= j-1;
+        }
+        
+        s=f;
+        int n=s.size();
+        memset(dp, -1, sizeof dp);
+        
+        return recur(0,n-1, s);
+    }
+};
