@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int findComplement(int num) {
+        vector<int> f(32, 0);
+        while(num>0){
+            int z = 31- __builtin_clz(num);
+            f[z]+=1;
+            num -= (1<<z);
+        }
+        int ans=0, flag=0;
+        for(int i=31;i>=0;i--){
+            if(!f[i] && flag){
+                ans += (1<<i);
+            }
+            if(f[i]){
+                flag = 1;
+            }
+        }
+        return ans;
+    }
+};
