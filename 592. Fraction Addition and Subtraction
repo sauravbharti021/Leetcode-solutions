@@ -1,0 +1,61 @@
+class Solution {
+public:
+    int gcd(int a, int b){
+        if(b==0)
+            return a;
+        return gcd(b, a%b);
+    }
+    int lcm(int a, int b){
+        return (a*b)/gcd(a,b);
+    }
+    string fractionAddition(string expression) {
+        vector<int> num, den;
+        int n = expression.size();
+        for(int i=0;i<n;i++){
+            if(expression[i]=='/'){
+                if(expression[i-1]=='0'){
+                    if(i-3>=0 && expression[i-3]=='-'){
+                        num.push_back(-10);
+                    }else
+                        num.push_back(10);
+                }else{
+                    if(i-2>=0 && expression[i-2]=='-'){
+                        num.push_back((expression[i-1]-'0')*-1);
+                    }else
+                    num.push_back((expression[i-1]-'0'));
+                }
+                
+                if(i+2<=n && expression.substr(i+1, 2)=="10"){
+                    den.push_back(10);
+                    i+=2;
+                }else{
+                    den.push_back((expression[i+1]-'0'));
+                    i+=1;
+                }
+            }
+        }
+        
+        int LCM = den[0];
+        for(int i=1;i<den.size();i++){
+            LCM = lcm(LCM, den[i]); 
+        }
+        int numerator = 0, denominator = LCM;
+        for(int i=0;i<num.size();i++){
+            numerator+= (LCM/den[i])*num[i];
+        }
+        while(gcd(numerator, denominator)!=1 ){
+            int common = gcd(numerator, denominator);
+            numerator/= common;
+            denominator/= common;
+        }
+        if(denominator<0){
+            numerator*=-1;
+            denominator*=-1;
+        }
+        string ans = "";
+        ans+= to_string(numerator);
+        ans+= "/";
+        ans+= to_string(denominator);
+        return ans;
+    }
+};
