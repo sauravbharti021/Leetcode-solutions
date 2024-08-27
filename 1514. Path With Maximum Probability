@@ -1,0 +1,33 @@
+#define ff first 
+#define ss second
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        queue<int> q;
+        vector<double> qProb(n+1, 0.0);
+        vector<vector<pair<int, double>>> adj(n+1);
+        for(int i=0;i<edges.size();i++){
+            int u= edges[i][0], v= edges[i][1];
+            double prob = succProb[i];
+            
+            adj[u].push_back({v, prob});
+            adj[v].push_back({u, prob});
+        }
+        qProb[start_node] = 1.0;
+        q.push(start_node);
+        while(!q.empty()){
+            int top = q.front();
+            q.pop();
+            
+            for(auto i: adj[top]){
+                double currProb = ((1.0* qProb[top] *i.ss));
+                if(currProb > qProb[i.first]){
+                    qProb[i.first] = currProb;
+                    q.push(i.first);
+                }
+            }
+        }
+        return qProb[end_node];
+    }
+};
