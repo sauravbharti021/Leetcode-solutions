@@ -1,0 +1,67 @@
+class Solution {
+public:
+    vector<char> dir{'N', 'E', 'S', 'W'};
+    int stepsCompleted(int x, int y, int u, int v, set<pair<int,int>> &s, int steps){
+        int curr = 0;
+        for(int i=0;i<steps;i++){
+            x+= u;
+            y+= v;
+            if(s.find({x,y})!=s.end())
+                return curr;
+            curr+=1;
+        }
+        return curr;
+    }
+    pair<int,int> moveRobot(int x, int y, char currDir, int steps, set<pair<int,int>> &s){
+        
+       
+        if(currDir == 'N'){
+            y+= stepsCompleted(x, y, 0, 1, s, steps);
+        }else if(currDir == 'E'){
+            x+= stepsCompleted(x, y, 1, 0, s, steps);
+        }else if(currDir == 'S'){
+            y-= stepsCompleted(x, y, 0, -1, s, steps);
+        }else{
+            x-= stepsCompleted(x, y, -1, 0, s, steps);
+        }
+        return {x, y};
+    }
+    char changeDirection(int rotation, char currDir){
+        int index;
+        for(int i=0;i<4;i++){
+            if(dir[i] == currDir){
+                index = i;
+            }
+        }
+        if(rotation == -1){
+            currDir = dir[(index+1)%4];
+        }
+        if(rotation == -2){
+            currDir = dir[((index-1)+4)%4];
+        }
+        return currDir;
+    }
+    int euclideanDistance(int u, int v){
+        return (abs(u)*abs(u))+ (abs(v)*abs(v));
+    }
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        int x=0, y=0;
+        int mx = 0;
+        set<pair<int,int>> s;
+        for(int i=0;i<obstacles.size();i++){
+            s.insert({obstacles[i][0], obstacles[i][1]});
+        }
+        char currDirection = 'N';
+        for(int i=0;i<commands.size();i++){
+            if(commands[i]==-1 || commands[i]==-2){ 
+                currDirection = changeDirection(commands[i], currDirection);
+            }else{
+                pair<int,int> now = moveRobot(x, y, currDirection, commands[i], s);
+                x = now.first;
+                y = now.second;
+                mx = max(mx, euclideanDistance(x, y));
+            }
+        }
+        return mx;
+    }
+};
