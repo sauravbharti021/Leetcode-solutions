@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> missingRolls(vector<int>& rolls, int mean, int n) {
+        int sum = 0;
+        
+        for(int i=0;i<rolls.size();i++){
+            sum+= rolls[i];
+        }
+        int total = (rolls.size() + n);
+        int xPlusY = (mean * total) - (sum);
+        
+        if(xPlusY>(6*n) || xPlusY < n)
+            return vector<int> {};
+
+        vector<int> ans(n,0);
+        while(xPlusY>0){
+            for(int i=0;i<n;i++){
+                if(xPlusY<=0) 
+                    break;
+                ans[i] +=1;
+                xPlusY --;
+            }
+        }
+        return ans;
+    }
+};
