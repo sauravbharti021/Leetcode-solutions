@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool ans=false;
+    bool isSubPath(ListNode* head, TreeNode* root) {
+        findSubtree(root, head->val, head);
+        return ans;
+    }
+    void findSubtree(TreeNode* root, int val, ListNode* head){
+        if(root==NULL)
+            return;
+        if(root->val == val)
+            ans|= match(root, head);
+        
+        findSubtree(root->left, val, head);
+        findSubtree(root->right, val, head);
+        
+        
+    }
+    bool match(TreeNode* root, ListNode* head){
+        if(head == NULL){
+            return true;
+        }
+        if(root==NULL)
+            return false;
+        if(head->val!=root->val)
+            return false;
+        
+        bool ans = match(root->left, head->next) || match(root->right, head->next);
+        return ans;
+    }
+    
+};
