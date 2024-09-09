@@ -1,0 +1,68 @@
+class Solution {
+public:
+    vector<vector<int>> spiralMatrix(int m, int n, ListNode* head) {
+
+        int i=0, j=0;
+        int cnt=0;
+        int temp =m;
+        m=n;
+        n=temp;
+        int totalCovered = 0;
+        
+        vector<vector<int>> ans(n, vector<int>(m, -1));
+        while(head!=NULL && totalCovered<(n*m)){
+            int flag=0;
+            if(cnt%4==0){
+                while(head!=NULL && j<m && ans[i][j]==-1){
+                    flag =1;
+                    ans[i][j] = head->val;
+                    j+=1;
+                    head= head->next;
+                }
+                if(flag) {
+                    j-=1;
+                    i+=1;
+                }   
+                
+            }else if(cnt%4==1){
+                while(head!=NULL && i<n && ans[i][j]==-1){
+                    flag=1;
+                    ans[i][j] = head->val;
+                    i+=1;
+                    head= head->next;
+                }
+                if(flag) {
+                    i-=1;
+                    j-=1;
+                }
+            }else if(cnt%4==2){
+                while(head!=NULL && j>=0 && ans[i][j]==-1){
+                    flag=1;
+                    ans[i][j] = head->val;
+                    j-=1;
+                    head= head->next;
+                }
+                if(flag) {
+                    j+=1;
+                    i-=1;
+                }
+            }else{
+                 while(head!=NULL && i>=0 && ans[i][j]==-1){
+                     flag=1;
+                    ans[i][j] = head->val;
+                    i-=1;
+                    head= head->next;
+                }
+                if(flag) {
+                    i+=1;
+                    j+=1;
+                }
+            }
+            
+            totalCovered+=1;
+            cnt+=1;
+        }
+        
+        return ans;
+    }
+};
