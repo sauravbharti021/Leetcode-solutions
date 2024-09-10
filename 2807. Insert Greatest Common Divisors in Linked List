@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int gcd(int a, int b){
+        if(a==0)
+            return b;
+        return gcd(b%a, a);
+    }
+    ListNode* insertGreatestCommonDivisors(ListNode* head) {
+        ListNode* prev = head;
+        while(head!=NULL && head->next!=NULL){
+            int value= gcd(head->val, head->next->val);
+            ListNode* now = new ListNode(value, head->next);
+            head->next = now;
+            head= head->next->next;
+        }
+        return prev;
+    }
+};
