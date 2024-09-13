@@ -1,0 +1,29 @@
+#define ll long long
+class Solution {
+public:
+    vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+        int n= arr.size();
+        vector<ll> temp(n+1, 0);
+        ll prev = 0; 
+        for(int i=0;i<n;i++){
+            ll now = prev;
+            now ^= arr[i];
+            temp[i] = now;
+            prev = temp[i];
+        }
+        
+        int m= queries.size();
+        vector<int> ans(m, 0);
+        
+        for(int i=0;i<m;i++){
+            int u= queries[i][0], v= queries[i][1];
+            int till = temp[v];
+            if(u>0){
+                till^= temp[(u-1)];
+            }
+            ans[i] = till;
+        }
+        
+        return ans;
+    }
+};
