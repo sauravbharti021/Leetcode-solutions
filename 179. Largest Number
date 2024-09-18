@@ -1,0 +1,38 @@
+class Solution {
+public:
+    string converter(int x){
+        if(x==0) return "v";
+        string res = "";
+        while(x>0){
+            int rem = x%10;
+            res+= abs(10-rem + 'a');
+            x/=10;
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+    static bool comparator(const pair<string,int> &a, const pair<string,int> &b){
+        return a.first+b.first < b.first+a.first;
+    }
+    string largestNumber(vector<int>& nums) {
+        int n= nums.size();
+        vector<pair<string,int>> a;
+        for(int i=0;i<n;i++){
+           string now = converter(nums[i]);
+            a.push_back({now, i});
+        }
+
+        sort(a.begin(), a.end(), comparator);
+        string ans="";
+        for(int i=0;i<n;i++){
+            ans += (to_string(nums[a[i].second]));
+        }
+        int flag=0;
+        for(int i=0;i<ans.size();i++){
+            if(ans[i]!='0') {flag =1; break;}
+        }
+        if(!flag)
+            return "0";
+        return ans;
+    }
+};
