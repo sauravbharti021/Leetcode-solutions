@@ -1,0 +1,56 @@
+class Trie{
+public:
+    Trie* children[26];
+    int cnt;
+    Trie(){
+        for(int i=0;i<26;i++) children[i] = NULL;
+        cnt=0;
+    }
+};
+
+class Solution {
+public:
+    Trie* root;
+    Solution(){
+        root= new Trie();
+    }
+    void setTrie(string &s){
+        Trie* curr= root;
+        for(int i=0;i<s.size();i++){
+            int now = (s[i]-'a');
+            if(curr->children[now]==NULL){
+                curr->children[now] = new Trie();
+            }
+            curr->children[now]->cnt +=1;
+            curr = curr->children[now];
+        }
+    }
+    vector<int> sumPrefixScores(vector<string>& words) {
+        
+        int n= words.size();
+        for(int i=0;i<n;i++){
+            setTrie(words[i]);
+        }
+        
+        vector<int> ans(n, 0);
+        for(int i=0;i<n;i++){
+            int res = 0;
+            int m= words[i].size();
+            Trie* now = root;
+            for(int j=0;j<m;j++){
+                int ch = (words[i][j]-'a');
+                if(now->children[ch]!=NULL){
+                    res+= now->children[ch]->cnt;
+                    now = now->children[ch];
+                }else{
+                    break;
+                }
+                
+            }
+            
+            ans[i] = res;
+        }
+        
+        return ans;
+    }
+};
