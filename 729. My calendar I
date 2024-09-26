@@ -1,0 +1,23 @@
+#define ff first
+#define ss second
+class MyCalendar {
+public:
+    vector<pair<int,int>> a;
+    MyCalendar() {
+        
+    }
+    
+    bool book(int start, int end) {
+        for(int i=0;i<a.size();i++){
+            if(start<=a[i].ff && a[i].ff<end){
+                return false;
+            }else if(start<=a[i].ss && a[i].ss<end){
+                return false;
+            }else if(start>=a[i].ff && end<=a[i].ss){
+                return false;
+            }
+        }
+        a.push_back({start, end-1});
+        return true;
+    }
+};
