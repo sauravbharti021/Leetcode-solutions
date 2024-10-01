@@ -1,0 +1,23 @@
+#define ff first
+#define ss second
+#define ll long long
+class Solution {
+public:
+    bool canArrange(vector<int>& arr, int k) {
+        map<ll,ll> m;
+        for(int i=0;i<arr.size();i++){
+            ll rem = arr[i]%k;
+            if(rem<0) rem+=k;
+            m[rem]+=1;
+        }
+        for(auto i: m){
+            if(i.ff==0){
+                if(i.ss%2==1) return false;
+                continue;
+            }
+            ll need = k- i.ff;
+            if(i.ss!=m[need]) return false;
+        }
+        return true;
+    }
+};
