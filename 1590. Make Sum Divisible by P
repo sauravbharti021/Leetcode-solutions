@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) {
+        long long prevSum = 0;
+        int n = nums.size();
+        int mi = n;
+        int rem = 0;
+        for(int i=0;i<n;i++){
+            prevSum+= nums[i];
+        }
+        rem = (prevSum % p);
+        map<int, int> m;
+        m[0] = -1;
+        vector<int> pre(n, 0);
+        for(int i=0;i<n;i++){
+            pre[i] = (i>0 ? pre[i-1]: 0) + nums[i];
+            pre[i] %= p;
+            if(pre[i]<0) pre[i]+=p;
+            m[pre[i]] = i;
+            int need = (pre[i] - rem)%p;
+            if(need<0) need+=p;
+            if(m.find(need)!=m.end()){
+                mi = min(mi, (i- m[need]));
+            }
+        }
+        return mi==n? -1 : mi;
+        
+        
+    }
+};
