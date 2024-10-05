@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        int n = s2.size(), m = s1.size();
+        vector<vector<int>> f(n, vector<int>(26, 0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<26;j++){
+                f[i][j] = (i>0? f[i-1][j] : 0) + ((s2[i]-'a')==j);
+            }
+        }
+        vector<int> ms(26, 0);
+        for(int i=0;i<m;i++){
+            ms[(s1[i]-'a')]+=1;
+        }
+        
+        for(int i=0;i+m<=n;i++){
+            int flag = 0;
+            for(int j=0;j<26;j++){
+                int cur = (f[(i+m-1)][j]) - (i>0? f[i-1][j] : 0);
+                if(cur!=ms[j]){
+                    flag = 1;
+                    break;
+                }
+            }
+            if(!flag)
+                return true;
+        }
+            
+        return false;
+    }
+};
