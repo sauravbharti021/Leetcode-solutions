@@ -1,0 +1,61 @@
+class Solution {
+public:
+    bool insertor(vector<string> &a1, vector<string> &a2){
+
+        int n= a1.size(), m= a2.size();
+        for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+                vector<string> temp;
+                for(int k=0;k<n;k++){
+                    if(k<i || k>j){
+                        temp.push_back(a1[k]);
+                    }
+                }
+                int la=0, lb=0;
+                int flag =0;
+                if(temp.size()!=a2.size()) continue;
+                while(la<temp.size() && lb<m){
+                    if(temp[la]!=a2[lb]){
+                        flag=1;
+                        break;
+                    }else{
+                        la+=1;
+                        lb+=1;
+                    }
+                }
+                if(!flag)
+                    return true;
+            }
+            
+        }
+        return false;
+    }
+    vector<string> wordCompiler(string &s){
+        int n = s.size();
+        vector <string> res;
+        int cnt=0;
+        for(int i=0;i<n;i++){
+            if(isalpha(s[i])){
+                string t="";
+                int j= i;
+                while(j<n && isalpha(s[j])){
+                    t+= s[j];
+                    j+=1;
+                }
+                i=j;
+                res.push_back(t);
+            }
+        }
+        return res;
+    }
+    bool areSentencesSimilar(string sentence1, string sentence2) {
+        vector <string> a1=wordCompiler(sentence1);
+        vector <string> a2=wordCompiler(sentence2);
+        if(a1==a2)
+            return true;
+        vector<string> first = a1.size() >=a2.size() ? a1 : a2;
+        if(insertor( first, first==a1 ? a2 : a1))
+            return true;
+        return false;
+    }
+};
