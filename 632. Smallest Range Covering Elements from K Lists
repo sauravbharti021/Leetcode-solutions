@@ -1,0 +1,35 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        int n= nums.size();
+        priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int, pair<int,int>>>> p;
+        
+        int maxi = 0;
+        int mi = 1e9, mx= -1e9;
+        for(int i=0;i<n;i++){
+            p.push({nums[i][0], {i, 0}});
+            mx = max(mx, nums[i][0]);
+        }
+        vector<int> ans;
+        while(!p.empty()){
+            pair<int, pair<int,int>> now = p.top();
+            p.pop();
+            if((mx - now.ff) < mi){
+                mi = (mx - now.ff);
+                ans.clear();
+                ans={now.ff, mx};
+            }
+            int minIndex = now.ss.ss;
+            int array = now.ss.ff;
+            if((minIndex+1) >= (nums[array].size())) break;
+            else{
+                p.push({nums[array][minIndex+1], {array, minIndex+1}});
+                mx = max(mx, nums[array][minIndex+1]);
+            }
+        }
+        
+        return ans;
+    }
+};
