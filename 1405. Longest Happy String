@@ -1,0 +1,76 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    string longestDiverseString(int a, int b, int c) {
+        /*
+            at most occurence for a char is 2,
+            greedy is to make sure to, utilize most given occurences
+            priority queue looks like
+        */
+        int oa= min(a, 2);
+        priority_queue<pair<int, int>> p;
+        p.push({a, 0});
+        p.push({b, 1});
+        p.push({c, 2});
+        string ans="";
+        int flag = 0;
+        while(!p.empty() ){
+            pair<int,int> t = p.top();
+            p.pop();  
+            if(t.ff<=0) break;
+            pair<int,int> u= {0,0};
+            if(!p.empty()){
+                u = p.top();
+                p.pop();
+            }
+            string fir = "", sec="";
+            if(t.ff>=2){
+                fir+= ('a'+t.ss);
+                fir+= ('a'+t.ss);
+                t.ff-=2;
+            }else if(t.ff>0){
+                fir+= ('a'+t.ss);
+                t.ff-=1;
+            }
+            if(u.ff>0){
+                sec+= ('a'+u.ss);
+                u.ff-=1;
+            }
+            if(ans.size()>0){
+                if(t.ss==(ans.back()-'a')){
+                    ans+= sec;
+                    ans+= fir;
+                }else{
+                    ans+= fir;
+                    ans+= sec;
+                }
+            }else{
+                ans+= fir;
+                ans+= sec;
+            }
+            if(u.ff>0){
+                p.push({u.ff, u.ss});
+            }
+            if(t.ff>0){
+                p.push({t.ff, t.ss});
+            }
+        }
+
+        ans = remover(ans);
+        return ans;
+    }
+    string remover(string &s){
+        int n= s.size();
+        int cnt=0;
+        for(int i=n-1;i>=0;i--){
+            if(s[i]!=s.back()) break;
+            else cnt+=1;
+        }
+        while(cnt>2){
+            s.pop_back();
+            cnt-=1;
+        }
+        return s;
+    }
+};
