@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maximumSwap(int num) {
+        int mx = num;
+        string s = to_string(num);
+        for(int i=0;i<s.size();i++){
+            for(int j=i+1;j<s.size();j++){
+                
+                string now = s;
+                swap(now[i], now[j]);
+                mx = max(mx, stoi(now));
+            }
+        }
+        return mx;
+    }
+};
