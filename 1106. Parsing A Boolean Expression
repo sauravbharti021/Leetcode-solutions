@@ -1,0 +1,50 @@
+class Solution {
+public:
+    /*
+        "&(|(&(t,f)))"
+    */
+    bool expressionExecuter(char operationType, vector<char> ele){
+        int val = operationType == '|' ? 0 : 1;
+        if(operationType == '|'){
+            for(int i=0;i<ele.size();i++){
+                val |= ((ele[i] == 'f') ? false : true);
+            }
+        }else if(operationType == '&'){
+            for(int i=0;i<ele.size();i++){
+                val &= (ele[i] == 'f' ? false : true);
+            }
+        }
+        if(operationType == '!'){
+            return (ele[0]=='f' ? true : false);
+        }
+        
+        return val;
+    }
+    bool parseBoolExpr(string expression) {
+        
+        stack<char> st;
+        for(int i=0;i<expression.size();i++){
+            if(st.empty()){
+                st.push(expression[i]);
+            }else{
+                if(expression[i] == ')'){
+                    vector<char> ele;
+                    while(st.top()!='('){
+                        if(st.top()!=','){
+                            ele.push_back(st.top());
+                        }
+                        st.pop();
+                    }
+                    st.pop();
+                    char sign = st.top();
+                    st.pop();
+                    int val = expressionExecuter(sign, ele);
+                    st.push(val == false ? 'f' : 't');
+                }else{
+                    st.push(expression[i]);
+                }
+            }
+        }
+        return st.top() == 'f' ? false : true;
+    }
+};
