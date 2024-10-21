@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int maxUniqueSplit(string s) {
+        int mx=1;
+        int n= s.size();
+        for(int i=0;i<(1<<n);i++){
+            set<string> st;
+            string now = "";
+            int cnt= 0;
+            for(int j=0;j<n;j++){
+                if(i&(1<<j)){
+                    now+= s[j];
+                    if(st.find(now)!=st.end()){
+                        cnt= -1e8;
+                        break;
+                    }
+                    st.insert(now);
+                    now="";
+                    cnt+=1;
+                }else{
+                    now+= s[j];
+                }
+            }
+            if(now!=""){
+                if(st.find(now)!=st.end()){
+                        cnt= -1e8;
+                }else 
+                    cnt+=1;
+            }
+            mx = max(mx, cnt);
+        }
+        return mx;
+    }
+};
