@@ -1,0 +1,28 @@
+#define ll long long
+class Solution {
+public:
+    long long kthLargestLevelSum(TreeNode* root, int k) {
+        queue<TreeNode*> q;
+        vector<ll> fre;
+        q.push(root);
+        while(!q.empty()){
+            int size = q.size();
+            ll sum = 0;
+            while(size--){
+                TreeNode* now = q.front();
+                q.pop();
+                sum+= now->val;
+                if(now->left!=NULL)
+                    q.push(now->left);
+                if(now->right!=NULL)
+                    q.push(now->right);
+            }
+            fre.push_back(sum);
+        }
+        if(fre.size() < k)
+            return -1;
+        
+        sort(fre.begin(), fre.end(), greater<ll>());
+        return fre[k-1];
+    }
+};
