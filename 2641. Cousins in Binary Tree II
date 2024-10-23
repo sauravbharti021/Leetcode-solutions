@@ -1,0 +1,42 @@
+class Solution {
+public:
+    TreeNode* replaceValueInTree(TreeNode* root) {
+        int height = 0;
+        vector<int> m;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()){
+            int size = q.size();
+            int sum = 0;
+            while(size--){
+                TreeNode* now = q.front();
+                q.pop();
+                sum+= now->val;
+                if(now->left!=NULL) q.push(now->left);
+                if(now->right!=NULL) q.push(now->right);
+            }
+            m.push_back(sum);
+            height+=1;
+        }
+        m.push_back(0);
+        recur(root, m, 0);
+        root->val = 0;
+        return root;
+    }
+    void recur(TreeNode* cur, vector<int> &m, int height){
+        if(cur==NULL)
+            return;
+        recur(cur->left, m, height+1);
+        recur(cur->right, m, height+1);
+        int ava_sum = m[height+1];
+        int my_sum = (cur->left!=NULL ? cur->left->val : 0) + (cur->right!=NULL ? cur->right->val : 0);
+        
+        int child_sum = ava_sum - my_sum;
+        if(cur->left!=NULL){
+            cur->left->val = child_sum;
+        }
+        if(cur->right!=NULL){
+            cur->right->val = child_sum;
+        }
+    }
+};
