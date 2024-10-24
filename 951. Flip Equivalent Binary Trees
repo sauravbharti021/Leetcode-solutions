@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> returner(TreeNode* root1){
+        queue<TreeNode*> q1;
+        vector<int> par1(101, -1);
+        q1.push(root1);
+        while(!q1.empty()){
+            int size = q1.size();
+            while(size--){
+                TreeNode* now = q1.front();
+                q1.pop();
+                if(now->left!=NULL){
+                    par1[now->left->val] = now->val;
+                    q1.push(now->left);
+                }
+                if(now->right!=NULL){
+                    par1[now->right->val] = now->val;
+                    q1.push(now->right);
+                }
+            }
+        }
+        return par1;
+    }
+    bool flipEquiv(TreeNode* root1, TreeNode* root2) {
+        
+        if(root1==NULL && root2==NULL)
+            return true;
+        if(root1==NULL || root2==NULL)
+            return false;
+        vector<int> par1 = returner(root1);
+        vector<int> par2 = returner(root2);
+        
+        for(int i=0;i<=100;i++){
+            if(par1[i]!=par2[i])
+                return false;
+        }
+            
+        return true;
+    }
+};
