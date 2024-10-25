@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<string> removeSubfolders(vector<string>& folder) {
+
+        int n= folder.size();
+        sort(folder.begin(), folder.end());
+        map<string,int> m;
+        for(int i=0;i<n;i++){
+            string temp = folder[i];
+            int flag = 0;
+            while(temp.size()>0){
+                if(m.find(temp)!=m.end()){
+                    flag=1;
+                    break;
+                }
+                while(!temp.empty() && temp.back()!='/'){
+                    temp.pop_back();  
+                }
+                if(!temp.empty() && temp.back()=='/') temp.pop_back();
+            }
+            if(!flag){
+                m[folder[i]]+=1;
+            }
+        }
+        vector<string> ans;
+        for(auto i: m){
+            ans.push_back(i.first);
+        }
+        return ans;
+    }
+};
