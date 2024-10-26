@@ -1,0 +1,31 @@
+class Solution {
+public:
+    map<int, multiset<int>> m;
+    map<int,pair<int,int>> levelFinder;
+    vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
+
+        vector<int> ans;
+        int f = dfs(root, 0);
+
+        for(int i=0;i<queries.size();i++){
+            pair<int,int> level = levelFinder[queries[i]];
+            m[level.first].erase(m[level.first].equal_range(level.second).first);
+            int otherMax = m[level.first].empty() ? (level.first - 1) : (level.first+ *(--m[level.first].end()) - 1);
+            otherMax= max(0, otherMax);
+            ans.push_back(otherMax);
+            
+            m[level.first].insert(level.second);
+        }
+        return ans;
+    }
+    int dfs(TreeNode* root, int level){
+        if(root==NULL)
+            return 0;
+        int ans = 0;
+        ans = max(ans, 1+ dfs(root->left, level+1));
+        ans = max(ans, 1+ dfs(root->right, level+1));
+        m[level].insert(ans);
+        levelFinder[root->val] = {level, ans};
+        return ans;
+    }
+};
