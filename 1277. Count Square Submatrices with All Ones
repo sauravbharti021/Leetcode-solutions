@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int countSquares(vector<vector<int>>& matrix) {
+        /*
+            prefix sum for matrix
+            10100
+            01000
+            01111
+        */
+        int n= matrix.size(), m = matrix[0].size();
+        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                dp[i][j] += (i>0? dp[i-1][j] : 0) + (j>0 ? dp[i][j-1] : 0) - ((i>0 && j>0)? dp[i-1][j-1] : 0);
+                dp[i][j] += matrix[i][j];
+            }
+        }
+        int cnt = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int l=i, k=j;
+                while(l<n && k<m){
+                    int sum = dp[l][k] - (i>0? dp[i-1][k] : 0) - (j>0 ? dp[l][j-1] : 0) +((i>0 && j>0)? dp[i-1][j-1] : 0);
+                    int totalCell = (l-i+1)* (k-j+1);
+                    if(sum!=totalCell) break;
+                    else{
+                        cnt+=1;
+                        l+=1;
+                        k+=1;
+                    }
+                }
+            }
+        }
+        
+        return cnt;
+    }
+};
