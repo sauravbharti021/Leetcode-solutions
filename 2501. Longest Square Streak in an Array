@@ -1,0 +1,25 @@
+#define ll long long
+class Solution {
+public:
+    int longestSquareStreak(vector<int>& nums) {
+        set<int> st;
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            st.insert(nums[i]);
+        }
+        sort(nums.begin(), nums.end());
+        int mx = 0;
+        for(int i=0;i<n;i++){
+            ll z = nums[i];
+            ll cnt=1;
+            z*=z;
+            while(z<=1e5 && st.find(z)!=st.end()){
+                cnt+=1;
+                z*=z;
+            }
+            mx= max(mx, (int)cnt);
+        }
+        
+        return mx<=1 ? -1 : mx;
+    }
+};
