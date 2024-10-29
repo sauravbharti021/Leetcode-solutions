@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    vector<vector<int>> dir{{1,1}, {0,1}, {-1,1}};
+    int recur(int i, int j, vector<vector<int>> &g){
+        int n= g.size(), m= g[0].size();
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        int mx = 1;
+        for(auto k: dir){
+            int u = i+ k[0];
+            int v = j+ k[1];
+            if(u>=0 && u<n && v>=0 && v<m && g[i][j]<g[u][v]){
+                mx = max(mx, 1 + recur(u, v, g));
+            }
+        }
+        return dp[i][j] = mx;
+    }
+    int maxMoves(vector<vector<int>>& grid) {
+        int n= grid.size(), m= grid[0].size();
+        dp.assign(n+1, vector<int>(m+1, -1));
+        
+        int mx = 0;
+        for(int i=0;i<n;i++){
+            mx = max(mx, recur(i,0, grid));       
+        }
+        return mx-1;
+    }
+};
