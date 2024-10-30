@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int recurBack(int i, int prev, vector<int> &nums){
+        if(i>=nums.size() || prev>= nums.size())
+            return 0;
+        if(dp[i][prev]!=-1)
+            return dp[i][prev];
+        int ans = 1e8;
+        if(nums[i]>=nums[prev]){
+            ans = min(ans, 1+recurBack(i+1, prev, nums));
+        }else{
+            ans = min(ans, recurBack(i+1, i, nums)); 
+            ans = min(ans, 1+ recurBack(i+1, prev, nums));
+        }
+        
+        return dp[i][prev]= ans;
+    }
+    int recurFront(int i, int prev, vector<int> &nums){
+        if(i<0 || prev<0)
+            return 0;
+        if(dp[i][prev]!=-1)
+            return dp[i][prev];
+        int ans = 1e8;
+        if(nums[i]>= nums[prev]){
+            ans = min(ans, 1+ recurFront(i-1, prev, nums));
+        }else{
+            ans = min(ans, recurFront(i-1, i, nums));
+            ans = min(ans, 1+ recurFront(i-1, prev, nums));
+        }
+        return dp[i][prev] = ans;
+    }
+    int minimumMountainRemovals(vector<int>& nums) {
+       /*
+        3 9 4 5 6 7
+        
+        dp both sides? for each index reset?
+       */
+        int n = nums.size();
+        dp.assign(n+1, vector<int>(n+1, -1));
+        int mi = n;
+        for(int i=1;i<n-1;i++){
+        
+            int left = recurFront(i-1, i, nums);
+            int right = recurBack(i+1, i, nums);
+            int leftRemaining = (i) - left;
+            int rightRemaining = (n-i-1) - right;
+            if((n-(left+right)>=3) && leftRemaining>=1 && rightRemaining >=1){
+                mi = min(mi, (left+right));
+            }
+        }
+        return mi;
+    }
+};
