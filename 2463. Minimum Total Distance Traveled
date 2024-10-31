@@ -1,0 +1,35 @@
+#define ll long long
+class Solution {
+public:
+    vector<vector<vector<ll>>> dp;
+    long long recur(int i, int j, vector<int>& robot, vector<vector<int>> &fact){
+        if(i>=robot.size())
+            return 0;
+        if(j>=fact.size())
+            return 1e18;
+        int left = fact[j][1];
+        if(dp[i][j][left]!=-1)
+            return dp[i][j][left];
+        
+        ll ans = 1e18;
+        if(left>0){ 
+            fact[j][1]-=1;
+            ans = min(ans, abs(robot[i]- fact[j][0])+ recur(i+1, j, robot, fact)); 
+            fact[j][1]+=1;
+        }
+        
+        ans = min(ans, recur(i, j+1, robot, fact));
+        return dp[i][j][left] = ans;
+            
+    }
+    long long minimumTotalDistance(vector<int>& robot, vector<vector<int>>& factory) {
+        
+        int n= robot.size();
+        sort(robot.begin(), robot.end());
+        sort(factory.begin(), factory.end());
+        dp.assign(n+1, vector<vector<ll>>(factory.size()+1, vector<ll>(n+1, -1)));
+        ll ans= recur(0, 0, robot, factory);
+        
+        return ans;
+    }
+};
