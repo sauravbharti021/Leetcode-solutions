@@ -1,0 +1,41 @@
+#define ll long long
+class Solution {
+public:
+    int minimizedMaximum(int n, vector<int>& quantities) {
+        ll sum =0;
+        sort(quantities.begin(), quantities.end(), greater<int>());
+        int m= quantities.size();
+        ll l = 0, r= 1e5;
+        while(r-l>1){
+            ll mid = (l+r)/2;
+            int j=0;
+            int flag=0;
+            for(int i=0;i<m;i++){
+                int curr = quantities[i];
+                while(curr>0){
+                    if(j>=n){
+                        flag=1;
+                        break;
+                    }
+                    if(curr>mid){
+                        curr-=mid;
+                        j++;
+                    }else{
+                        curr=0;
+                        j++;
+                        break;
+                    }
+                }
+                if(flag) break;
+            }
+            
+            if(flag){
+                l=mid;
+            }else{
+                r=mid;
+            }
+        }
+        
+        return r;
+    }
+};
