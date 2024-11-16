@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> resultsArray(vector<int>& nums, int k) {
+        int n= nums.size();
+        vector<int> ans;
+        for(int i=(k-1);i<n;i++){
+            int flag=0;
+            for(int j=i;j>(i-k+1);j--){
+                if((j-1>=0) && (nums[j]<=nums[j-1] || (nums[j]-nums[j-1])!=1)){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag){
+                ans.push_back(-1);
+            }else{
+                ans.push_back(nums[i]);
+            }
+        }
+        return ans;
+    }
+};
