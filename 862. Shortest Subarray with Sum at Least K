@@ -1,0 +1,25 @@
+#define ll long long
+class Solution {
+public:
+    int shortestSubarray(vector<int>& nums, int k) {
+
+        int n= nums.size();
+        priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> p;
+        ll sum = 0;
+        ll mi = 1e13;
+        for(ll i=0;i<n;i++){
+            sum+= nums[i];
+            if(sum>=k){
+                mi = min(mi, i+1);
+            }
+            while(p.size()>0 && (sum - p.top().first) >= k){
+                pair<int,int> x= p.top();
+                p.pop();
+                mi = min(mi, (ll)(i- x.second));
+            }
+            
+            p.push({sum, i});
+        }
+        return mi==1e13 ? -1 : mi;
+    }
+};
