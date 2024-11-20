@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int takeCharacters(string s, int k) {
+        if(k==0)
+            return 0;
+        int n = s.size();
+        int l= k*3 - 1, r= n+1;
+        int found = 0;
+        vector<vector<int>> pre(n, vector<int>(3, 0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<3;j++){
+                pre[i][j]  = (i>0 ? pre[i-1][j] : 0) + ((s[i]-'a')==j);
+            }
+        }
+        while(r-l>1){
+            int mid = (l+r)/2;
+            // cout<<mid<<"\n";
+            int right = mid, left =0;
+            int flag =0;
+            if(helper(0, mid-1, pre, k)){
+                flag = 1;
+            }
+            left = n-1;
+            right = mid - 2;
+            while(right>=0){
+                if(flag) break;
+                if(helper(left, right, pre, k)){
+                    flag =1;
+                    break;
+                }else{
+                    right-=1;
+                    left-=1;
+                }
+            }
+            if(helper(n-mid, n-1, pre, k)){
+                flag = 1;
+            }
+            
+            if(flag){
+                found = 1;
+                r = mid;
+            }else{
+                l= mid;
+            }
+        }
+        if(!found) return -1;
+        return r;
+    }
+    bool helper(int left, int right, vector<vector<int>> &pre, int k){
+        int n= pre.size();
+        for(int i=0;i<=2;i++){
+            int sum = pre[right][i] + (left > right ?  (pre[n-1][i] - (left>0 ? pre[left-1][i]: 0)) : ((right == n-1 && left>0)  ? (-1 * pre[left - 1][i]) : 0 ));
+            if(sum<k) return false;
+        }
+        return true;
+    }
+};
