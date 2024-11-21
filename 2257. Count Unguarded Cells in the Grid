@@ -1,0 +1,78 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int countUnguarded(int m, int n, vector<vector<int>>& guards, vector<vector<int>>& walls) {
+        vector<vector<int>> g(m, vector<int>(n,0));
+        for(int i=0;i<guards.size();i++){
+            g[guards[i][0]][guards[i][1]] = 1;
+        }
+       
+        vector<vector<int>> row(m, vector<int>{});
+        vector<vector<int>> col(n, vector<int>{});
+        for(int i=0;i<walls.size();i++){
+            int u= walls[i][0], v= walls[i][1];
+            row[u].push_back(v);
+            col[v].push_back(u);
+        }
+        rep(i, m){
+            sort(row[i].begin(), row[i].end());
+        }
+        rep(i, n){
+            sort(col[i].begin(), col[i].end());
+        }
+        vector<vector<int>> preRow(m+1, vector<int>(n+1, 0));
+        vector<vector<int>> preCol(m+1, vector<int>(n+1, 0));
+        rep(i,m){
+            rep(j, n){
+                preRow[i][j] += (j>0 ? preRow[i][j-1] : 0) + g[i][j];
+            }
+        }
+        rep(i,n){
+            rep(j, m){
+                preCol[j][i] += (j>0 ? preCol[j-1][i] : 0) + g[j][i];
+            }
+        }
+        for(int i=0;i<walls.size();i++){
+            g[walls[i][0]][walls[i][1]] = -1;
+        }
+        
+        int ans = 0;
+        rep(i,m){
+            rep(j,n){
+                int flag = 0;
+                if(g[i][j]==0){
+                    auto it = lower_bound(row[i].begin(), row[i].end(), j);
+                    int rightIndex = min(n-1, (int)(it==row[i].end() ? n : (*it)));
+                    int leftIndex;
+                    if(it==row[i].begin()){
+                       leftIndex = -1; 
+                    }else{
+                        it--;
+                        leftIndex = *it;
+                    }
+                    if((preRow[i][rightIndex] - preRow[i][j] > 0) || (preRow[i][j]- (leftIndex>0 ? preRow[i][leftIndex-1] : 0))){
+                        continue;
+                    }
+                    
+                    auto it2 = lower_bound(col[j].begin(), col[j].end(), i);
+                    int downIndex = min(m-1, (int)(it2== col[j].end()? m : *it2));
+                    int topIndex;
+                    if(it2==col[j].begin()){
+                        topIndex = -1;
+                    }else{
+                        it2--;
+                        topIndex = *it2;
+                    }
+                    
+                    if((preCol[downIndex][j] - preCol[i][j] > 0) || (preCol[i][j] - (topIndex>0 ? preCol[topIndex-1][j] : 0))){
+                        continue;
+                    }
+                    ans+=1;
+                }
+            }
+        }
+        
+        return ans;
+        
+    }
+};
