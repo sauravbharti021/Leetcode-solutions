@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maxEqualRowsAfterFlips(vector<vector<int>>& matrix) {
+        int n= matrix.size(), m= matrix[0].size();
+        int mx = 0;
+        for(int i=0;i<n;i++){
+            vector<int> flipped(m, 0);
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]!=0) flipped[j]= 1;
+            }
+            mx = max(mx, countAns(flipped, matrix));
+            flipped.assign(m, 0);
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]!=1) flipped[j]= 1;
+            }
+            mx= max(mx, countAns(flipped, matrix));
+        }
+        return mx;
+    }
+    int countAns(vector<int> &flipped, vector<vector<int>> &matrix){
+        int ans = 0;
+        int n= matrix.size(), m= matrix[0].size();
+        for(int i=0;i<n;i++){
+            int zeroCnt=0, oneCnt=0;
+            for(int j=0;j<m;j++){
+                int temp;
+                if(flipped[j]){
+                    temp = (1^ matrix[i][j]);
+                }else temp = matrix[i][j];
+                
+                if(temp) oneCnt+=1;
+                else zeroCnt+=1;
+            }
+            if(oneCnt==m || zeroCnt==m) ans+=1;
+        }
+        return ans;
+    }
+};
