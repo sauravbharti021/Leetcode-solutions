@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<vector<char>> rotateTheBox(vector<vector<char>>& box) {
+        int n= box.size(), m= box[0].size();
+        vector<vector<char>> dum(n, vector<char>(m, '.'));
+        for(int i=0;i<n;i++){
+            int cnt=0;
+            int j=0;
+            while(j<m){
+                if(box[i][j] == '*'){
+                    int k=j-1;
+                    while(cnt>0 ){
+                        dum[i][k]='#';
+                        k--;
+                        cnt--;
+                        if(k<0) break;
+                    }
+                    dum[i][j]='*';
+                }else if(box[i][j] == '#'){
+                    cnt+=1;
+                }
+                
+                j+=1;
+            }
+            
+            if(cnt>0){
+                for(int j=m-1;j>=0 && cnt>0; j--){
+                    dum[i][j] = '#';
+                    cnt-=1;
+                }
+            }
+        }
+
+        int x=n-1, y=0;
+        vector<vector<char>> ans(m, vector<char>(n));
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                ans[i][j] = dum[x][y];
+                x-=1;
+                if(x<0){
+                    x=n-1;
+                    y+=1;
+                }
+            }
+        }
+        return ans;
+    }
+};
