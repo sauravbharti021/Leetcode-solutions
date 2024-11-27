@@ -1,0 +1,40 @@
+class Solution {
+public:
+    queue<int> q;
+    vector<vector<int>> adj;
+    vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& queries) {
+        adj.assign(n+1, vector<int>{});
+        for(int i=0;i<n-1;i++){
+            int u= i, v=i+1;
+            adj[u].push_back(v);
+        }
+        q.push(0);
+        vector<int> dis(n, 1e9);
+        dis[0]=0;
+        helper(dis);
+        vector<int> ans;
+        for(int i=0;i<queries.size();i++){
+            int u= queries[i][0], v= queries[i][1];
+            adj[u].push_back(v);
+            if(dis[v]>(dis[u]+1)){
+                dis[v] = dis[u]+1;
+                q.push(v);
+                helper(dis);
+            }
+            ans.push_back(dis[n-1]);
+        }
+        return ans;
+    }
+    void helper(vector<int> &dis){
+        while(!q.empty()){
+            int x= q.front();
+            q.pop();
+            for(auto j: adj[x]){
+                if(dis[j]> (dis[x]+1)){
+                    q.push(j);
+                    dis[j] = dis[x]+1;
+                }
+            }
+        }
+    }
+};
