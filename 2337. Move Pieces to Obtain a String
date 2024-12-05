@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool canChange(string start, string target) {
+        stack<char> st1, st2;
+        int n= start.size();
+        for(int i=0;i<n;i++){
+            if(start[i]!='_') st1.push(start[i]);
+            
+            if(target[i]=='R'){
+                if(st1.empty()) return false;
+                if(st1.top()!='R') return false;
+                st1.pop();
+            }
+            
+            if(target[i]!='_') st2.push(target[i]);
+            
+            if(start[i]=='L'){
+                if(st2.empty()) return false;
+                if(st2.top()!='L') return false;
+                st2.pop();
+            }
+        }
+        while(!st1.empty()){
+            if(st1.top()=='R') return false;
+            st1.pop();
+        }
+        while(!st2.empty()){
+            if(st2.top()=='L') return false;
+            st2.pop();
+        }
+        return true;
+    }
+};
