@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minimumSize(vector<int>& nums, int maxOperations) {
+        int l = 0, r= 1e9+1;
+        int n= nums.size();
+        sort(nums.begin(), nums.end());
+        while(r-l>1){
+            int mid = (r+l)/2;
+            int flag = 0, cnt= maxOperations;
+            for(int i=0;i<n;i++){
+                int x= nums[i];
+                int need =(x%mid==0 ? (x/mid - 1): (x/mid));
+                int rem = x%mid;
+                if(cnt<need) {
+                    flag = 1;
+                    break;
+                }else{
+                    cnt-=need;
+                }
+            }
+            if(!flag){
+                r=mid;
+            }else{
+                l=mid;
+            }
+        }
+        return r;
+    }
+};
