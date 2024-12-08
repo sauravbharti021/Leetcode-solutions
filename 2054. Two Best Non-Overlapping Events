@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxTwoEvents(vector<vector<int>>& events) {
+        
+        sort(events.begin(), events.end());
+        int n= events.size();
+        vector<int> suf(n+1, 0);
+        for(int i=n-1;i>=0;i--){
+            suf[i] = max(suf[i+1], events[i][2]);
+        }
+        int mx= -1;
+        for(int i=0;i<n;i++){
+            auto it = upper_bound(events.begin(), events.end(), vector<int>{events[i][1]+1});
+            if(it == events.end()){
+                mx= max(mx, events[i][2]);
+            }else{
+                int index = it-events.begin();
+                mx= max(mx, events[i][2]+ suf[index]);
+            }
+        }
+        return mx;
+    }
+};
