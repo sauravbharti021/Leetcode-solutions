@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
+        int n= nums.size();
+        vector<int> pre(n+1, 0);
+        for(int i=1;i<n;i++){
+            pre[i] += (pre[i-1]);
+            pre[i] += ((nums[i]%2) == (nums[i-1]%2)) ? 1 : 0;
+        }
+        
+        vector<bool> ans(queries.size(), false);
+        for(int i=0;i<queries.size();i++){
+            int u= queries[i][0], v= queries[i][1];
+            int fre = pre[v] - pre[u];
+            if(fre==0) ans[i] = true;
+        }
+        return ans;
+    }
+};
