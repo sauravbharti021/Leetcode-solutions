@@ -1,0 +1,38 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    long double calc(int pass, int total){
+        long double x= ((1.0*(pass+1))/(total+1));
+        long double y= (1.0*(pass))/total;
+        
+        return x-y;
+    }
+    double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
+
+        int n= classes.size();
+        int cnt = 0;
+        priority_queue<pair<long double, pair<int,int>>> pq;
+        for(int i=0;i<n;i++){
+            pq.push({calc(classes[i][0], classes[i][1]), {classes[i][0], classes[i][1]}});
+        }
+        
+        while(extraStudents--){
+            pair<double, pair<int,int>> x = pq.top();
+            pq.pop();
+            
+            pq.push({calc(x.ss.ff+1, x.ss.ss+1), {x.ss.ff+1, x.ss.ss+1}});
+        }
+        
+        long double sum = 0;
+        while(!pq.empty()){
+            pair<long double, pair<int,int>> x = pq.top();
+            pq.pop();
+            long double a = x.ss.ff;
+            long double b = x.ss.ss;
+            sum+= (a/b);
+        }
+        
+        return double((1.0*sum)/n);
+    }
+};
