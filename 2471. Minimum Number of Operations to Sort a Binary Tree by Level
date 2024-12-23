@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int minimumOperations(TreeNode* root) {
+        queue<TreeNode*> q;
+        int ans = 0;
+        q.push(root);
+        
+        while(!q.empty()){
+            int size = q.size();
+            vector<int> a;
+            map<int,int> ind;
+            while(size--){
+                TreeNode* now = q.front();
+                q.pop();
+                ind[now->val] = a.size();
+                a.push_back(now->val);
+                if(now->left!=NULL) q.push(now->left);
+                if(now->right!=NULL) q.push(now->right);
+            }
+            vector<int> b= a;
+            sort(b.begin(), b.end());
+            
+            for(int i=0;i<a.size();i++){
+                if(a[i]!=b[i]){
+                    ans+=1;
+                    ind[a[i]] = ind[b[i]];
+                    a[ind[b[i]]] = a[i];
+                    
+                    ind[b[i]] = i;
+                    a[i] = b[i];
+                }
+            }
+            
+        }
+        
+        return ans;
+    }
+};
