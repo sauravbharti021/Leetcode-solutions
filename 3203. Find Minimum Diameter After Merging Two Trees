@@ -1,0 +1,66 @@
+class Solution {
+public:
+    vector<vector<int>> adj1, adj2;
+    int longest_dis;
+    int longest_node;
+    void dfs(int n, vector<vector<int>> &adj, int par, int dis){
+        if(dis>longest_dis){
+            longest_dis = dis;
+            longest_node = n;
+        }
+        for(auto i: adj[n]){
+            if(i!=par){
+                dfs(i, adj, n, dis+1);
+            }
+        }
+        
+    }
+    int minimumDiameterAfterMerge(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        /*
+            // having the maximum 
+            connect with the one having smallest maximum path.
+            
+            bfs?
+            dfs?
+            
+        */
+        int n = edges1.size();
+        int m = edges2.size();
+        adj1.assign(n+1, vector<int>{});
+        adj2.assign(m+1, vector<int>{});
+        for(int i=0;i<n;i++){
+            int u = edges1[i][0], v= edges1[i][1];
+            adj1[u].push_back(v);
+            adj1[v].push_back(u);
+        }
+        
+        for(int i=0;i<m;i++){
+            int u= edges2[i][0], v=edges2[i][1];
+            adj2[u].push_back(v);
+            adj2[v].push_back(u);
+        }
+        
+        dfs(0, adj1, -1, 1);
+        int long1 = longest_dis;
+        
+        longest_dis = 0;
+        dfs(longest_node, adj1, -1, 1);
+        int long2 = longest_dis;
+        int d1 = max(long1, long2);
+        
+        longest_dis = 0;
+        longest_node = -1;
+        dfs(0, adj2, -1, 1);
+        int long3 = longest_dis;
+        
+        longest_dis = 0;
+        dfs(longest_node, adj2, -1, 1);
+        int long4 = longest_dis;
+        
+        int d2 = max(long3, long4);
+        
+        
+        return max( d1/2 + d2/2 + 1, max(d1-1, d2-1 ));
+        
+    }
+};
