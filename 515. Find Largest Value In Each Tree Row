@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<long long> max_dis;
+    void recur(TreeNode* head, int dis){
+        if(head==NULL) return;
+        max_dis[dis] = max(max_dis[dis], (long long)head->val);
+        recur(head->left, dis+1);
+        recur(head->right, dis+1);
+    }
+    vector<int> largestValues(TreeNode* root) {
+        max_dis.assign(1e4+1, -1e11);
+        recur(root, 0);
+        vector<int> ans;
+        for(int i=0;i<max_dis.size();i++){
+            if(max_dis[i]==-1e11) break;
+            ans.push_back(max_dis[i]);
+        }
+        
+        return ans;
+    }
+};
