@@ -1,0 +1,52 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<pair<int,int>> p(n), s(n+1);
+
+        vector<int> pre(n,0);
+        rep(i,n){
+            pre[i] = (i>0 ? pre[i-1] : 0) + nums[i];
+        }
+        vector<vector<int>> ans;
+        int mx = 0;
+        for(int i=k-1;i<n;i++){
+            int sum = pre[i] - (i-k>=0 ? pre[i-k] : 0);
+            if(sum>mx){
+                mx = sum;
+                p[i] = {mx, i-k+1};
+            }else{
+                p[i] = p[i-1];
+            }
+        }
+        
+        mx = 0;
+        for(int i=n-k;i>=0;i--){
+            int sum = pre[i+k-1] - (i>0? pre[i-1] : 0);
+            if(sum>=mx){
+                mx= sum;
+                s[i] = {mx, i};
+            }else{
+                s[i] = s[i+1];
+            }
+        }
+        
+        mx = 0;
+        for(int i=k;(i+k)<n;i++){
+            int curSum = pre[i+k-1] - (pre[i-1]);
+            pair<int,int> left = p[i-1];
+            pair<int,int> right = s[i+k];
+            int tot = curSum + left.first + right.first;
+            if(tot>mx){
+                mx = tot;
+                ans.clear();
+                ans.push_back(vector<int> {left.second, i, right.second});
+            }else if(tot==mx){
+                ans.push_back(vector<int> {left.second, i, right.second});
+            }
+        }
+        sort(ans.begin(), ans.end());
+        return ans[0];
+    }
+};
