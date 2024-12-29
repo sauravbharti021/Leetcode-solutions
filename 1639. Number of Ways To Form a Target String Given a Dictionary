@@ -1,0 +1,41 @@
+#define ll long long
+class Solution {
+public:
+    vector<vector<int>> fre;
+    vector<vector<int>> dp;
+    int mod = 1000000007;
+    int recur(int i, int j, string &target){
+        if(j>=target.size()) return 1;
+        if(i>=dp.size()) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        ll ans = 0;
+        if(j<target.size() && fre[i][(target[j]-'a')] > 0){
+            int x = (target[j]-'a');
+            ans = (ans +  (recur(i+1, j+1, target)%mod)%mod)%mod;
+            if(ans>0){
+                ans = (ans* fre[i][x])%mod;
+            }
+        }
+        ans = (ans+ recur(i+1, j, target)%mod)%mod;
+        ans%= mod;
+        if(ans<0) ans+= mod;
+
+        return dp[i][j] = ans;
+    }
+    int numWays(vector<string>& words, string target) {
+        int n = words.size();
+        int m = words[0].size();
+        fre.assign(m, vector<int>(26, 0));
+        dp.assign(m, vector<int>(target.size() + 1, -1));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<words[i].size();j++){
+                // cout<<words[i][j]<<" ";
+                int x= (words[i][j] - 'a');
+                fre[j][x]+=1;
+            }
+        }
+
+        int x= recur(0, 0, target);
+        return x;
+    }
+};
