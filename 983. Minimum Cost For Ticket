@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> dp;
+    int recur(int i, vector<int> &days, vector<int> &costs){
+        if(i>=days.size()){
+            return 0;
+        }
+        if(dp[i]!=1e9) return dp[i];
+        int ans = 1e9;
+        ans = min(ans, costs[0]+ recur(i+1, days, costs));
+        int next_week_index, next_month_index;
+        for(int j=i;j<days.size();j++){
+            if(days[j]<(days[i]+7)){
+                next_week_index = j;
+                next_month_index=j;
+            }else if(days[j]<(days[i]+30)){
+                next_month_index=j;
+            }else break;
+        }
+        ans = min(ans, costs[1]+ recur(next_week_index+1, days, costs));
+        ans = min(ans, costs[2]+ recur(next_month_index+1, days, costs));
+
+        return dp[i] = ans;
+    }
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        dp.assign(366, 1e9);
+        int x = recur(0, days, costs);
+        return x;
+    }
+};
