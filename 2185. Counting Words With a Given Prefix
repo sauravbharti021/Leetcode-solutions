@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool havePre(string &s, string &t){
+        int i=0,j=0;
+        while(i<s.size() && j<t.size()){
+            if(s[i]!=t[j]) return false;
+            i+=1;
+            j+=1;
+        }
+        if(j<t.size()) return false;
+        return true;
+    }
+    int prefixCount(vector<string>& words, string pref) {
+        int n= words.size();
+        int cnt = 0;
+        for(int i=0;i<n;i++){
+            cnt+= havePre(words[i], pref);
+        }
+        return cnt;
+    }
+};
