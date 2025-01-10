@@ -1,0 +1,35 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
+        int n = words1.size(), m= words2.size();
+        vector<int> fre(26, 0);
+        rep(i, m){
+            vector<int> ch(26, 0);
+            rep(j, words2[i].size()){
+                ch[(words2[i][j] - 'a')]+=1;
+            }
+            rep(j, 26){
+                fre[j] = max(ch[j], fre[j]);
+            }
+        }
+        vector<string> ans;
+        rep(i,n){
+            vector<int> ch(26, 0);
+            rep(j, words1[i].size()){
+                ch[(words1[i][j] - 'a')]+= 1;
+            }
+            int flag = 0;
+            rep(j, 26){
+                if(ch[j]<fre[j]){
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if(!flag) ans.push_back(words1[i]);
+
+        }
+        return ans;
+    }
+};
