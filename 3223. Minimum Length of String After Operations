@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minimumLength(string s) {
+        int n= s.size();
+        vector<vector<int>> fre(n, vector<int>(26, 0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<26;j++){
+                fre[i][j] = (i>0 ? fre[i-1][j] : 0) + ((s[i]-'a')==j? 1: 0);
+            }
+        }
+        int ans = 0;
+        for(int i=0;i<26;i++){
+            int curF= fre[n-1][i];
+            if(curF==0) continue;
+            if(curF%2==0) ans+=2;
+            else ans+=1;
+        }
+        return ans;
+    }
+};
