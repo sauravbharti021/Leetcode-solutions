@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int minimizeXor(int num1, int num2) {
+        vector<int> fre1(65, 0), fre2(65, 0);
+        long long cnt = 0;
+        while(num2>0){
+            cnt+=1;
+            int y = 31 - __builtin_clz(num2);
+            cout<<y<<"\n";
+            fre2[y]+=1;
+            num2 -= (1ULL<<y);
+        }
+
+        while(num1>0){
+            int y = 31 - __builtin_clz(num1);
+            fre1[y]+=1;
+            num1 -= (1ULL<<y);
+        }
+        long long ans = 0;
+        for(int i=64;i>=0;i--){
+            if(fre1[i]>0 && cnt>0){
+                ans+= (1ULL<<i);
+                cnt-=1;
+            }
+            if(cnt==0) break;
+        }
+
+        for(int i=0;i<64;i++){
+            if(fre1[i]==0 && cnt>0){
+                ans+= (1ULL<<i);
+                cnt-=1;
+            }
+            if(cnt==0) break;
+        }
+
+        return ans;
+    }
+};
