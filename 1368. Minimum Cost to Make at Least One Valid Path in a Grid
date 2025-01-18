@@ -1,0 +1,40 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    vector<vector<int>> dis;
+    vector<vector<int>> dirs{{0,1}, {0,-1}, {1,0},{-1,0}};
+    vector<vector<int>> vis;
+    int minCost(vector<vector<int>>& grid) {
+       /*
+            dp[i][j][k]
+       */ 
+       int n= grid.size(), m = grid[0].size();
+       dis.assign(n+1, vector<int>(m+1, 1e5));
+        vis.assign(n+1, vector<int>(m+1, 0));
+        int ans = 0;
+        queue<pair<int,int>> q;
+        q.push({0, 0});
+        dis[0][0] = 0;
+
+        while(!q.empty()){
+            pair<int,int> x = q.front();
+            q.pop();
+
+            for(int i=0;i<4;i++){
+                int cost = 1;
+                if((grid[x.ff][x.ss] - 1) == i) cost = 0;
+
+                int u = x.ff + dirs[i][0], v = x.ss + dirs[i][1];
+                if(u>=0 && v>=0 && u<n && v<m){
+                    if((dis[x.ff][x.ss] + cost )< (dis[u][v])){
+                        dis[u][v] = (dis[x.ff][x.ss] + cost);
+                        q.push({u, v});
+                    }
+                }
+            }
+        }
+        return dis[n-1][m-1];
+
+    }
+};
