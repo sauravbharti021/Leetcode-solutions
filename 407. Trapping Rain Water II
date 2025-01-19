@@ -1,0 +1,66 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define rrep(i,n) for(int i=n-1;i>=0;i--)
+#define ff first
+#define ss second
+
+class Solution {
+public:
+    struct Cell {
+        int height, x, y;
+        bool operator<(const Cell& other) const {
+            return height > other.height; // Min-heap
+        }
+    };
+    vector<vector<int>> dir{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int trapRainWater(vector<vector<int>>& heightMap) {
+        int n = heightMap.size(), m = heightMap[0].size();
+        vector<vector<int>> dis(n+1, vector<int>(m+1, 1e9));
+
+        priority_queue<Cell> p;
+        rep(i,n){
+            // left
+            p.push({heightMap[i][0], i, 0});
+            dis[i][0] = heightMap[i][0];
+            // right
+            p.push({heightMap[i][m-1], i, m-1});
+            dis[i][m-1] = heightMap[i][m-1];
+        }
+
+        rep(i,m){
+            // top
+            p.push({heightMap[0][i], 0, i});
+            dis[0][i] = heightMap[0][i];
+            // bottom 
+            p.push({heightMap[n-1][i], n-1, i});
+            dis[n-1][i] = heightMap[n-1][i];
+        }
+
+        while(!p.empty()){
+            Cell f = p.top();
+            p.pop();
+            if(f.height != dis[f.x][f.y]) continue;
+
+            rep(i, 4){
+                int u = f.x + dir[i][0], v= f.y + dir[i][1];
+                
+                if(u>=0 && v>=0 && u<n && v<m ){
+                    int nowHei = max(f.height, heightMap[u][v]);
+                    if(nowHei<dis[u][v]){
+                        dis[u][v] = nowHei;
+                        p.push({nowHei, u, v});
+                    }
+                }
+            }
+
+        }
+        int ans = 0;
+
+        for(int i=1;i<n-1;i++){
+            for(int j=1;j<m-1;j++){
+                ans+= (dis[i][j] - heightMap[i][j]);
+            }
+        }
+
+        return ans;
+    }
+};
