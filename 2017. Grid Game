@@ -1,0 +1,27 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    long long gridGame(vector<vector<int>>& grid) {
+        int n = 2, m = grid[0].size();
+        vector<long long> preU(m, 0), preD(m, 0);
+        long long totSum = 0;
+        rep(i,m){
+            preU[i] = (i>0? preU[i-1] : 0) + (long long)(grid[0][i]);
+            preD[i] = (i>0 ? preD[i-1]: 0) + (long long)(grid[1][i]);
+            totSum += grid[0][i];
+            totSum += grid[1][i];
+        }
+        int mx = -1;
+        int index = -1;
+        long long ans = 1e11;
+        rep(i,m){
+
+            long long maxBCanGet = max((preU[m-1] - (preU[i])), ((i-1>=0 )? preD[i-1] : 0) );
+            if(maxBCanGet<ans){
+                ans = maxBCanGet;
+                index =i;
+            }
+        }
+        return ans;
+    }
+};
