@@ -1,0 +1,81 @@
+class Solution {
+public:
+    /*
+        row * col + col
+    */
+    struct dsu{
+        vector<int> par, rank;
+        void makeset(int n){
+            par.assign(n+1, 1);
+            rank.assign(n+1, 0);
+            for(int i=0;i<=n;i++){
+                par[i] = i;
+            }
+        }
+        int find(int n){
+            while(n!=par[n]) n = par[n];
+            return n;
+        }
+        void unite(int u, int v){
+            v = find(v);
+            u = find(u);
+            if(rank[u]<rank[v]){
+                rank[v]+= rank[u];
+                par[u] = v;
+            }else{
+                rank[u] += rank[v];
+                par[v] = u;
+            }
+        }
+    };
+    int countServers(vector<vector<int>>& grid) {
+        int n = grid.size(), m= grid[0].size();
+        dsu d;
+        d.makeset(m*n+1);
+
+        for(int i=0;i<n;i++){
+            int ele=-1;
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    if(ele==-1){
+                        ele = (m*i)+j;
+                        continue;
+                    }else{
+                        cout<<ele<<"sr "<<(m*i)+j<<"\n";
+                        d.unite(ele, (m*i)+j);
+                    }
+                }
+            }
+        }
+
+        for(int i=0;i<m;i++){
+            int ele = -1;
+            for(int j=0;j<n;j++){
+                if(grid[j][i]==1){
+                    if(ele==-1){
+                        ele = (m*j) + i;
+                    }else{
+                        // cout<<ele<<"sc "<<(m*i)+j<<"\n";
+                        d.unite(ele, (m*j)+i);
+                    }
+                }
+            }
+        }
+        map<int,int> mp;
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]){
+                    int ele = (m*i)+j;
+                    int par = d.find(ele);
+                    cout<<par<<"\n";
+                    mp[par] +=1;
+                }
+            }
+        }
+
+        for(auto i: mp) ans+= (i.second>1 ? i.second : 0);
+
+        return ans;
+    }
+};
