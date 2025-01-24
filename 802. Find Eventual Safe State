@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<int>> adj;
+    vector<int> dp;
+    vector<int> vis;
+    int cnt=0;
+    int recur(int n){
+        if(vis[n]) {vis[n] = false; return 0;}
+        if(dp[n]!=-1)
+            return dp[n];
+        vis[n]= true;
+        int ans = 1;
+        for(int j=0;j<adj[n].size();j++){
+            ans &= recur(adj[n][j]);
+        }
+        vis[n] = false;
+        return dp[n] = ans;
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n= graph.size();
+        adj.assign(n, vector<int>{});
+        dp.assign(n+1, -1);
+        vis.assign(n+1, false);
+        for(int i=0;i<n;i++){
+            int u = i;
+            for(int j= 0;j<graph[i].size();j++){
+                int v= graph[i][j];
+                adj[u].push_back(v);
+            }
+        }
+
+        vector<int> ans;
+        for(int i=0;i<n;i++){
+            if(dp[i]==-1){
+                int now = recur(i);
+            }
+            if(dp[i]==1)
+                ans.push_back(i);
+        }
+
+        return ans;
+    }
+};
