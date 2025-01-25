@@ -1,0 +1,72 @@
+class Solution {
+public:
+    struct dsu{
+        vector<int> par, rank;
+        void makeset(int n){
+            par.assign(n+1, 1);
+            rank.assign(n+1,0);
+            for(int i=0;i<=n;i++) par[i]=i;
+        }
+        int find(int n){
+            while(par[n]!=n) n= par[n];
+            return n;
+        }
+        void unite(int u,int v){
+            u = find(u);
+            v= find(v);
+            if(rank[u]<rank[v]){
+                rank[v]+= rank[u];
+                par[u] = v;
+            }else{
+                rank[u]+= rank[v];
+                par[v] = u;
+            }
+        }
+    };
+    vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
+        /// DSU
+        dsu d;
+        int n = nums.size();
+        d.makeset(n+1);
+        vector<pair<int,int>> a;
+        for(int i=0;i<n;i++){
+            a.push_back({nums[i], i});
+        }
+        sort(a.begin(), a.end());
+        int j = 0;
+        while(j<n){
+            int str = a[j].first;
+            int k = j+1;
+            while(k<n && abs(a[k].first - a[k-1].first)<=limit){
+                d.unite(a[j].second, a[k].second);
+                k+=1;
+            }
+            j = k;
+        }
+
+        map<int, vector<int>> m;
+        for(int i=0;i<n;i++){
+            int par = d.find(i);
+            m[par].push_back(i);
+        }
+        for(int i=0;i<n;i++){
+            int par = d.find(i);
+        }
+        vector<int> ans(n, 0);
+        for(auto it=m.begin();it!=m.end();it++){
+            vector<int> now = it->second;
+            vector<int> temp;
+            for(int k=0;k<now.size();k++){
+                temp.push_back(nums[now[k]]);
+            }
+            sort(temp.begin(), temp.end());
+            sort(now.begin(), now.end());
+
+            for(int k=0;k<temp.size();k++){
+                nums[now[k]] = temp[k];
+            }
+        }
+
+        return nums;
+    }
+};
