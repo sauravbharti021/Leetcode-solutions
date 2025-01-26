@@ -1,0 +1,62 @@
+class Solution {
+public:
+    vector<vector<int>> adj;
+    int bfs(int n, set<int> &visited) {
+        queue<pair<int, int>> q;
+        q.push({n, 0});
+        int mx = 0;
+        while (!q.empty()) {
+            pair<int, int> p = q.front();
+            q.pop();
+            for (auto i : adj[p.first]) {
+                if (visited.find(i) == visited.end()) {
+                    visited.insert(i);
+                    q.push({i, p.second + 1});
+                    mx = max(mx, p.second + 1);
+                }
+            }
+        }
+
+        return mx;
+    }
+    int maximumInvitations(vector<int>& favorite) {
+        int n = favorite.size();
+        adj.assign(n + 1, vector<int>{});
+
+        for (int i = 0; i < n; i++) {
+            int u = i, v = favorite[i];
+            adj[v].push_back(u);
+        }
+        int longRow = 0, longCycle = 0;
+        vector<bool> vis(n, false);
+        for (int i = 0; i < n; i++) {
+            if (vis[i])
+                continue;
+            int str = i, now = i;
+            int dis = 0;
+            map<int, int> m;
+            while (true) {
+                if (vis[now])
+                    break;
+                vis[now] = true;
+                m[now] = (dis + 1);
+                dis += 1;
+                if (m.find(favorite[now]) != m.end()) {
+                    int dis = m[now] - m[favorite[now]] + 1;
+                    if (dis == 2) {
+                        set<int> setTemp{now, favorite[now]};
+                        longRow += 2 + bfs(now, setTemp) +
+                                                   bfs(favorite[now], setTemp);
+                    } else {
+                        longCycle = max(longCycle, dis);
+                    }
+
+                    break;
+                }
+                now = favorite[now];
+            }
+        }
+
+        return max(longCycle, longRow);
+    }
+};
