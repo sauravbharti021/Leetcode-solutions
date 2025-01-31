@@ -1,0 +1,97 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> dir{{0,1},{0,-1},{1,0},{-1,0}};
+    vector<vector<bool>> vis;
+    struct dsu{
+        vector<int> par, rank;
+        void makeset(int n){
+            par.assign(n+1, 1);
+            rank.assign(n+1, 1);
+            rep(i, n+1) par[i]=i;
+        }
+        int find(int x){
+            while(x!=par[x]) x= par[x];return x;
+        }
+        void unite(int u, int v){
+            u= find(u);
+            v= find(v);
+            if(rank[u]<rank[v]){
+                rank[v]+= rank[u];
+                par[u]= v;
+            }else{
+                rank[u]+= rank[v];
+                par[v]=u;
+            }
+        }
+    };
+
+    dsu d;
+    void dfs(int i, int j, vector<vector<int>>&g){
+        int n = g.size();
+        if(i>=n || j>=n || i<0 || j<0)
+        return;
+        vis[i][j]= true;
+        rep(k,4){
+            int u = i+ dir[k][0], v= j+ dir[k][1];
+            if(u>=0 && v>=0 && u<n && v<n && !vis[u][v] && g[u][v]){
+                dfs(u, v, g);
+                d.unite((n*i)+j, (u*n)+v);
+            }
+        }
+    }
+    int largestIsland(vector<vector<int>>& grid) {
+        int n= grid.size();
+        vis.assign(n+1, vector<bool>(n+1, false));
+
+        d.makeset(n*n);
+        /*
+            we will try to utillize the zero, but no gurantee that always we will need to use zero. There could be better islands prexisting.
+        */
+        int ans = 0;
+        vis.assign(n+1, vector<bool>(n+1, false));
+        rep(i,n){
+            rep(j,n){
+                if(grid[i][j]==1 && !vis[i][j]){
+                    dfs(i,j, grid);
+                }
+            }
+        }
+
+        map<int, int> m;
+        int mx = 0;
+        vector<vector<int>> senior(n+1, vector<int> (n+1));
+        rep(i,n){
+            rep(j,n){
+                if(grid[i][j]){
+                    int par = d.find((i*n)+j);
+                    m[par]+=1;
+                    senior[i][j] = par;
+                    mx = max(mx, m[par]);
+                }
+            }
+        }
+
+
+        rep(i, n){
+            rep(j, n){
+                if(grid[i][j]==0){
+                    int comp = 1;
+                    set<int> s;
+                    rep(p, 4){
+                        int u = i+ dir[p][0], v= j+ dir[p][1];
+                        if(u>=0 && v>=0 && u<n && v<n && grid[u][v] ){
+                            int parent = senior[u][v];
+                            if(s.find(parent)==s.end()){
+                                comp+= m[parent];
+                                s.insert(parent);
+                            }
+                        }
+                    }
+                    mx = max(mx, comp);
+                }
+            }
+        }
+        return mx;
+    }
+};
