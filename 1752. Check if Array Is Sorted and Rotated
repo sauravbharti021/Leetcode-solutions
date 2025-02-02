@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool check(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> b= nums;
+        sort(b.begin(), b.end());
+        for(int i=0;i<n;i++){
+            int j = 0, k = i, flag = 0;
+            while(j<n && nums[k%n]==b[j]){
+                j++, k++;
+            }
+            if(j==n){
+                return true;
+            }
+        }
+
+        return false;
+    }
+};
