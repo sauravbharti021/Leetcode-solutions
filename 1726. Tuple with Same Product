@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int tupleSameProduct(vector<int>& nums) {
+        map<int,int> m;
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                int now = nums[i]* nums[j];
+                m[now]+=1;
+            }
+        }
+        int ans= 0;
+        for(auto i: m){
+            int now = ((i.second)*(i.second-1))/2 * 8;
+            ans+= now;
+        }
+        return ans;
+    }
+};
