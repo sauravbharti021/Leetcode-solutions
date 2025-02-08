@@ -1,0 +1,35 @@
+class NumberContainers {
+
+    /*
+        two maps -
+            one for the index and the number
+            other for the no of indices in that number
+    */
+public:
+    map<int,int> getNumber;
+    map<int, set<int>> allIndices;
+    NumberContainers() {
+        
+    }
+    
+    void change(int index, int number) {
+
+        if(getNumber.find(index)!=getNumber.end()){
+            int noAtThatIndex = getNumber[index];
+            allIndices[noAtThatIndex].erase(index);
+            if(allIndices[noAtThatIndex].size()==0){
+                allIndices.erase(noAtThatIndex);
+            }
+        }
+
+        getNumber[index] = number;
+        allIndices[number].insert(index);
+    }
+    
+    int find(int number) {
+        if(allIndices.find(number)!=allIndices.end()){
+            return *allIndices[number].begin();
+        }
+        return -1;
+    }
+};
