@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string removeOccurrences(string s, string part) {
+        int n = s.size(), m = part.size();
+        if(part.size()>s.size()) return s;
+
+        string prev="";
+        for(int i=0;i<n;i++){
+            prev+= s[i];
+            if(prev.size()>=part.size()){
+                int size = prev.size();
+                string temp = prev.substr(size-m, m);
+                if(temp==part){
+                    prev = prev.substr(0, size-m);
+                }
+            }
+        }
+
+        return prev;
+    }
+};
