@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maximumSum(vector<int>& nums) {
+        int n = nums.size();
+        map<int,vector<int>> m;
+        for(int i=0;i<n;i++){
+            m[digSum(nums[i])].push_back(nums[i]);
+        }
+        int mx = -1;
+        for(auto i: m){
+            if(i.second.size()>=2){
+                sort(i.second.begin(), i.second.end());
+                int size = i.second.size();
+                mx = max(mx, i.second[size-1] + i.second[size - 2]);
+            }
+        }
+
+        return mx;
+    }
+    int digSum(int n){
+        int ans = 0;
+        while(n>0){
+            ans+= (n%10);
+            n/=10;
+        }
+        return ans;
+    }
+};
