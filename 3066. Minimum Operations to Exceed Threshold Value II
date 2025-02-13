@@ -1,0 +1,25 @@
+#define ll long long
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int k) {
+       int n = nums.size();
+       priority_queue<ll, vector<ll>, greater<ll>> p;
+       for(int i=0;i<n;i++){
+        p.push(nums[i]);
+       } 
+        int cnt=0;
+       while(p.size()>1){
+        ll x= p.top();
+        p.pop();
+        if(x>=k) break;
+        ll y = p.top();
+        p.pop();
+        ll z= min(x,y) * 2+ max(x,y);
+        p.push(z);
+        cnt+=1;
+       }
+
+       return cnt;
+
+    }
+};
