@@ -1,0 +1,28 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class ProductOfNumbers {
+public:
+    vector<int> pre, zeroCount;
+    int cnt=0;
+    ProductOfNumbers() {
+        pre.assign(4e4+1, 1);
+        zeroCount.assign(4e4+1, 0);
+    }
+    
+    void add(int num) {
+        cout<<cnt<<"\n";
+        if(cnt==0) pre[cnt]=num;
+        else pre[cnt] = ((pre[cnt-1]!=0 ? pre[cnt-1]: 1)*num);
+        if(num==0) zeroCount[cnt]+=1;
+        
+        zeroCount[cnt]+=(cnt>0 ? zeroCount[cnt-1] : 0);
+        cnt+=1;
+    }
+    
+    int getProduct(int k) {
+        int size = cnt-1;
+        int zero = zeroCount[size] - ((size-k>=0 ? zeroCount[size-k] : 0));
+        if(zero>0) return 0;
+        int ans = pre[size]/(((size-k)>=0 ? (pre[size-k]==0 ? 1 : pre[size-k]) : 1));
+        return ans;
+    }
+};
