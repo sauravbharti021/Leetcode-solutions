@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<int> good;
+    Solution(){
+        
+    }
+    bool helper(int n, int original){
+        string f = to_string(n);
+        int size = f.size();
+        for(int i=0;i<(1<<size);i++){
+            string now = "";
+            int temp = 0;
+            for(int j=0;j<size;j++){
+                now+=f[j];
+                if(i&(1<<j)){
+                    temp+= val(now);
+                    now="";
+                }
+            }
+            if(now!=""){
+                temp+= val(now);
+            }
+            if(temp==original) return true;
+        }
+        return false;
+    }
+    int val(string s){
+        if(s=="") return 0;
+        return stoi(s);
+    }
+    int punishmentNumber(int n) {
+        for(int i=1;i<=n;i++){
+            if(helper(i*i, i)) good.push_back(i);
+        }
+        auto it = upper_bound(good.begin(), good.end(), n);
+
+        int upto= (it-good.begin());
+        int ans = 0;
+        for(int i=0;i<min(upto, (int)good.size());i++){
+            if(good[i]<=n){
+                ans+= (good[i]*good[i]);
+            }
+        }
+        return ans;
+    }
+};
