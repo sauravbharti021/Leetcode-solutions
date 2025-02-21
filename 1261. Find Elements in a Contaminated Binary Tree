@@ -1,0 +1,27 @@
+#define ll long long
+class FindElements {
+public:
+    set<ll> st;
+    FindElements(TreeNode* root) {
+        recur(root, 0);
+        st.insert(0);
+    }
+    void recur(TreeNode* head, ll val){
+        if(head==NULL)
+        return;
+
+        if(head->left!=NULL){
+            st.insert(val*2 + 1);
+            recur(head->left, val*2+1);
+        }
+        if(head->right!=NULL){
+            st.insert(val*2+2);
+            recur(head->right, val*2+2);
+        }
+    }
+    
+    bool find(int target) {
+        if(st.find(target)!=st.end()) return true;
+        return false;
+    }
+};
