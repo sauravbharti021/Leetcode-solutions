@@ -1,0 +1,57 @@
+ #define ff first
+ #define ss second
+ #define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int index= 1;
+    TreeNode* recur(int parIndex, vector<pair<int,int>> &a){
+        if(index>a.size()){
+            return NULL;
+        }
+
+        TreeNode* now = new TreeNode(a[parIndex].ss);
+        if(index<a.size() && a[index].ff>a[parIndex].ff){
+            int prevIndex= index;
+            index+=1;
+            now-> left = recur(prevIndex, a);
+        }
+
+        if(index<a.size() && a[index].ff>a[parIndex].ff){
+            int prevIndex= index;
+            index+=1;
+            now->right = recur(prevIndex, a);
+        }
+
+        return now;
+    }
+    vector<pair<int,int>> helper(string &s){
+        int j=0;
+        int cnt=0;
+        int n = s.size();
+        vector<pair<int,int>> now;
+        while(j<n){
+            if(s[j]>= '0' && s[j]<='9'){
+                string temp="";
+                while(j<n && s[j]>= '0' && s[j]<='9'){
+                    temp+= s[j];
+                    j++;
+                }
+                now.push_back({cnt, stoi(temp)});
+                cnt=0;
+            }else{
+                cnt+=1;
+                j+=1;
+            }
+        }
+        return now;
+    }
+    TreeNode* recoverFromPreorder(string traversal) {
+        vector<pair<int,int>> a = helper(traversal);
+        
+        TreeNode* ans = recur(0,a);
+        return ans;
+    }
+    void print(vector<pair<int,int>> a){
+        rep(i,a.size()) cout<<a[i].ff<<" p "<<a[i].ss<<"\n";
+    }
+};
