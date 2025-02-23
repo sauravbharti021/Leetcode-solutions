@@ -1,0 +1,52 @@
+
+ #define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    /*
+        pre order - root, left, right
+        post order- left, right, root
+
+        only problem is confirming as left child or backtracking
+
+        1 2 3
+        2 3 1
+    */
+
+    int index=1;
+    map<int,int> m;
+    set<int> vis;
+    TreeNode* recur(int curIndex, vector<int> &pre, vector<int> &post){
+        if(curIndex>=pre.size()){
+            return NULL;
+        }
+        int n= pre.size();
+        vis.insert(pre[curIndex]);
+        TreeNode* cur = new TreeNode(pre[curIndex]);
+        int tempIndex = m[pre[curIndex]];
+        int flag = 0;
+        if( index<n && m[pre[index]] <m[pre[curIndex]] && tempIndex-1>=0 && vis.find(post[tempIndex-1])==vis.end() ){
+            int prevIndex= index;
+            index+=1;
+            flag=1;
+            cur->left = recur(prevIndex, pre, post);
+        }
+
+        if(flag){
+            if(tempIndex-1>=0 && vis.find(post[tempIndex-1])==vis.end() && (m[pre[curIndex]] - 1)>=0 &&  (post[m[pre[curIndex]] - 1]) == pre[index] ){
+                int prevIndex = index;
+                index+=1;
+                cur->right = recur(prevIndex, pre, post);
+            }
+        }
+        
+        return cur;
+    }
+    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+        int n= preorder.size();
+        rep(i,n){
+            m[postorder[i]] = i;
+        }
+        TreeNode* ans = recur(0, preorder, postorder);
+        return ans;
+    }
+};
