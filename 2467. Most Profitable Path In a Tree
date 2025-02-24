@@ -1,0 +1,79 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> par;
+    vector<vector<int>> adj;
+    vector<int> disB;
+    void recurBob(int bob, int dis){
+        disB[bob] = dis;
+        if(par[bob]!=-1) {
+            recurBob(par[bob], dis+1);
+        }
+    }
+    void findPar(int n, int parent){
+        par[n] = parent;
+
+        for(auto i: adj[n]){
+            if(i!=parent){
+                findPar(i, n);
+            }
+        }
+    }
+
+    int recur(int n, int parent, int dis, vector<int> &amount){
+
+        int mx = -1e9;
+        int ans = 0;
+        if(disB[n]!=-1){
+            int total_d = disB[0];
+            // collide
+            if(total_d%2==0){
+                int half = total_d/2;
+                if(dis==half){
+                    ans+= (amount[n]/2);
+                }
+                else if(dis>half){
+                    ans=0;
+                }else{
+                    ans+= (amount[n]);
+                }
+            }
+            // no-collision
+            else{
+               int half = total_d/2; p
+               if(dis>half){
+                    ans=0;
+                }else{
+                    ans+= (amount[n]);
+                }
+            }
+        }else{
+            ans = amount[n];
+        }
+
+        for(auto i:adj[n]){
+            if(i!=parent){
+                int value= recur(i,n , dis+1, amount);
+                mx = max(mx, ans + value);
+            }
+        }
+        if(mx==-1e9) mx =ans;
+        return mx;
+    }
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        int n= edges.size();
+        par.assign(n+1, 0);
+        adj.assign(n+1, vector<int>{});
+        disB.assign(n+1, -1);
+        rep(i,n){
+            int u= edges[i][0], v= edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        findPar(0, -1);
+        recurBob(bob, 0);
+
+        int ans = recur(0, -1, 0, amount);
+        return ans;
+    }
+};
