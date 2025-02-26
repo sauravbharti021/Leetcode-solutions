@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int doKadane(vector<int> &a){
+        int n= a.size();
+        int mx = 0, sum=0;
+        for(int i=0;i<n;i++){
+            sum+= a[i];
+            mx = max(mx, sum);
+            if(sum<0) sum = 0;
+        }
+
+        return mx;
+    }
+    int maxAbsoluteSum(vector<int>& nums) {
+        int n= nums.size();
+        // kadane will work with both signs.
+
+        vector<int> dup = nums;
+        for(int i=0;i<n;i++){
+            dup[i] = (-1*dup[i]);
+        }
+
+        int mx = max(doKadane(dup), doKadane(nums));
+        return mx;
+    }
+};
