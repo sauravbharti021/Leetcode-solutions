@@ -1,0 +1,32 @@
+#define ll long long
+class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& arr) {
+        set<int> st;
+        int n = arr.size();
+        for(int i=0;i<n;i++){
+            st.insert(arr[i]);
+        }
+        int mx = 0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int cnt = 2;
+                ll prev= arr[j];
+                int flag = 0;
+                ll now = (ll)arr[i] + (ll)arr[j];
+                while(st.find(now)!=st.end()){
+                    int temp = now;
+                    now+= prev;
+                    prev = temp;
+                    cnt+=1;
+                    flag = 1;
+                }
+
+                if(flag){
+                    mx = max(mx, cnt);
+                }
+            }
+        }
+        return mx;
+    }
+};
