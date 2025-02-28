@@ -1,0 +1,71 @@
+#define all(c) c.begin(), c.end()
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int recur(int i, int j, string &s, string &t){
+        int n= s.size(), m= t.size();
+        if(i<0 || j<0)
+        return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int ans = 0;
+        if(s[i]==t[j]){
+            ans = 1+ recur(i-1, j-1, s, t);
+        }else{
+            ans = max(recur(i-1,j, s, t), recur(i, j-1, s, t));
+        }
+
+        return dp[i][j]=ans;
+    }
+    string shortestCommonSupersequence(string str1, string str2) {
+        /*
+            simple question about largest commmon subsequence
+
+        */
+        int n= str1.size(), m= str2.size();
+        dp.assign(n+1, vector<int>(m+1, -1));
+        int size = recur(n-1, m-1, str1, str2);
+        if(size==n || size==m){
+            return n>=m ? str1 : str2;
+        }
+        string lcs ="";
+        for(int i=n-1;i>=0;i--){
+            for(int j=m-1;j>=0;j--){
+                if(dp[i][j]==size && size>0 && str1[i]==str2[j]){
+                    lcs+= str1[i];
+                    size--;
+                    break;
+                }
+            }
+        }
+        reverse(all(lcs));
+        int i=0,j=0,k=0;
+        string ans="";
+        while(i<n && j<m && k<lcs.size()){
+            if(str1[i]==str2[j] && lcs[k]==str1[i]){
+                ans+= str1[i];
+                i++,j++,k++;
+            }else if(str1[i]==lcs[k]){
+                ans+= str2[j];
+                j++;
+            }else if(str2[j]==lcs[k]){
+                ans+= str1[i];
+                i++;
+            }else{
+                ans+= str1[i];
+                ans+= str2[j];
+                i++,j++;
+            }
+        }
+
+        while(i<n) {
+            ans+= str1[i];
+            i++;
+        }
+        while(j<m){
+            ans+= str2[j];
+            j+=1;
+        }
+
+        return ans;
+    }
+};
