@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<int> fre(n*n+1, 0);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                fre[grid[i][j]] +=1;
+            }
+        }
+
+        vector<int> ans(2,0);
+        for(int i=1;i<=n*n;i++){
+            if(fre[i]==0) ans[1]=i;
+            else if(fre[i]==2) ans[0]=i;
+        }
+        return ans;
+    }
+};
