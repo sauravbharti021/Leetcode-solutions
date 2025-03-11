@@ -1,0 +1,28 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+#define rrep(i,n) for(int i=n-1;i>=0;i--)
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int n = s.size();
+        int a =1e9, b= 1e9, c=1e9;
+        vector<vector<int>> f(n+1, vector<int>(3, 1e9));
+        rrep(i,n){
+            rep(j,3){
+                if(j==(s[i]-'a'))
+                f[i][j] = i;
+                else{
+                    f[i][j] = f[i+1][j];
+                }
+            }
+        }
+
+        int ans = 0, flag=0;
+        for(int i=0;i+3<=n;i++){
+            int next = max(f[i][0], max(f[i][1], f[i][2]));
+
+            if(next<1e9) ans+= (n-next);
+        }
+
+        return ans;
+    }
+};
