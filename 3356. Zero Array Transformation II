@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+        int n= nums.size();
+        int q= queries.size();
+        int l= -1, r= q;
+        int avaAns=0, tempFlag = 0;
+        for(int i=0;i<n;i++){
+            if(nums[i]>0) {
+                tempFlag = 1;
+                break;
+            }
+        }
+        if(!tempFlag) return 0;
+        while(r-l>1){
+            int mid = (l+r)/2;
+            vector<int> pre(n+1, 0);
+            for(int i=0;i<=mid;i++){
+                int left = queries[i][0], right = queries[i][1], val = queries[i][2];
+                pre[left]-=val;
+                pre[right+1]+=val;
+            }
+            int flag = 0;
+            for(int i=0;i<n;i++){
+                if(i>0)
+                    pre[i]+= pre[i-1];
+                if((pre[i]+nums[i]) >0) {
+                    flag=1;
+                    break;
+                }
+            }
+
+            if(!flag){
+                r=mid;
+                avaAns=1;
+            }else{
+                l=mid;
+            }
+        }
+        if(!avaAns) return -1;
+        return r+1;
+    }
+};
