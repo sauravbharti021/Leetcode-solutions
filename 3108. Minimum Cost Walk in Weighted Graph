@@ -1,0 +1,103 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+struct dsu{
+    vector<int> par;
+    vector<double> rank;
+    void makeset(int n){
+        par.assign(n+1, -1);
+        rank.assign(n+1, 0.0001);
+        rep(i,n+1) par[i]=i;
+    }
+    ll find(ll x){
+        while(par[x]!=x)
+            x=par[x];
+        return x;
+    }
+    void unite(ll u, ll v){
+        u= find(u);
+        v= find(v);
+        if(rank[u]>rank[v]){
+            rank[u] += rank[v];
+            par[v] =u;
+        }else{
+            rank[v] += rank[u];
+            par[u] =v;
+        }
+    }
+};
+    
+    vector<int> minimumCost(int n, vector<vector<int>>& edges, vector<vector<int>>& query) {
+        /*
+            Can never top the number
+        */
+        
+        dsu d;
+        d.makeset(n+1);
+        
+        rep(i, edges.size()){
+            int u= edges[i][0], v= edges[i][1];
+            d.unite(u,v);
+        }
+        map<int, set<int>> m;
+        
+        rep(i, edges.size()){
+            int u= edges[i][0], v= edges[i][1], w=edges[i][2];
+            int par = d.find(u);
+            m[par].insert(w);
+        }
+        
+        map<int, ll> m2;
+        for(auto i: m){
+            
+            vector<int> a;
+            for(auto j: i.ss){
+                a.pb(j);
+            }
+            // cout<<i.ff<<"\n";
+            // rep(i,a.size()) cout<<a[i]<<" "; cout<<"\n";
+            
+            ll x= a[0];
+            for(int j=1;j<a.size();j++) x&= a[j];
+            
+            m2[i.ff]= x;
+            // cout<<x<<"haha\n";
+        }
+        
+//         rep(i, n){
+//             cout<<i<<" : "<<d.find(i)<<"\n";
+            
+//         }
+        vector<int> ans(query.size());
+        rep(i, query.size()){
+            ll u= query[i][0], v=query[i][1];
+            if(u==v){
+                ans[i]= 0;
+                continue;
+            }
+            ll now= d.find(u);
+            if(now!=d.find(v)){
+                ans[i]= -1;
+                continue;
+            }
+            
+            ans[i] = m2[now];
+        }
+        
+        return ans;
+        
+    }
+};
