@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<vector<int>> adj;
+    vector<bool> vis;
+    vector<int> connected;
+    void dfs(int n, map<int, set<int>> &adj){
+        connected.push_back(n);
+        vis[n] = true;
+        for(auto i: adj[n]){
+            if(!vis[i])
+              dfs(i, adj);
+        }
+    }
+    int countCompleteComponents(int n, vector<vector<int>>& edges) {
+        adj.assign(n+1, vector<int>{});
+        vis.assign(n+1, false);
+        map<int,set<int>> m; 
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][0], v = edges[i][1];
+            m[u].insert(v);
+            m[v].insert(u);
+        }
+        int forest = 0;
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                connected.clear();
+               dfs(i, m);
+               if(helper(m))
+                forest+=1;
+            }
+        }
+
+        return forest;
+    }
+    bool helper(map<int,set<int>> &adj){
+        for(int i=0;i<connected.size();i++){
+            for(int j=i+1;j<connected.size();j++){
+                if(adj[connected[i]].find(connected[j])==adj[connected[i]].end() ||
+                    adj[connected[j]].find(connected[i]) == adj[connected[j]].end()
+                )
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
