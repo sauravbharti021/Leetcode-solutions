@@ -1,0 +1,57 @@
+class Solution {
+public:
+    unordered_map<string, bool> computed;
+    set<string> ans;
+    set<string> cycle;
+    bool recur(string& s, set<string>& avail,
+               map<string, vector<string>>& needs) {
+
+        int flag = 1;
+        if (avail.find(s) != avail.end())
+            return computed[s] = true;
+
+        if (computed.find(s) != computed.end()) {
+            return computed[s];
+        }
+        if (needs.find(s) == needs.end()) {
+            return computed[s] = false;
+        }
+
+        if (cycle.find(s) != cycle.end()) {
+            return computed[s] = false;
+        }
+
+        cycle.insert(s);
+        for (auto i : needs[s]) {
+            flag &= recur(i, avail, needs);
+        }
+        if (flag) {
+            ans.insert(s);
+        }
+
+        return computed[s] = flag;
+    }
+
+    vector<string> findAllRecipes(vector<string>& recipes,
+                                  vector<vector<string>>& ingredients,
+                                  vector<string>& supplies) {
+        set<string> avail;
+        map<string, vector<string>> needs;
+        for (int i = 0; i < supplies.size(); i++) {
+            avail.insert(supplies[i]);
+        }
+
+        for (int i = 0; i < recipes.size(); i++) {
+            for (int j = 0; j < ingredients[i].size(); j++)
+                needs[recipes[i]].push_back(ingredients[i][j]);
+        }
+
+        for (int i = 0; i < recipes.size(); i++) {
+            recur(recipes[i], avail, needs);
+        }
+        vector<string> answer;
+        for (auto i : ans)
+            answer.push_back(i);
+        return answer;
+    }
+};
