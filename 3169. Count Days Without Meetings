@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int countDays(int days, vector<vector<int>>& meetings) {
+        int prev=0;
+        sort(meetings.begin(), meetings.end());
+
+        int n=meetings.size();
+        int ans= 0;
+        int last = 0;
+        int j=0;
+        while(j<n){
+            int mi= meetings[j][0], mx= meetings[j][1];
+            while(j<n && mi<=meetings[j][0] && mx>=meetings[j][0] ){
+                mi = min(mi, meetings[j][0]);
+                mx = max(mx, meetings[j][1]);
+                j++;
+            }
+            last = max(last, mx);
+            ans+= (mi - prev)-1;
+            prev = last;    
+        }
+        ans+= (days - last );
+
+        return ans;
+
+    }
+};
