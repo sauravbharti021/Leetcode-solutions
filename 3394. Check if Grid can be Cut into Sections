@@ -1,0 +1,48 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
+
+        vector<pair<int,int>> row, col;
+        for(int i=0;i<rectangles.size();i++){
+            row.push_back({rectangles[i][0], rectangles[i][2]});
+            col.push_back({rectangles[i][1], rectangles[i][3]});
+        }
+        sort(row.begin(), row.end());
+        sort(col.begin(), col.end());
+        if(finder(row)) return true;
+        if(finder(col)) return true;
+
+        return false;
+    }
+    bool finder(vector<pair<int,int>> &a){
+        int n= a.size();
+        int left = 0, right = 0;
+        int i=0;
+        int j = nextIndex(i, a);
+        if(j<n){
+            left = 1;
+        }
+        int k = nextIndex(j, a);
+        if(k<n){
+            right = 1;
+        }
+        if(left && right ) return true;
+        return false;
+       
+    }
+    int nextIndex(int i, vector<pair<int,int>> &a){
+        int n = a.size();
+        if(i>=n) return i;
+        int mx= a[i].ss, mi = a[i].ff;
+        while(i<n){
+            if(mi<a[i].ss && mx>a[i].ff){
+                mx=max(mx, a[i].ss);
+                mi = min(mi, a[i].ff);
+                i++;
+            }else break;
+        }
+        return i;
+    }
+};
