@@ -1,0 +1,38 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        int n= s.size();
+        vector<pair<int,int>> f(26);
+        for(int i=0;i<26;i++){
+            f[i] = {1e9, -1};
+        }
+
+        for(int i=0;i<n;i++){
+            int x= (s[i]-'a');
+            f[x].ff = min(f[x].ff, i);
+            f[x].ss = max(f[x].ss, i);
+        }
+        int cnt = 0;
+        vector<int> ans;
+        int left = 0, right=0;
+        for(int i=0;i<n;i++){
+            int x= (s[i]-'a');
+            cout<<f[x].ff<<" "<<f[x].ss<<" "<<left<<" "<<right<<" "<< i<<"\n";
+            if(f[x].ff>right){
+                cnt+=1;
+                ans.push_back(right-left+1);
+                left = i;
+                right = f[x].ss;
+
+            }else  if(f[x].ss>=right){
+                right= f[x].ss;
+            }
+        }
+
+        ans.push_back(right-left+1);
+
+        return ans;
+    }
+};
