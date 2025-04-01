@@ -1,0 +1,20 @@
+#define ll long long
+class Solution {
+public:
+    vector<ll> dp;
+    ll recur(int i, vector<vector<int>> &questions){
+        if(i>= questions.size())
+            return 0;
+        if(dp[i]!=-1)
+            return dp[i];
+        ll ans = max(questions[i][0]+ recur(i+questions[i][1]+1, questions), recur(i+1, questions));
+
+        return dp[i]=ans;
+    }
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n= questions.size();
+        dp.assign(n+1, -1);
+        ll ans = recur(0, questions);
+        return ans;
+    }
+};
