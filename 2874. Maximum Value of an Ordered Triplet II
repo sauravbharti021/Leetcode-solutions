@@ -1,0 +1,22 @@
+#define ll long long
+#define ff first
+#define ss second
+class Solution {
+public:
+    long long maximumTripletValue(vector<int>& nums) {
+        int n= nums.size();
+        vector<ll> left(n, 0), right(n, 0);
+
+        for(int i=n-2;i>=0;i--){
+            right[i]= max((ll)nums[i+1], right[i+1]);
+        }
+        for(int i=1;i<n;i++){
+            left[i] = max((ll)nums[i-1], left[i-1]);
+        }
+        ll ans = 0;
+        for(int i=1;i<n-1;i++){
+            ans = max(ans, (left[i] - (ll)nums[i]) * right[i] );
+        }
+        return ans;
+    }
+};
