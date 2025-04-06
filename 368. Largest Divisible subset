@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    vector<bool> vis;
+    vector<int> recur(int i,  vector<int> &nums){
+        if(i>=nums.size())
+            return vector<int> {};
+        if(vis[i]){
+            return dp[i];
+        }
+        vis[i] = true;
+        vector<int> ans;
+
+        for(int j=i+1;j<nums.size();j++){
+            if(nums[j]%nums[i] == 0){
+                vector<int> now = recur(j, nums);
+                if(ans.size()< now.size()){
+                    ans = now;
+                }
+            }
+        }
+        ans.push_back(nums[i]);
+        return dp[i] = ans;
+    }
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        int n= nums.size();
+        sort(nums.begin(), nums.end());
+        dp.assign(n+1, vector<int>{});
+        vis.assign(n+1, false);
+
+        vector<int> res;
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                vector<int> temp = recur(i, nums);
+                if(temp.size()>res.size()) res = temp;
+            }
+        }
+        return res;
+    }
+};
