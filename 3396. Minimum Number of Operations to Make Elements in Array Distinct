@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        set<int> st;
+        int n= nums.size();
+        int to_delete = 0;
+        for(int i=n-1;i>=0;i--){
+            if(st.find(nums[i])!=st.end()){
+                to_delete = i+1;
+                break;
+            }else{
+                st.insert(nums[i]);
+            }
+        }
+        return ceil((1.0*to_delete)/3);
+    }
+};
