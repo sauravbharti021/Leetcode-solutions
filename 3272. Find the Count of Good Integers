@@ -1,0 +1,74 @@
+#define ll long long
+class Solution {
+public:
+    ll ans = 0;
+    unordered_set<string> st;
+    void recur(int left, int right, string s,int n, int k){
+        if(left>right){
+            if(stoll(s)%k==0){
+                sort(s.begin(), s.end());
+                if(st.find(s)==st.end()){
+                    st.insert(s);
+                    ans+= good_arrangements(s);
+                }
+            }
+            return;
+        }
+        string now="";
+        for(int i=0;i<n;i++){
+            if(s[i]!='*'){
+                now+= s[i];
+            }else{
+                now+= '*';
+            }
+        }
+        for(int i=(left==0 ? 1 : 0);i<=9;i++){
+            string ready = now;
+            now[left] = ('0' + i);
+            now[right] = ('0' + i);
+
+            recur(left+1, right-1, now, n, k);
+        }
+    }
+    long long countGoodIntegers(int n, int k) {
+        /*
+        540045
+
+        4 5 4 3 2 1
+        / 2 * 2 * 2
+
+        all possible arrangements - arrangements having zero in prefix
+        */
+        string test = "";
+        for(int i=0;i<n;i++) test+= '*';
+
+        recur(0, n-1, test, n, k);
+        return ans;
+    }
+    ll good_arrangements(string &s){
+        ll total_char=s.size();
+        vector<ll> fre(10, 0);
+        for(int i=0;i<s.size();i++)
+            fre[(s[i]-'0')]+=1;
+        int for_dup = 1;
+        for(int i=0;i<10;i++){
+            if(fre[i]>1){
+                for_dup *= fac(fre[i]);
+            }
+        }
+        ll ans= fac(total_char)/ for_dup;
+
+        if(fre[0]>0){
+            ll zero_p = for_dup/fac(fre[0]) * ( fac(fre[0] - 1) );
+            ll zero_ans = fac(total_char - 1)/zero_p;
+            ans -= zero_ans;
+        }   
+
+        return ans;
+    }
+    ll fac(ll x){
+        ll now = 1;
+        for(int i=2;i<=x;i++) now*=i;
+        return now;
+    }
+};
