@@ -1,0 +1,38 @@
+#define ll long long
+class Solution {
+public:
+    long long countFairPairs(vector<int>& nums, int lower, int upper) {
+        int n= nums.size();
+        sort(nums.begin(), nums.end());
+        int right = 0;
+        set<int> st;
+        unordered_map<int,int> m;
+        ll ans = 0;
+
+        for(int i=n-1;i>=0;i--){
+            m[nums[i]]=i;
+            st.insert(nums[i]);
+        }
+        for(int i=n-1;i>=0;i--){
+            int low = lower-nums[i];
+            int high = upper-nums[i];
+            auto lw = st.lower_bound(low);
+            int lowIndex=-1, highIndex = n-1;
+            if(lw!=st.end() && (nums[i]+ *lw)<=upper && (nums[i]+ *lw)>=lower){
+                lowIndex = m[*lw];
+            }
+            auto hw =st.upper_bound(high);
+            if(hw!=st.end()){
+                highIndex = m[*hw] -1;
+            }
+
+            if(highIndex>=lowIndex && lowIndex!=-1){
+                ans+= highIndex-lowIndex+1;
+
+                if(i>=lowIndex && i<=highIndex) ans-=1;
+            }
+        }
+
+        return ans/2;
+    }
+};
