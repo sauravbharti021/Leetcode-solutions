@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int numRabbits(vector<int>& answers) {
+        int n= answers.size();
+        /*
+         2 2 2 2 2 2 
+         store in map
+
+         2 -> 6
+         while(fre[2]>=2){
+            ans+=1;
+            fre[2]-=2;
+         }   
+        */
+        map<int,int> m;
+        for(int i=0;i<n;i++){
+            m[answers[i]]+=1;
+        }
+
+        int ans = 0;
+        for(auto i: m){
+            int fre = i.second;
+            int num = i.first;
+            if(num==0){
+                ans+= fre;
+                continue;
+            }
+            while(fre>=(num+1)){
+                fre-=(num+1);
+                ans+=(num+1);
+            }
+            if(fre>0){
+                ans+= (num+1);
+            }
+        }
+
+        return ans;
+    }
+};
