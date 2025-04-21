@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numberOfArrays(vector<int>& differences, int lower, int upper) {
+        int n = differences.size();
+        long long mx = -1e18, mi = 1e18;
+        long long sum = 0;
+        for(int i=0;i<n;i++){
+            sum+= differences[i];
+            mx = max(mx, sum);
+            mi = min(mi, sum);
+        }
+
+        long long cnt = 0;
+        for(int i=lower;i<=upper;i++){
+            long long low = i+mi;
+            long long high = i+mx;
+            if(lower<=low && upper>=high){
+                cnt+=1;
+            }
+        }
+
+        return cnt;
+    }
+};
