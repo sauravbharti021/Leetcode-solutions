@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int countLargestGroup(int n) {
+        
+        map<int,int> m;
+        int mx = 0;
+        for(int i=1;i<=n;i++){
+            int x = sumCalculator(i);
+            m[x]+=1;
+            mx = max(mx, m[x]);
+        }
+        map<int,int>m2;
+        for(auto i: m){
+            m2[i.second] +=1;
+        }
+        
+
+        return m2[mx];
+
+    }
+    int sumCalculator(int n){
+        int sum = 0;
+        while(n>0){
+            sum+= n%10;
+            n/=10;
+        }
+
+        return sum;
+    }
+};
