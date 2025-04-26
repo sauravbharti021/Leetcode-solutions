@@ -1,0 +1,62 @@
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+        int n = nums.size();
+        set<int> greaterI, smallerI;
+
+        set<int> grtIndex, smlIndex;
+        for(int i=0;i<n;i++){
+            if(nums[i]<minK){
+                smallerI.insert(i);
+            }
+            if(nums[i]>maxK){
+                greaterI.insert(i);
+            }
+            if(nums[i]==minK){
+                smlIndex.insert(i);
+            }
+            if(nums[i]==maxK){
+                grtIndex.insert(i);
+            }
+        }
+        long long ans = 0;
+        for(int i=0;i<n;i++){
+            if(nums[i]>=minK && nums[i]<=maxK){
+                auto belowSmall = smallerI.upper_bound(i);
+                auto aboveGreater = greaterI.lower_bound(i);
+
+                int belowMi, aboveMx;
+                if(belowSmall == smallerI.end()){
+                    belowMi = n;
+                }else{
+                    belowMi = *belowSmall;
+                }
+                if(aboveGreater == greaterI.end()){
+                    aboveMx = n;
+                }else{
+                    aboveMx = *aboveGreater;
+                }
+
+                int minBarrier = min( belowMi, aboveMx);
+
+                auto below = smlIndex.lower_bound(i);
+                auto above = grtIndex.lower_bound(i);
+
+                if(below == smlIndex.end()) continue;
+                if(above == grtIndex.end()) continue;
+
+                int minIndexNeeded = max(*below, *above);
+
+                if(minBarrier<= minIndexNeeded) {
+                    continue;
+                }else{
+                    ans+= (minBarrier - minIndexNeeded);
+                }
+
+            }
+        }
+
+        return ans;
+        
+    }
+};
