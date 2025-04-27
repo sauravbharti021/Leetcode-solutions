@@ -1,0 +1,41 @@
+#define mod 1000000007
+#define ll long long
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int n= arr.size();
+        vector<ll> f(n, 1);
+        helper(arr, f, 0);
+        reverse(arr.begin(), arr.end());
+        reverse(f.begin(), f.end());
+        helper(arr, f, 1);
+        
+        ll ans = 0;
+        for(int i=0;i<n;i++){
+            ans= (ans+ (arr[i]*f[i])%mod)%mod;
+            if(ans<0) ans+= mod;
+        }
+
+        return ans;
+    }
+    void helper(vector<int> &arr, vector<ll> &f, int flag){
+        int n= arr.size();
+        stack<pair<int,int>> st; 
+        for(int i=0;i<n;i++){
+            if(st.empty()){
+                st.push({arr[i], i});
+                continue;
+            }else{
+                while(!st.empty() && ((flag && st.top().first>=arr[i]) || (!flag && st.top().first>arr[i])) ){
+                    st.pop();
+                }
+
+                f[i] = (f[i] * (st.empty() ? i+1 : (i-st.top().second )))%mod;
+                if(f[i]<0) f[i]+= mod;
+
+                st.push({arr[i], i});
+            }
+
+        }
+    }
+};
