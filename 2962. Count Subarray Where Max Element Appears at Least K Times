@@ -1,0 +1,25 @@
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        int n= nums.size();
+        int mx= *(max_element(nums.begin(), nums.end()));
+        vector<int> a;
+
+        for(int i=0;i<n;i++){
+            if(nums[i]==mx){
+                a.push_back(i);
+            }
+        }
+
+        int prev = -1;
+        long long ans = 0;
+        for(int i=0;i+k<=a.size();i++){
+            long long right = n-a[i+k-1];
+            long long left = a[i]-prev;
+            ans = (ans + (right*left));
+            prev = a[i];
+        }
+
+        return ans;
+    }
+};
