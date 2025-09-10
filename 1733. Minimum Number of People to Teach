@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int minimumTeachings(int n, vector<vector<int>>& languages, vector<vector<int>>& friendships) {
+        int m= languages.size();
+        vector<vector<int>> fre(m+1, vector<int>(n+1, 0));
+        for(int i=0;i<m;i++){
+            for(int j=0;j<languages[i].size();j++){
+                fre[i+1][languages[i][j]]+=1;
+            }
+        }
+
+        vector<vector<bool>> friends(m+1, vector<bool>(m+1, false));
+        for(int i=0;i<friendships.size();i++){
+            for(int j=1;j<=n;j++){
+                int u= friendships[i][0], v= friendships[i][1];
+                if(fre[u][j]>0 && fre[v][j]>0){
+                    friends[u][v] = true;
+                    friends[v][u] = true;
+                }
+            }
+        }
+
+        int mi = 1e9;
+        for(int i=1;i<=n;i++){
+            int cnt = 0;
+            vector<bool> ignore(m+1, false); 
+            for(int j=0;j<friendships.size();j++){
+                int u = friendships[j][0], v = friendships[j][1];
+                if(friends[u][v]){
+                    continue;
+                }else{
+                    if(fre[u][i]==0 && !ignore[u]) {
+                        cnt+=1;
+                        ignore[u] = true;
+                    }
+                    if(fre[v][i]==0 && !ignore[v]) {
+                        cnt+=1;
+                        ignore[v] = true;
+                    }
+                }
+            }
+            mi = min(mi, cnt);
+        }
+
+        return mi;
+    }
+};
