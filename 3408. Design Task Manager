@@ -1,0 +1,44 @@
+class TaskManager {
+public:
+    set<pair<int, pair<int,int>>> st;
+    map<int,int> taskToUser;
+    map<int,int> taskToPriority;
+    TaskManager(vector<vector<int>>& tasks) {
+        for(int i=0;i<tasks.size();i++){
+            st.insert({tasks[i][2], {tasks[i][1], tasks[i][0]}});
+            taskToUser[tasks[i][1]] = tasks[i][0];
+            taskToPriority[tasks[i][1]] = tasks[i][2];
+        }
+    }
+    
+    void add(int userId, int taskId, int priority) {
+        st.insert({priority, {taskId, userId}});
+        taskToUser[taskId] = userId;
+        taskToPriority[taskId] = priority;
+    }
+    
+    void edit(int taskId, int newPriority) {
+        pair<int, pair<int,int>> st_pair = make_pair(taskToPriority[taskId], make_pair(taskId, taskToUser[taskId]));
+        st.erase(st_pair);
+        taskToPriority[taskId] = newPriority;
+        st.insert({newPriority, {taskId, taskToUser[taskId]}}); 
+    }
+    
+    void rmv(int taskId) {
+        pair<int, pair<int,int>> st_pair = make_pair(taskToPriority[taskId], make_pair(taskId, taskToUser[taskId]));
+        st.erase(st_pair);
+        taskToUser.erase(taskId);
+        taskToPriority.erase(taskId);
+    }
+    
+    int execTop() {
+        if(st.empty()) return -1;
+        pair<int, pair<int,int>> st_pair = *(--st.end());
+        int taskId = st_pair.second.first;
+        st.erase(st_pair);
+        taskToUser.erase(taskId);
+        taskToPriority.erase(taskId);
+
+        return st_pair.second.second;
+    }
+};
