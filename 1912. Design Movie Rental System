@@ -1,0 +1,74 @@
+class MovieRentingSystem {
+public:
+    // movie, {price, shop}
+    map<int, set<pair<int,int>>> srh;
+    // price, {shop, movie}
+    set<pair<int,pair<int,int>>> rpt_rented;
+    // {shop, movie} = price
+    map<pair<int,int>, int> unrented, rented;
+
+    MovieRentingSystem(int n, vector<vector<int>>& entries) {
+        
+        for(int i=0;i<entries.size();i++){
+            int s= entries[i][0], m =entries[i][1], p = entries[i][2];
+            srh[m].insert({p, s});
+            unrented[{s,m}] = p;
+        }
+    }
+    
+    vector<int> search(int movie) {
+        vector<int> ans;
+        vector<pair<int,int>> junk;
+        int cnt = 5;
+        while(!srh[movie].empty() && cnt--){
+            pair<int,int> now = *srh[movie].begin();
+            srh[movie].erase(now);
+            ans.push_back(now.second);
+            junk.push_back(now);
+        }
+
+        for(int i=0;i<junk.size();i++){
+            srh[movie].insert(junk[i]);
+        }
+
+        return ans;
+    }
+    
+    void rent(int shop, int movie) {
+        int price = unrented[{shop, movie}];
+
+        srh[movie].erase({price, shop});
+
+        unrented.erase({shop, movie});
+        rented[{shop, movie}] = price;
+        rpt_rented.insert({price, {shop, movie}});
+    }
+    
+    void drop(int shop, int movie) {
+        int price = rented[{shop, movie}];
+
+        rpt_rented.erase({price, {shop, movie}});
+        rented.erase({shop, movie});
+        srh[movie].insert({price, shop});
+        unrented[{shop, movie}] = price;
+    }
+    
+    vector<vector<int>> report() {
+        vector<vector<int>> ans;
+        int cnt = 5;
+        vector<pair<int,pair<int,int>>> junk;
+        while(!rpt_rented.empty() && cnt--){
+            pair<int, pair<int,int>> top = *rpt_rented.begin();
+            rpt_rented.erase(top);
+            junk.push_back(top);
+
+            vector<int> temp{top.second.first, top.second.second};
+            ans.push_back(temp);
+        }
+
+        for(auto i: junk){
+            rpt_rented.insert(i);
+        }
+        return ans;
+    }
+};
