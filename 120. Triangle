@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int recur(int r, int c, vector<vector<int>> &tri){
+        if(r==tri.size()){
+            return 0;
+        }
+        if(c>=tri[r].size()) return 1e9;
+        int n= tri.size(), m = tri[r].size();
+        if(dp[r][c]!=-1e9) return dp[r][c];
+        int ans = tri[r][c];
+        int mi = 1e9;
+        if(r+1<n && c+1<tri[r+1].size()){
+            mi = min(mi, recur(r+1, c+1, tri));
+        }
+        mi = min(mi, recur(r+1, c, tri));
+        return dp[r][c] = ans+mi;
+    }
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n= triangle.size();
+        int m = (n*(n+1))/2;
+        dp.assign(n+1, vector<int>(n+1, -1e9));
+        int ans = recur(0, 0, triangle);
+        return ans;
+    }
+};
