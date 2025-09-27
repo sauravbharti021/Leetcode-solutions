@@ -1,0 +1,29 @@
+class Solution {
+public:
+    double largestTriangleArea(vector<vector<int>>& points) {
+        int n = points.size();
+        long double ans = 0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                for(int k=j+1;k<n;k++){
+                    long double ab = distanceBWTwoPoints(points[i][0], points[i][1], points[j][0], points[j][1]);
+                    long double ac = distanceBWTwoPoints(points[i][0], points[i][1], points[k][0], points[k][1]);
+                    long double bc = distanceBWTwoPoints(points[j][0], points[j][1], points[k][0], points[k][1]);
+
+                    ans = max(ans, getArea(ab, ac, bc));
+                }
+            }
+        }
+        return ans;
+    }
+    long double distanceBWTwoPoints(int x1, int y1, int x2, int y2) {
+        long long dx = x1 - x2;
+        long long dy = y1 - y2;
+        return sqrt(static_cast<long double>(dx * dx + dy * dy));
+    }
+    long double getArea(long double ab, long double ac, long double bc){
+        long double s = (1.0*(ab+bc+ac))/2;
+        return sqrt(static_cast<long double>(s*(s-ab)*(s-bc)*(s-ac)));
+    }
+
+};
