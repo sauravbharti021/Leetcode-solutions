@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxBottlesDrunk(int numBottles, int numExchange) {
+        int ans = numBottles;
+        int totalFreeBottles = numBottles;
+
+        while(totalFreeBottles>=numExchange){
+            if(totalFreeBottles>=numExchange){
+                ans+=1;
+                totalFreeBottles-=numExchange;
+                totalFreeBottles+=1;
+                numExchange+=1;
+            }
+        }
+        return ans;
+    }
+};
