@@ -1,0 +1,54 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    vector<vector<int>> dir{{0,1}, {0,-1}, {1,0}, {-1, 0}};
+    vector<vector<pair<int, int>>> dp;
+    vector<vector<bool>> vis;
+    void dfs(int i, int j, vector<vector<int>> &heights){
+        int n = heights.size(), m= heights[0].size();
+        vis[i][j] = true;
+        for(int k=0;k<4;k++){
+            int u = dir[k][0] + i, v= dir[k][1] + j;
+            if(u>=0 && v>=0 && u<n && v<m && !vis[u][v] && heights[i][j]<=heights[u][v]){
+                dfs(u, v, heights);
+            }
+        }
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        /*
+            go to all the directions and return like that.
+        */
+        int n = heights.size(), m= heights[0].size();
+        dp.assign(n+1, vector<pair<int,int>>(m+1, {-1, -1}));
+        vis.assign(n+1, vector<bool> (m+1, false));
+        vector<vector<int>> res;
+
+        for(int i=0;i<n;i++){
+            dfs(i, 0, heights);
+        }
+        for(int j=0;j<m;j++){
+            dfs(0, j, heights);
+        }
+
+        vector<vector<bool>> pacific = vis;
+        vis.assign(n+1, vector<bool>(m+1, false));
+        for(int i=0;i<n;i++){
+            dfs(i, m-1, heights);
+        }
+        for(int j=0;j<m;j++){
+            dfs(n-1, j, heights);
+        }
+        vector<vector<bool>> atlantic = vis;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(pacific[i][j] && atlantic[i][j]){
+                    res.push_back(vector<int>{i,j});
+                }
+            }
+        }
+
+        return res;
+    }       
+};
