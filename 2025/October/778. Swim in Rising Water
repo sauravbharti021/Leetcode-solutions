@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<vector<bool>> vis;
+    vector<vector<int>> dir{{0,1},{0,-1},{1,0},{-1,0}};
+    void dfs(int i, int j, vector<vector<int>> &grid, int time){
+        int n= grid.size();
+        if(i<0 || j<0 || i>=n || j>=n) return;
+        vis[i][j] = true;
+        for(int k=0;k<4;k++){
+            int u = i+dir[k][0], v= j+dir[k][1];
+            if(u>=0 && v>=0 && u<n && v<n && !vis[u][v] && grid[u][v]<=time){
+                dfs(u, v, grid, time);
+            }
+        }
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        int n= grid.size();
+        int l = -1, r = 2501;
+        while(r-l>1){
+            int mid = (l+r)/2;
+            vis.assign(n+1, vector<bool>(n+1, false));
+            if(grid[0][0]>mid){
+                l=mid;
+                continue;
+            }
+            dfs(0, 0, grid, mid);
+            if(vis[n-1][n-1]){
+                r = mid;
+            }else{
+                l = mid;
+            }
+        }
+
+        return r;
+    }
+};
