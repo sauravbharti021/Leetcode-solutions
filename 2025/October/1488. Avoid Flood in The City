@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> avoidFlood(vector<int>& rains) {
+        int n = rains.size();
+        map<int, set<int>> m;
+        for(int i=0;i<n;i++){
+            if(rains[i]!=0) m[rains[i]].insert(i);
+        }
+
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> p;
+        vector<int> ans(n, 0);
+        set<int> full;
+        int flag = 0;
+        for(int i=0;i<n;i++){
+            if(rains[i]!=0){
+                if(full.find(rains[i])!=full.end()){
+                    flag = 1;
+                    break;
+                }
+                full.insert(rains[i]);
+                auto it = m[rains[i]].upper_bound(i);
+                if(it!=m[rains[i]].end()){
+                    ans[i] = rains[i];
+                    p.push({*it, rains[i]});
+                }
+                ans[i] = -1;
+            }else{
+                if(p.empty()){
+                   ans[i] = 1;
+                   continue; 
+                }
+                pair<int,int> x= p.top();
+                p.pop();
+
+                full.erase(x.second);
+                ans[i] = x.second;
+            }
+        }
+
+        if(flag) return vector<int> {};
+        return ans;
+    }
+};
