@@ -1,0 +1,18 @@
+#define ll long long
+class Solution {
+public:
+    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
+        vector<ll> quotients;
+        int n = spells.size();
+        for(int i=0;i<potions.size();i++){
+            quotients.push_back(ceil((1.0*success)/potions[i]));
+        }
+        sort(quotients.begin(), quotients.end()); 
+        vector<int> ans(n, 0);
+        for(int i=0;i<n;i++){
+            int index = upper_bound(quotients.begin(), quotients.end(), spells[i]) - quotients.begin();
+            ans[i] = index;
+        }
+        return ans;
+    }
+};
