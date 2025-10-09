@@ -1,0 +1,24 @@
+#define ll long long
+class Solution {
+public:
+    long long minTime(vector<int>& skill, vector<int>& mana) {
+       int n = skill.size(), m = mana.size();
+
+       vector<ll> busy_upto(n+1, 0);
+
+       for(int i=0;i<m;i++){
+        ll start = 0;
+        ll gap = 0;
+        for(int j=0;j<n;j++){
+            gap = max(gap, busy_upto[j+1]-start);
+            start+= (mana[i] * skill[j]);
+        }
+        start = gap;
+        for(int j=0;j<n;j++){
+            start+= (mana[i]* skill[j]);
+            busy_upto[j+1] = start;
+        }
+       }
+       return busy_upto.back();
+    }
+};
