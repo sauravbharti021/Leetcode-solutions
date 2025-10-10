@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maximumEnergy(vector<int>& energy, int k) {
+        int n = energy.size();
+        int ans = -1e9;
+        int flag = 0;
+        for(int i=n-1;i>=n-k;i--){
+            int cur_sum = 0;
+            int mx = -1e9;
+            int index = i;
+            while(index>=0){
+                cur_sum += energy[index];
+                mx = max(mx, cur_sum);
+                index-=k; 
+            }
+
+            ans = max(ans, mx);
+        }
+        return ans;
+    }
+};
