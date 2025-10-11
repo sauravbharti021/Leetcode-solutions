@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<long long> dp;
+    long long recur(int i, vector<pair<int,int>> &spells){
+        if(i<0) return 0;
+        if(dp[i]!=-1) return dp[i];
+
+        long long val = (long long)spells[i].first* (long long)spells[i].second;
+        int next_index;
+        if(i-2>=0 && spells[i-2].first == (spells[i].first-2) ){
+            next_index = i-3;
+        }else if(i-1>=0 && spells[i-1].first == spells[i].first -1){
+            next_index = i-2;
+        }else if(i-1>=0 && spells[i-1].first == spells[i].first - 2){
+            next_index = i-2;
+        }else{
+            next_index = i-1;
+        }
+
+        long long ans = recur(i-1, spells);
+        ans = max(ans, val+ recur(next_index, spells));
+
+        return dp[i] = ans;
+    }
+    long long maximumTotalDamage(vector<int>& power) {
+        map<int,int> m;
+        for(auto i: power){
+            m[i]+=1;
+        }
+
+        vector<pair<int,int>> spells;
+        for(auto i: m){
+            spells.push_back({i.first, i.second});
+        }
+        int size = spells.size();
+        dp.assign(size+1, -1);
+
+        long long res = recur(spells.size()-1, spells);
+
+        return res;   
+    }
+};
