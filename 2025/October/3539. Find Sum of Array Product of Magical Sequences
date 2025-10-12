@@ -1,0 +1,47 @@
+#define mod 1000000007
+#define ll long long
+class Solution {
+public:
+    vector<ll> fac;
+    Solution(){
+        fac.assign(51, 1);
+        for(int i=2;i<=50;i++){
+            fac[i] = (i*fac[i-1])%mod;
+            if(fac[i]<0) fac[i]+=mod;
+        }
+    }
+    ll modp(ll a,ll b,ll m){ 
+        a %= m;     ll res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; 
+    }
+    return res;}
+    int getInv(int n){
+        return modp(fac[n], mod-2, mod);
+    }
+    int getSetBits(int n){
+        if(n<=0) return 0;
+        return __builtin_popcount(n);
+    }
+    int dp[51][31][31][16];
+    int recur(int index, int mLeft, int kLeft, int carry, vector<int> &nums){
+        if(index>=nums.size()){
+            if(mLeft==0 && kLeft==0 && carry==0) return 1;
+            if(getSetBits(carry)==kLeft && mLeft ==0) return 1;
+            return 0;
+        }
+        if(dp[index][mLeft][kLeft][carry]!=-1) return dp[index][mLeft][kLeft][carry];
+        ll ans = 0;
+        for(int i=0;i<=mLeft;i++){
+            if(kLeft>= (i+carry)%2){
+                ans = (ans + ((recur(index+1, mLeft-i, kLeft- (carry+i)%2, (carry+i)/2, nums) * (ll)getInv(i))%mod * modp(nums[index], i, mod))%mod)%mod;
+            }
+        }
+        return dp[index][mLeft][kLeft][carry] = ans;
+    }
+    int magicalSum(int m, int k, vector<int>& nums) {
+    
+        memset(dp, -1, sizeof dp);
+        int res = recur(0, m, k, 0, nums);
+        res = (res * fac[m])%mod;
+        return (res+mod)%mod;
+    }
+};
