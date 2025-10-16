@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int findSmallestInteger(vector<int>& nums, int value) {
+        int n = nums.size();
+        set<long long> numsRem;
+        for(auto i: nums){
+            long long rem = ((i%value) + value)%value;
+            long long l = -1, r= 1e5;
+            while(r-l>1){
+                long long mid = (l+r)/2;
+                if(numsRem.find(mid*value + rem)!=numsRem.end()){
+                    l = mid;
+                }else{
+                    r = mid;
+                }
+            }
+            numsRem.insert(r*value + rem);
+        }
+        int counter = 0;
+        for(auto i: numsRem){
+            if(i!=counter) return counter;
+            counter+=1;
+        }
+        return counter;
+    }
+};
