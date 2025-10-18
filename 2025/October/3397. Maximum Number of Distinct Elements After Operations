@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxDistinctElements(vector<int>& nums, int k) {
+
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        set<int> st;
+        int prev = nums[0]-k;
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            int start = max(prev, nums[i]-k);
+            while(start<=(nums[i]+k) && st.find(nums[i]+start)!=st.end()){
+                start+=1;
+            }
+            if(start<=(nums[i]+k) && start>=(nums[i]-k)) {
+                ans+=1;
+                prev = start+1;
+            }else{
+                prev = start;
+            }
+        }
+
+        return ans;
+    }
+};
