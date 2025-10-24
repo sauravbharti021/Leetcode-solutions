@@ -1,0 +1,35 @@
+class Solution {
+public:   
+    vector<string> cache{"0", "1", "22", "333", "4444", "55555", "666666"};
+    set<long long> possible;
+    map<string, bool> dp;
+    void createCombination(string s){
+        if(s.size()>=7) return;
+        if(s!=""){
+            possible.insert(stoll(s));
+            createPermutation(s);
+        }
+        for(int i=1;i<=6;i++){
+            if(s.find(cache[i])==-1){
+                createCombination(s+cache[i]);
+            }
+        }
+    }
+    void createPermutation(string t){
+        if(dp.find(t)!=dp.end()) return;
+        sort(t.begin(), t.end());
+        while(next_permutation(t.begin(), t.end())){
+            dp[t] = true;
+            possible.insert(stoll(t));
+        }
+    }
+    Solution(){
+        createCombination("");
+        possible.insert(1224444);
+    }
+
+    int nextBeautifulNumber(int n) {
+        auto it = possible.upper_bound(n);
+        return *it;
+    }
+};
