@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int totalMoney(int n) {
+        
+        int ans = 0;
+        int start = 1, left = n;
+        while(left>0){
+            int now= min(start+7-1, start+left-1);
+            ans += ((now*(now+1))/2) - ((start*(start-1))/2);
+            left-=min(7, left);
+            start+=1;
+        }
+        return ans;
+    }
+};
