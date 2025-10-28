@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int countValidSelections(vector<int>& nums) {
+        int ans = 0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]!=0) continue;
+            ans += finder(nums, i, 0);
+            ans += finder(nums, i, 1);
+        }
+
+        return ans;
+    }
+    bool finder(vector<int> nums, int index, int direc){
+        int n = nums.size();
+        int i= index;
+        while(i>=0 && i<n){
+            if(nums[i]>0){
+                nums[i]-=1;
+                direc^=1;
+                i+= (direc? 1: -1);
+            }else{
+                i+= (direc? 1: -1);
+            }
+        }
+        for(auto i: nums) if(i!=0) return false;
+        return true;
+    }
+};
