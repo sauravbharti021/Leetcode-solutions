@@ -1,0 +1,24 @@
+class Solution {
+public:
+    ListNode* modifiedList(vector<int>& nums, ListNode* head) {
+        set<int> st;
+        for(auto i: nums) st.insert(i);
+        ListNode* cur = new ListNode();
+        ListNode* ans = cur;
+        while(head!=NULL){
+             
+            while(head!=NULL && st.find(head->val)!=st.end()){
+                head = head->next;
+            }
+            if(head!=NULL){
+                ListNode* now = new ListNode(head->val);
+                cur->next = now;
+                head= head->next;
+                cur= cur->next;
+            }
+        }
+
+        return ans->next;
+        
+    }
+};
