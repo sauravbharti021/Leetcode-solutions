@@ -1,0 +1,70 @@
+struct DSU{
+    vector<int> parent;
+    vector<double> rank;
+    void makeset(int n){
+        parent.assign(n+1, 0);
+        rank.assign(n+1, 0.001);
+        for(int i=1;i<=n;i++) parent[i] = i;
+    }
+    int findPar(int x){
+        while(parent[x]!=x) x= parent[x];
+        return x;
+    }
+    void unite(int u, int v){
+        u = findPar(u);
+        v= findPar(v);
+        if(rank[u]<rank[v]){
+            rank[v]+=rank[u];
+            parent[u] = v;
+        }else{
+            rank[u]+=rank[v];
+            parent[v] = u;
+        }
+    }
+};
+
+class Solution {
+public:
+    vector<int> processQueries(int c, vector<vector<int>>& connections, vector<vector<int>>& queries) {
+        DSU d;
+        d.makeset(c+1);
+        for(int i=0;i<connections.size();i++) {
+            int u = connections[i][0], v= connections[i][1];
+            d.unite(u, v);
+        }
+        vector<int> memorization(c+1, -1);
+        for(int i=1;i<=c;i++){
+            memorization[i] = d.findPar(i);
+        }
+        unordered_map<int, set<int>> m;
+        for(int i=1;i<=c;i++){
+            int parent = memorization[i];
+            m[parent].insert(i);
+        }
+
+
+        vector<int> ans;
+        for(int i=0;i<queries.size();i++){
+            int type = queries[i][0], x = queries[i][1];
+            int parent = memorization[x];
+            if(type==2){
+                if(m[parent].find(x)!=m[parent].end()){
+                    m[parent].erase(x);
+                }
+            }else{
+                if(m[parent].find(x)!=m[parent].end()){
+                    ans.push_back(x);
+                }else{
+                    if(m[parent].size()==0){
+                        ans.push_back(-1);
+                        continue;
+                    }
+                    ans.push_back(*m[parent].begin());
+                }
+            }
+        }
+
+        return ans;
+
+    }
+};
