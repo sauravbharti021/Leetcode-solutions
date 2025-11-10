@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        vector<int> act=nums;
+        int n = nums.size();
+        int ans = 0;
+        stack<int> st;
+        st.push(0);
+        for(int i=0;i<act.size();i++){
+            while(!st.empty()){
+                int x = st.top();
+                if(nums[i]>x){
+                    ans+=1;
+                    st.push(nums[i]);
+                    break;
+                }else if(nums[i]<x){
+                    st.pop();
+                }else break;
+            }
+        }
+
+        return ans;
+    }
+};
