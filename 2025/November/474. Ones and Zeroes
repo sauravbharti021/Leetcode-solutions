@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<vector<vector<int>>> dp;
+    int recur(int i, int m, int n, int size, vector<vector<int>> &fre){
+        if(i>=size) return 0;
+        if(dp[i][m][n]!=-1) return dp[i][m][n];
+
+        int zero = fre[i][0], one = fre[i][1];
+        int ans = 0;
+        if(m-zero>=0 && n-one>=0){
+            ans = 1+ recur(i+1, m-zero, n-one, size, fre);
+        }
+        ans = max(ans, recur(i+1, m, n, size, fre));
+        return dp[i][m][n] = ans;
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        /*
+            3D dp? (i,m,n)?
+        */
+        int size = strs.size();
+        dp.assign(size+1, vector<vector<int>>(m+1, vector<int>(n+1, -1)));
+        vector<vector<int>> fre(size, vector<int>(2,0));
+        for(int i=0;i<size;i++){
+            int cntO = 0, cntZ=0;
+            for(int j=0;j<strs[i].size();j++){
+                if(strs[i][j]=='0') cntZ +=1;
+                else cntO+=1;
+            }
+            fre[i][0]+=cntZ;
+            fre[i][1]+=cntO;
+        }
+        int res = recur(0, m, n, size, fre);
+        return res;
+    }
+};
