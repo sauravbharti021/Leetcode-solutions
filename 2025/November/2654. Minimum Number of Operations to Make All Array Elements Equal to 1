@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int gcd(int a, int b){
+        if(b==0) return a;
+        return gcd(b, a%b);
+    }
+    int minOperations(vector<int>& nums) {
+        int n = nums.size();
+        int oneCount = 0;
+        for(auto i: nums) if(i==1) oneCount +=1;
+        int g = nums[0];
+        for(int i=1;i<n;i++) g = gcd(g,nums[i]);
+        if(g!=1) return -1;
+        if(oneCount>0) return n-oneCount;
+
+        int soon = 1e9;
+        for(int i=1;i<=n;i++){
+            int flag = 0;
+            for(int j=0;j+i<=n;j++){
+                int tempGcd = nums[j];
+                for(int k=j+1;k<=j+i && k<n;k++) tempGcd= gcd(tempGcd, nums[k]);
+                if(tempGcd==1){
+                    soon = i;
+                    flag = 1;
+                    break;
+                }
+            }
+            if(flag==1){
+                soon = i;
+                break;
+            }   
+        }
+
+        return n+soon-1;
+    }
+};
