@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> rangeAddQueries(int n, vector<vector<int>>& queries) {
+        vector<vector<int>> dp(n, vector<int>(n, 0));
+        for(int i=0;i<queries.size();i++){
+                int x1= queries[i][0], y1 = queries[i][1], x2 = queries[i][2], y2 = queries[i][3];
+            for(int k=x1;k<=x2;k++){
+                dp[k][y1]+=1;
+                if(y2+1<n) dp[k][y2+1]-=1;
+            }
+            
+        }
+
+        for(int i=0;i<n;i++){
+            for(int j=1;j<n;j++){
+                dp[i][j]+=dp[i][j-1];
+            }
+        }
+        return dp;
+    }
+};
