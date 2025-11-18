@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool isOneBitCharacter(vector<int>& bits) {
+        int n = bits.size();
+        string now = "";
+        for(int i=0;i<n;i++){
+            if(bits[i]==1){
+                i+=1;
+                now="";
+            }else{
+                now+=bits[i];
+            }
+        }
+        return now.size()>=1;
+    }
+};
