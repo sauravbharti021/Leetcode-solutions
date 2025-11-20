@@ -1,0 +1,36 @@
+#define all(c) c.begin(), c.end()
+class Solution {
+public:
+    bool static comp(const vector<int> &a, const vector<int> &b){
+        if(a[1]==b[1]) return a[0]<b[0];
+        return a[1]<b[1];
+    }
+    int intersectionSizeTwo(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        /*
+            [1, ]
+        */
+        sort(intervals.begin(), intervals.end(), comp);
+        vector<int> st;
+        for(int i=0;i<n;i++){
+            int str = intervals[i][0], en= intervals[i][1];
+            int start = lower_bound(all(st), str) - st.begin();
+            auto end = upper_bound(all(st), en) - st.begin();
+
+            if(end-start == 0){
+                st.push_back(en-1);
+                st.push_back(en);      
+            }else if(end - start == 1){
+                if(lower_bound(all(st), en)!=st.end()){
+                    st.push_back(en-1);
+                }else{
+                    st.push_back(en);
+                }
+            }
+            sort(st.begin(), st.end());
+        }
+        set<int> unique;
+        for(auto i: st) unique.insert(i);
+        return unique.size();
+    }
+};
