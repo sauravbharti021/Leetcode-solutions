@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<bool> prefixesDivBy5(vector<int>& nums) {
+       int n = nums.size();
+        vector<bool> ans(n, false);
+        int flag= 0;
+        int now = 0,cnt= 0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]==0 && !flag){
+                ans[i]= true;
+            }else{
+                if(!flag){
+                    flag = 1;
+                    cnt = 1;
+                    now = 1;
+                    continue;
+                }
+                now = ((now*2)%5 + (nums[i]==0 ? 0: 1));
+                if(now%5==0) ans[i] = true;
+                now%=5;
+            }
+        }
+        return ans;
+    }
+};
