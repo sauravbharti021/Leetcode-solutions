@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int smallestRepunitDivByK(int k) {
+        if(k%2==0) return -1;
+        int start = 1, res = 1;
+        set<int> st;
+        while(start%k!=0){
+            start*=10;
+            start+=1;
+            start%=k;
+            res+=1;
+            if(st.find(start)!=st.end()){
+                return -1;
+            }else{
+                st.insert(start);
+            }
+        }
+
+        return res;
+    }
+};
