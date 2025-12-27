@@ -1,0 +1,49 @@
+#define ff first 
+#define ss second
+#define ll long long
+class Solution {
+public:
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+
+        sort(meetings.begin(), meetings.end());
+        priority_queue<pair<ll, ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> p;
+        map<int,int> m;
+        set<int> freeRoomTracker;
+        for(int i=0;i<n;i++) freeRoomTracker.insert(i);
+
+        for(int i=0;i<meetings.size();i++){
+            ll startTime = meetings[i][0];
+            ll endTime = meetings[i][1];
+            ll timeForMeet = (endTime - startTime);
+
+            int delayed = 0;
+            
+            while(!p.empty() && startTime>=p.top().ff){
+                freeRoomTracker.insert(p.top().ss);
+                p.pop();
+            }
+
+            if(freeRoomTracker.size()>0){
+                auto it = freeRoomTracker.begin();
+                m[*it]+=1;
+                p.push({endTime, *it});
+                freeRoomTracker.erase(it);
+            }else{
+                pair<ll,ll> latestToClear = p.top();
+                p.pop();
+                m[latestToClear.ss]+=1;
+                p.push({latestToClear.ff+timeForMeet, latestToClear.ss});
+            }
+        }
+
+        int maxi= -1e9, bestRoom;
+        for(auto i: m){
+            if(i.second>maxi){
+                maxi = i.second;
+                bestRoom = i.first;
+            }
+        }
+
+        return bestRoom;
+    }
+};
