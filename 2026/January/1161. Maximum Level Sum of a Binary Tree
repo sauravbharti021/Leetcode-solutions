@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maxLevelSum(TreeNode* root) {
+        vector<int> lvl(1e4+1, 0);
+        int level = 1;
+        queue<TreeNode*> q;
+        q.push(root);
+        int mx = -1e9, ans = 0;
+        while(!q.empty()){
+            int size = q.size();
+            int lvlSum = 0;
+            while(size--){
+                TreeNode* cur = q.front();
+                q.pop();
+                lvlSum+= (cur->val);
+                if(cur->left!=NULL) q.push(cur->left);
+                if(cur->right!=NULL) q.push(cur->right);
+            }
+            if(lvlSum>mx){
+                mx = lvlSum;
+                ans = level;
+            }
+            level+=1;
+        }
+
+        return ans;
+    }
+};
