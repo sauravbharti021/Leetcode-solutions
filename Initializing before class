@@ -1,0 +1,70 @@
+#define ll long long
+
+
+vector<int> prime;
+unordered_map<int, vector<int>> plot;
+vector<int> factors[1000001];
+bool initialized = []() {
+    prime.assign(1e6+1, 1);
+    for(ll i=2;i<=1e6;i++) {
+        if(prime[i]==1){
+            prime[i] = i;
+            for(ll p = i;p<=1e6;p+=i){
+                prime[p] = i;
+                factors[p].push_back(i);
+            }
+        }
+    }
+    return true;
+}();
+
+#define ll long long
+class Solution {
+public:
+    int bfs(vector<int> &nums){
+        int n = nums.size();
+        vector<int> dis(n, 1e9);
+        queue<int> q;
+        q.push(n-1);
+        dis[n-1] = 0;
+
+        while(!q.empty()){
+            int head = q.front();
+            q.pop();
+            int x = nums[head];
+
+            if(head+1<n && dis[head+1]>(dis[head]+1)){
+                q.push(head+1);
+                dis[head+1] = 1 + dis[head];
+            }
+            if(head-1>=0 && dis[head-1]>(dis[head]+1)){
+                q.push(head-1);
+                dis[head-1] = 1+ dis[head];
+            }
+
+            while(x>1){
+                for(auto j: plot[prime[x]]){
+                    if(dis[j]> (dis[head]+1)){
+                        q.push(j);
+                        dis[j]= dis[head]+1;
+                    }
+                }
+                int val = x;
+                x/= prime[x];
+                plot.erase(val);
+            }
+        }
+        return dis[0];
+    }
+    int minJumps(vector<int>& nums) {
+        /*
+            simple dp[i] with support of prime factorisation
+        */
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            plot[nums[i]].push_back(i);
+        }
+        int ans = bfs(nums);
+        return ans;
+    }
+};
